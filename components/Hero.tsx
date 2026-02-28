@@ -13,50 +13,50 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
       {/* Decorative Background Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl bg-purple-600/10 rounded-full blur-[120px] pointer-events-none opacity-50"></div>
       
-      {/* Floating Hearts Animation */}
+      {/* Floating Hearts Animation - Optimized */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             initial={{ y: '100vh', opacity: 0, scale: 0 }}
             animate={{ 
               y: '-20vh', 
-              opacity: [0, 0.4, 0.4, 0],
-              scale: [0.5, 1.2, 0.8],
-              x: Math.sin(i) * 300 
+              opacity: [0, 0.3, 0.3, 0],
+              scale: [0.5, 1, 0.8],
+              x: Math.sin(i) * 200 
             }}
             transition={{ 
-              duration: 10 + i * 1.5, 
+              duration: 12 + i * 2, 
               repeat: Infinity, 
               ease: "linear",
-              delay: i * 0.5
+              delay: i * 1
             }}
-            className="absolute bottom-0 text-purple-500/30 text-4xl"
-            style={{ left: `${Math.random() * 100}%` }}
+            className="absolute bottom-0 text-purple-500/20 text-4xl will-change-transform"
+            style={{ left: `${15 + Math.random() * 70}%` }}
           >
-            {['❤️', '💖', '✨', '💎'][i % 4]}
+            {['❤️', '💖', '✨'][i % 3]}
           </motion.div>
         ))}
       </div>
 
       <div className="relative z-10 max-w-5xl">
         <motion.div 
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, type: "spring" }}
+          transition={{ duration: 0.6 }}
           className="inline-block px-6 py-2 mb-8 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md"
         >
           <span className="flex items-center gap-3">
-            <Sparkles className="w-4 h-4 animate-pulse" />
+            <Sparkles className="w-4 h-4" />
             Nepal's #1 Premium Matrimonial
-            <Sparkles className="w-4 h-4 animate-pulse" />
+            <Sparkles className="w-4 h-4" />
           </span>
         </motion.div>
         
         <motion.h1 
-          initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-7xl md:text-9xl font-black mb-10 leading-[1] tracking-tighter"
         >
           Find Your <br />
@@ -66,7 +66,7 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: '100%' }}
-              transition={{ delay: 1.5, duration: 0.8 }}
+              transition={{ delay: 1, duration: 0.6 }}
               className="absolute -bottom-2 left-0 h-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"
             />
           </span>
@@ -78,8 +78,9 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          The most trusted platform for serious Nepali singles. <br className="hidden md:block" />
-          Join <span className="text-white font-bold">5,000+</span> verified members today.
+          नेपालको पहिलो डिजिटल म्याट्रिमोनी सेवा <br />
+          <span className="text-white font-bold">सुरक्षित र भरपर्दो</span> जीवनसाथीको खोजी अब सजिलो। <br />
+          Join <span className="text-purple-400 font-bold">5,000+</span> verified members today.
         </motion.p>
         
         <div className="flex flex-col items-center justify-center gap-8">

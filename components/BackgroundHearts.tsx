@@ -3,62 +3,60 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const BackgroundHearts: React.FC = () => {
+  // Reduced particle count for better performance
+  const particles = [...Array(15)];
+  const orbs = [...Array(3)];
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {[...Array(40)].map((_, i) => (
+      {particles.map((_, i) => (
         <motion.div 
           key={i}
           initial={{ 
             y: '110vh', 
             x: `${Math.random() * 100}vw`,
-            scale: 0.5 + Math.random(),
-            opacity: 0,
-            rotate: 0
+            scale: 0.5 + Math.random() * 0.5,
+            opacity: 0
           }}
           animate={{ 
             y: '-10vh',
-            x: `${(Math.random() * 100) + (Math.sin(i) * 10)}vw`,
-            opacity: [0, 0.4, 0.4, 0],
-            rotate: 360
+            x: `${(Math.random() * 100) + (Math.sin(i) * 5)}vw`,
+            opacity: [0, 0.2, 0.2, 0],
           }}
           transition={{ 
-            duration: 10 + Math.random() * 20,
+            duration: 15 + Math.random() * 15,
             repeat: Infinity,
             delay: Math.random() * 10,
             ease: "linear"
           }}
-          className="absolute text-purple-500/20"
+          className="absolute text-purple-500/10 will-change-transform"
           style={{ 
-            fontSize: `${10 + Math.random() * 30}px`,
-            filter: 'blur(1px)'
+            fontSize: `${15 + Math.random() * 20}px`,
           }}
         >
-          {['❤️', '💖', '✨', '💕', '💗'][Math.floor(Math.random() * 5)]}
+          {['❤️', '💖', '✨'][i % 3]}
         </motion.div>
       ))}
       
-      {/* Glow Orbs */}
-      {[...Array(5)].map((_, i) => (
+      {/* Glow Orbs - Simplified */}
+      {orbs.map((_, i) => (
         <motion.div
           key={`orb-${i}`}
-          initial={{ 
-            scale: 1,
-            x: `${Math.random() * 100}vw`,
-            y: `${Math.random() * 100}vh`,
-            opacity: 0.1
-          }}
+          initial={{ opacity: 0.05 }}
           animate={{ 
-            scale: [1, 1.5, 1],
-            x: [`${Math.random() * 100}vw`, `${Math.random() * 100}vw`],
-            y: [`${Math.random() * 100}vh`, `${Math.random() * 100}vh`],
-            opacity: [0.1, 0.2, 0.1]
+            opacity: [0.05, 0.1, 0.05],
+            scale: [1, 1.2, 1]
           }}
           transition={{ 
-            duration: 20 + Math.random() * 10,
+            duration: 10 + i * 5,
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]"
+          className="absolute w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[120px] will-change-transform"
+          style={{
+            left: `${10 + i * 30}%`,
+            top: `${20 + i * 20}%`,
+          }}
         />
       ))}
     </div>

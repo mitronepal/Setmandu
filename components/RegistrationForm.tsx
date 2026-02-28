@@ -68,6 +68,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onComplete }) => {
     setStep(s => s + 1);
   };
 
+  const prevStep = () => setStep(s => s - 1);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 5) {
