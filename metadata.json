@@ -1,0 +1,7 @@
+{
+  "name": "Setmandu Matrimonial",
+  "description": "A premium, animated matrimonial platform for Nepali users featuring an intelligent match-scoring engine and a high-end glassmorphism design.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
