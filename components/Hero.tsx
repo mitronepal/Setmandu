@@ -59,6 +59,7 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-7xl md:text-9xl font-black mb-10 leading-[1] tracking-tighter"
         >
+          <span className="text-sm md:text-xl block mb-4 text-purple-500/60 font-mono tracking-[0.5em] uppercase">Setmandu Matrimony</span>
           Find Your <br />
           <span className="rose-gold-text">Soulmate</span> <br /> 
           in <span className="text-purple-400 relative">
