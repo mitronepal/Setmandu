@@ -161,18 +161,6 @@
     .btn-group .btn{flex:1;padding:14px 10px;font-size:15px;}
     .btn-group .btn-secondary{flex:.5;}
 
-    .file-upload{border:2px dashed rgba(142,36,170,0.3);border-radius:24px;padding:22px;text-align:center;
-      background:rgba(255,255,255,0.2);cursor:pointer;transition:.25s;}
-    body.dark .file-upload{background:rgba(50,32,58,0.3);}
-    .file-upload:active{border-color:var(--primary);background:rgba(142,36,170,0.06);}
-    .file-upload .material-symbols-outlined{font-size:34px;color:var(--primary);display:block;margin-bottom:4px;}
-    .file-upload input{display:none;}
-    .file-preview{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
-    .file-preview img{width:72px;height:72px;object-fit:cover;border-radius:16px;border:3px solid rgba(142,36,170,0.2);}
-    .upload-progress{height:5px;background:rgba(142,36,170,0.12);border-radius:6px;margin-top:8px;overflow:hidden;display:none;}
-    .upload-progress.show{display:block;}
-    .upload-progress-fill{height:100%;width:0%;background:var(--primary);transition:width .3s;}
-
     .payment-options{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 12px;}
     .payment-option{flex:1;min-width:78px;padding:12px 8px;background:rgba(255,255,255,0.28);
       border:2px solid rgba(142,36,170,0.14);border-radius:20px;text-align:center;cursor:pointer;transition:.25s;
@@ -314,7 +302,7 @@
     <span class="alert-icon">⚠️</span>
     <h3 class="np">महत्वपूर्ण सूचना</h3>
     <p class="np">
-      <strong>कृपया भुक्तानी गर्दा प्राप्त हुने Transaction Code</strong><br>
+      <strong>भुक्तानी पछि प्राप्त Transaction Code</strong><br>
       तलको फारममा सही रूपमा भर्नुहोस्।<br><br>
       हामीले तपाईंको भुक्तानी प्रमाणित गर्न यो कोड प्रयोग गर्छौं।<br>
       धन्यवाद! 🙏
@@ -396,16 +384,15 @@
 'use strict';
 
 // ============================================================
-// CONSTANTS (from static config, no PHP)
+// CONSTANTS (static config)
 // ============================================================
 const QR_ESEWA = 'https://i.ibb.co/prhr7Z3Q/esewa-qr.jpg';
 const QR_KHALTI = 'https://i.ibb.co/6cxrmjBq/khalti-qr.jpg';
 const QR_BANK = 'https://i.ibb.co/xKkz8YWq/bank-qr.jpg';
 const WHATSAPP_NUMBER = '9779810700688';
 const TIKTOK_URL = 'https://www.tiktok.com/@setmandu.com';
-const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
 
-// Membership plans (static, no server roundtrip)
+// Membership plans (static)
 const ALL_PLANS = {
   'Starter': 100,
   'Basic': 500,
@@ -423,7 +410,6 @@ let selectedPayment = null;
 let selectedMembership = null;
 let selectedMembershipPrice = 0;
 let formData = {};
-let fileData = { profilePhoto: null, paymentScreenshot: null };
 let isSubmitting = false;
 let requestId = null;
 const STEPS = 4;
@@ -437,9 +423,7 @@ const welcomeModal = document.getElementById('welcomeModal');
 const alertDialog = document.getElementById('alertDialog');
 const aiChatModal = document.getElementById('aiChatModal');
 
-// In-memory storage fallback: some in-app browsers (older TikTok/FB
-// webviews in private-ish modes) throw on localStorage access.
-// This wrapper prevents that from crashing the whole page.
+// Safe localStorage wrapper
 const safeStorage = {
   _mem: {},
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) { this._mem[k] = v; } },
@@ -481,19 +465,19 @@ const countries = [
 // ============================================================
 const t = {
   ne: {
-    stepTitles: ['व्यक्तिगत विवरण','साथीको विवरण','सदस्यता योजना','फोटो र भुक्तानी'],
-    stepLabels: ['व्यक्तिगत','साथीको रुचि','सदस्यता','फोटो र भुक्तानी'],
+    stepTitles: ['व्यक्तिगत विवरण','साथीको विवरण','सदस्यता योजना','भुक्तानी प्रमाण'],
+    stepLabels: ['व्यक्तिगत','साथीको रुचि','सदस्यता','भुक्तानी प्रमाण'],
     fullName:'पूरा नाम *', currentCountry:'हालको देश *', gender:'लिङ्ग *', age:'उमेर *',
     caste:'जाति / जनजाति *', education:'शिक्षा *', occupation:'पेशा *',
     preferredAge:'रुचाइएको उमेर', preferredCaste:'रुचाइएको जाति (वैकल्पिक)', preferredCountry:'रुचाइएको देश',
-    profilePhoto:'प्रोफाइल फोटो * (अनिवार्य)', selectPayment:'भुक्तानी विधि *',
+    selectPayment:'भुक्तानी विधि *',
     esewa:'इ-सेवा', khalti:'खल्ती', bank:'बैंक',
-    uploadScreenshot:'भुक्तानी स्क्रिनसट * (अनिवार्य)', submit:'दर्ता गर्नुहोस्', back:'पछाडि', next:'अर्को',
+    submit:'दर्ता गर्नुहोस्', back:'पछाडि', next:'अर्को',
     registrationFee:'दर्ता शुल्क', success:'🎉 दर्ता सफल भयो!', welcome:'SetMandu मा स्वागत छ,',
     paymentReceived:'✓ रु. को भुक्तानी प्राप्त भयो', pendingVerification:'तपाईंको खाता प्रमाणीकरणको लागि पेन्डिङ छ।',
     startOver:'पुनः सुरु गर्नुहोस्', processing:'तपाईंको दर्ता प्रक्रिया भइरहेको छ...',
-    required:'कृपया यो फिल्ड भर्नुहोस्', uploadRequired:'कृपया फोटो अपलोड गर्नुहोस्',
-    paymentRequired:'कृपया भुक्तानी विधि चयन गर्नुहोस्', screenshotRequired:'कृपया भुक्तानी स्क्रिनसट अपलोड गर्नुहोस्',
+    required:'कृपया यो फिल्ड भर्नुहोस्',
+    paymentRequired:'कृपया भुक्तानी विधि चयन गर्नुहोस्',
     fee:'दर्ता शुल्क: रु.', confirm:'सबै विवरण जाँच गर्नुहोस्',
     confirmTitle:'पुष्टि गर्नुहोस्', yourID:'तपाईंको SetMandu युजर आइडी',
     whatsapp:'WhatsApp मा सम्पर्क गर्नुहोस्', tiktok:'TikTok मा फलो गर्नुहोस्',
@@ -502,7 +486,6 @@ const t = {
     selectPaymentMethod:'कृपया पहिले भुक्तानी विधि चयन गर्नुहोस्', membershipPlan:'सदस्यता योजना *',
     selectMembership:'कृपया सदस्यता योजना चयन गर्नुहोस्',
     nepalNote:'✨ तपाईंको लागि उपलब्ध सदस्यता योजनाहरू',
-    fileTooLarge:'फाइल धेरै ठूलो छ (अधिकतम ५MB)', invalidFileType:'अमान्य फाइल प्रकार',
     ageInvalid:'उमेर १८ देखि ८० को बीचमा हुनुपर्छ', networkError:'नेटवर्क त्रुटि, फेरि प्रयास गर्नुहोस्',
     duplicateSubmit:'पहिले नै पेश गरिएको छ',
     starterPlan:'Starter', basicPlan:'Basic', premiumPlan:'Premium', goldPlan:'Gold', vipPlan:'VIP',
@@ -515,19 +498,19 @@ const t = {
     transactionPlaceholder:'जस्तै: TXN123456789'
   },
   en: {
-    stepTitles: ['Personal Details','Partner Details','Membership Plan','Photo & Payment'],
-    stepLabels: ['Personal','Partner','Membership','Photo & Payment'],
+    stepTitles: ['Personal Details','Partner Details','Membership Plan','Payment Proof'],
+    stepLabels: ['Personal','Partner','Membership','Payment Proof'],
     fullName:'Full Name *', currentCountry:'Current Country *', gender:'Gender *', age:'Age *',
     caste:'Caste / Ethnicity *', education:'Education *', occupation:'Occupation *',
     preferredAge:'Preferred Age', preferredCaste:'Preferred Caste (Optional)', preferredCountry:'Preferred Country',
-    profilePhoto:'Profile Photo * (Required)', selectPayment:'Payment Method *',
+    selectPayment:'Payment Method *',
     esewa:'eSewa', khalti:'Khalti', bank:'Bank',
-    uploadScreenshot:'Payment Screenshot * (Required)', submit:'Register', back:'Back', next:'Next',
+    submit:'Register', back:'Back', next:'Next',
     registrationFee:'Registration Fee', success:'🎉 Registration Successful!', welcome:'Welcome to SetMandu,',
     paymentReceived:'✓ Payment of Rs. received', pendingVerification:'Your account is pending verification.',
     startOver:'Start Over', processing:'Processing your registration...',
-    required:'Please fill this field', uploadRequired:'Please upload photo',
-    paymentRequired:'Please select payment method', screenshotRequired:'Please upload payment screenshot',
+    required:'Please fill this field',
+    paymentRequired:'Please select payment method',
     fee:'Registration Fee: Rs.', confirm:'Please review all details',
     confirmTitle:'Confirm', yourID:'Your SetMandu User ID',
     whatsapp:'Contact on WhatsApp', tiktok:'Follow on TikTok',
@@ -536,7 +519,6 @@ const t = {
     selectPaymentMethod:'Please select payment method first', membershipPlan:'Membership Plan *',
     selectMembership:'Please select a membership plan',
     nepalNote:'✨ Membership plans available for you',
-    fileTooLarge:'File too large (max 5MB)', invalidFileType:'Invalid file type',
     ageInvalid:'Age must be between 18 and 80', networkError:'Network error, please try again',
     duplicateSubmit:'Already submitted',
     starterPlan:'Starter', basicPlan:'Basic', premiumPlan:'Premium', goldPlan:'Gold', vipPlan:'VIP',
@@ -551,11 +533,6 @@ const t = {
 };
 
 function getText(key) { return t[selectedLang][key] || key; }
-
-function isNepalSelected() {
-  const el = document.getElementById('currentCountry');
-  return el && el.value === 'Nepal';
-}
 
 function getActivePlans() {
   return ALL_PLANS;
@@ -623,7 +600,7 @@ function showAlert() { alertDialog.classList.add('show'); }
 function closeAlert() { alertDialog.classList.remove('show'); }
 
 // ============================================================
-// STEP DEFINITIONS
+// STEP DEFINITIONS — NO FILE UPLOADS
 // ============================================================
 function getStepFields() {
   return [
@@ -645,10 +622,8 @@ function getStepFields() {
         { id:'membership', label:getText('membershipPlan'), type:'membership', required:true }
     ]},
     { title: getText('stepTitles')[3], fields: [
-        { id:'profilePhoto', label:getText('profilePhoto'), type:'file', accept:'image/*,image/heic,image/heif', required:true },
         { id:'paymentMethod', label:getText('selectPayment'), type:'payment', required:true },
-        { id:'transactionCode', label:getText('transactionCode'), type:'text', required:true },
-        { id:'paymentScreenshot', label:getText('uploadScreenshot'), type:'file', accept:'image/*,image/heic,image/heif', required:true }
+        { id:'transactionCode', label:getText('transactionCode'), type:'text', required:true }
     ]}
   ];
 }
@@ -666,21 +641,10 @@ function renderStep(step) {
       const opts = f.options.map(o => `<option value="${o}">${o}</option>`).join('');
       html += `<div class="form-group">
         <label class="np">${f.label}</label>
-        <select id="${f.id}" ${f.required ? 'required' : ''} onchange="validateField('${f.id}'); onCountryChange()">
+        <select id="${f.id}" ${f.required ? 'required' : ''} onchange="validateField('${f.id}')">
           <option value="">${selectedLang === 'ne' ? 'छनौट गर्नुहोस्' : 'Select'}</option>${opts}
         </select>
         <div class="error-msg np" id="${f.id}_error">${getText('required')}</div>
-      </div>`;
-    } else if (f.type === 'file') {
-      html += `<div class="form-group">
-        <div class="file-upload" onclick="document.getElementById('${f.id}').click()">
-          <span class="material-symbols-outlined">cloud_upload</span>
-          <div style="font-size:13.5px;font-weight:500;" class="np">${f.label}</div>
-        </div>
-        <input type="file" id="${f.id}" accept="${f.accept}" capture="environment" style="display:none" onchange="handleFileSelect('${f.id}', this)">
-        <div class="upload-progress" id="progress-${f.id}"><div class="upload-progress-fill" id="progress-fill-${f.id}"></div></div>
-        <div class="file-preview" id="preview-${f.id}"></div>
-        <div class="error-msg np" id="${f.id}_error">${getText('uploadRequired')}</div>
       </div>`;
     } else if (f.type === 'membership') {
       html += `<div class="form-group">
@@ -753,17 +717,11 @@ function renderStep(step) {
 
   stepsContainer.innerHTML = html;
 
+  // Restore form values
   data.fields.forEach(f => {
     const el = document.getElementById(f.id);
-    if (el && formData[f.id] !== undefined && f.type !== 'file' && f.type !== 'payment' && f.type !== 'membership') {
+    if (el && formData[f.id] !== undefined && f.type !== 'payment' && f.type !== 'membership') {
       el.value = formData[f.id];
-    }
-  });
-
-  Object.keys(fileData).forEach(key => {
-    const preview = document.getElementById(`preview-${key}`);
-    if (preview && fileData[key] instanceof File) {
-      preview.innerHTML = `<img src="${URL.createObjectURL(fileData[key])}" />`;
     }
   });
 
@@ -803,7 +761,7 @@ function renderStep(step) {
 }
 
 // ============================================================
-// MEMBERSHIP — 5 unified plans (Rs.100 / 500 / 1500 / 2500 / 5000)
+// MEMBERSHIP
 // ============================================================
 function planKeyToTextKeys(planName) {
   const map = {
@@ -843,28 +801,6 @@ function buildMembershipCardsHTML(plans) {
 
 function getMembershipHTML() {
   return buildMembershipCardsHTML(ALL_PLANS);
-}
-
-function updateMembershipPlans(country) {
-  const plans = ALL_PLANS;
-  if (selectedMembership && !(selectedMembership in plans)) {
-    selectedMembership = null;
-    selectedMembershipPrice = 0;
-    formData.membership = null;
-    formData.membershipPrice = 0;
-  }
-  const membershipContainer = document.getElementById('membershipContainer');
-  if (membershipContainer) {
-    membershipContainer.innerHTML = buildMembershipCardsHTML(plans);
-  }
-  syncFeeEverywhere();
-  saveToLocal();
-}
-
-function onCountryChange() {
-  const countrySelect = document.getElementById('currentCountry');
-  if (!countrySelect) return;
-  updateMembershipPlans(countrySelect.value);
 }
 
 function selectMembership(plan, price) {
@@ -922,7 +858,7 @@ function validateField(id) {
     const val = el.value.trim();
     if (val.length < 3) {
       el.classList.add('error');
-      errorEl.textContent = 'कृपया मान्य Transaction Code भर्नुहोस् / Please enter a valid transaction code';
+      errorEl.textContent = selectedLang === 'ne' ? 'कृपया मान्य Transaction Code भर्नुहोस्' : 'Please enter a valid transaction code';
       errorEl.classList.add('show');
       return false;
     }
@@ -946,12 +882,7 @@ function validateAllFields(step) {
   let valid = true;
 
   fields.forEach(f => {
-    if (f.type === 'file') {
-      if (f.required && !fileData[f.id]) {
-        document.getElementById(f.id + '_error')?.classList.add('show');
-        valid = false;
-      }
-    } else if (f.type === 'membership') {
+    if (f.type === 'membership') {
       if (f.required && !selectedMembership) {
         document.getElementById('membership_error')?.classList.add('show');
         valid = false;
@@ -989,7 +920,7 @@ function collectStepData(step) {
   const stepDefs = getStepFields();
   const fields = stepDefs[step - 1].fields;
   fields.forEach(f => {
-    if (f.type === 'file' || f.type === 'payment' || f.type === 'membership') return;
+    if (f.type === 'payment' || f.type === 'membership') return;
     const el = document.getElementById(f.id);
     if (el) formData[f.id] = el.value;
   });
@@ -1061,47 +992,6 @@ function printQR() {
 }
 
 // ============================================================
-// FILE HANDLING — hardened for in-app browsers
-// ============================================================
-function handleFileSelect(id, input) {
-  const files = input.files;
-  if (!files || !files.length) return;
-  const file = files[0];
-  const errorEl = document.getElementById(id + '_error');
-
-  if (file.size > MAX_UPLOAD_SIZE) {
-    if (errorEl) { errorEl.textContent = getText('fileTooLarge'); errorEl.classList.add('show'); }
-    input.value = '';
-    return;
-  }
-
-  const validTypes = ['image/jpeg','image/jpg','image/png','image/gif','image/webp','image/heic','image/heif'];
-  const nameLower = (file.name || '').toLowerCase();
-  const hasValidExt = /\.(jpe?g|png|gif|webp|heic|heif)$/.test(nameLower);
-  const hasValidType = validTypes.includes(file.type);
-  if (file.type && !hasValidType && !hasValidExt) {
-    if (errorEl) { errorEl.textContent = getText('invalidFileType'); errorEl.classList.add('show'); }
-    input.value = '';
-    return;
-  }
-
-  fileData[id] = file;
-  const preview = document.getElementById(`preview-${id}`);
-  if (preview) {
-    try {
-      const objectUrl = URL.createObjectURL(file);
-      preview.innerHTML = `<img src="${objectUrl}" onload="URL.revokeObjectURL('${objectUrl}')" />`;
-    } catch (e) {
-      const reader = new FileReader();
-      reader.onload = ev => { preview.innerHTML = `<img src="${ev.target.result}" />`; };
-      reader.readAsDataURL(file);
-    }
-  }
-  if (errorEl) errorEl.classList.remove('show');
-  saveToLocal();
-}
-
-// ============================================================
 // LOCAL STORAGE (safe wrapper)
 // ============================================================
 function saveToLocal() {
@@ -1125,7 +1015,7 @@ function loadFromLocal() {
       selectedMembershipPrice = saved.membershipPrice || 0;
     }
     if (saved.lang) selectedLang = saved.lang;
-  } catch (e) { /* corrupted data — ignore */ }
+  } catch (e) { /* ignore */ }
 }
 
 // ============================================================
@@ -1139,8 +1029,6 @@ function submitForm() {
   if (!selectedMembership) { document.getElementById('membership_error')?.classList.add('show'); return; }
   if (!selectedPayment) { document.getElementById('payment_error')?.classList.add('show'); return; }
   if (!formData.transactionCode) { document.getElementById('transactionCode_error')?.classList.add('show'); return; }
-  if (!fileData.paymentScreenshot) { document.getElementById('paymentScreenshot_error')?.classList.add('show'); return; }
-  if (!fileData.profilePhoto) { document.getElementById('profilePhoto_error')?.classList.add('show'); return; }
 
   isSubmitting = true;
   requestId = genRequestId();
@@ -1148,9 +1036,8 @@ function submitForm() {
   if (nextBtn) nextBtn.disabled = true;
   showLoader(true);
 
-  // Simulate API call / registration process
+  // Simulate registration
   setTimeout(() => {
-    // Mark as registered locally (demo mode)
     safeStorage.set('setmandu_registered', 'true');
     safeStorage.set('setmandu_user', JSON.stringify({
       name: formData.fullName,
@@ -1195,6 +1082,7 @@ function showSuccess(name, userID, membership, price) {
     <div style="background:rgba(67,160,71,0.08);padding:12px;border-radius:24px;margin:12px 0;border:1px solid rgba(67,160,71,0.2);">
       <p class="np" style="font-size:15px;color:#43a047;font-weight:600;">${getText('paymentReceived')} ${price}</p>
       <p class="np" style="font-size:13.5px;color:var(--muted);margin-top:4px;">${getText('pendingVerification')}</p>
+      <p class="np" style="font-size:13px;color:var(--muted);margin-top:4px;">Transaction Code: ${formData.transactionCode || 'N/A'}</p>
     </div>
 
     <div class="np" style="font-family:'Baloo 2',cursive;font-size:19px;color:var(--primary-dark);margin:12px 0;">
