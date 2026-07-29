@@ -1,154 +1,1690 @@
+<?php
+// ============================================================
+// index.php - SetMandu Premium Registration (Complete Rebuild)
+// ============================================================
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setmandu - Nepal's #1 Digital Matrimony & Bihe Center | सिटमान्डु</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Setmandu (सिटमान्डु) is Nepal's first and most trusted digital matrimony service. Find your perfect life partner with our verified profiles and premium matching. #Setmandu #DigitalBiheCenter">
-    <meta name="keywords" content="Setmandu, सिटमान्डु, Nepali Matrimony, Digital Bihe Center Nepal, Marriage Bureau Kathmandu, Nepali Wedding, Find Soulmate Nepal, Matrimonial Service Nepal, Best Matrimony App Nepal">
-    <meta name="author" content="Setmandu Matrimony">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://ais-pre-ujfrth6um3mnidlyzno4yt-308793056352.run.app">
+define('FIREBASE_API_KEY', 'AIzaSyAcQlfL5FQsLbgjZl2PSpwANbJDRsAYg-0');
+define('FIREBASE_AUTH_DOMAIN', 'setmandu-603f9.firebaseapp.com');
+define('FIREBASE_DB_URL', 'https://setmandu-603f9-default-rtdb.firebaseio.com');
+define('FIREBASE_PROJECT_ID', 'setmandu-603f9');
+define('FIREBASE_STORAGE_BUCKET', 'setmandu-603f9.firebasestorage.app');
+define('FIREBASE_MSG_SENDER_ID', '991608006279');
+define('FIREBASE_APP_ID', '1:991608006279:android:15e91e65aff59c2fff3a22');
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ais-pre-ujfrth6um3mnidlyzno4yt-308793056352.run.app">
-    <meta property="og:title" content="Setmandu - Nepal's #1 Digital Matrimony & Bihe Center">
-    <meta property="og:description" content="सुरक्षित र भरपर्दो जीवनसाथीको खोजी - नेपालको पहिलो डिजिटल म्याट्रिमोनी सेवा। Join 5,000+ verified members.">
-    <meta property="og:image" content="https://picsum.photos/seed/setmandu/1200/630">
+define('UPLOAD_DIR', $_SERVER['DOCUMENT_ROOT'] . '/uploads/');
+define('UPLOAD_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/uploads/');
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://ais-pre-ujfrth6um3mnidlyzno4yt-308793056352.run.app">
-    <meta property="twitter:title" content="Setmandu - Find Your Perfect Nepali Match">
-    <meta property="twitter:description" content="Nepal's most trusted premium matrimonial platform for serious life partners. #Setmandu">
-    <meta property="twitter:image" content="https://picsum.photos/seed/setmandu/1200/630">
+define('QR_ESEWA', 'https://i.ibb.co/prhr7Z3Q/esewa-qr.jpg');
+define('QR_KHALTI', 'https://i.ibb.co/6cxrmjBq/khalti-qr.jpg');
+define('QR_BANK', 'https://i.ibb.co/xKkz8YWq/bank-qr.jpg');
 
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Setmandu Matrimony",
-      "url": "https://ais-pre-ujfrth6um3mnidlyzno4yt-308793056352.run.app",
-      "logo": "https://picsum.photos/seed/setmandu/200/200",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+977-9863821349",
-        "contactType": "customer service",
-        "areaServed": "NP",
-        "availableLanguage": ["Nepali", "English"]
-      },
-      "sameAs": [
-        "https://facebook.com/setmandu",
-        "https://instagram.com/setmandu"
-      ]
+define('WHATSAPP_NUMBER', '9779810700688');
+define('TIKTOK_URL', 'https://www.tiktok.com/@setmandu.com');
+
+// Max upload size (5MB)
+define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024);
+
+$dirs = [UPLOAD_DIR, UPLOAD_DIR . 'profiles/', UPLOAD_DIR . 'payments/'];
+foreach ($dirs as $dir) {
+    if (!file_exists($dir)) {
+        @mkdir($dir, 0755, true);
     }
-    </script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-deep: #05020a;
-            --accent-purple: #7C3AED;
-            --accent-gold: #f8b500;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-deep);
-            color: white;
-            overflow-x: hidden;
-            margin: 0;
-        }
-        .atmosphere {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.05) 0%, transparent 70%),
-                radial-gradient(circle at 80% 70%, rgba(248, 181, 0, 0.03) 0%, transparent 70%);
-            /* Reduced blur for performance */
-            filter: blur(40px);
-            opacity: 0.6;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .rose-gold-text {
-            background: linear-gradient(135deg, #fceabb 0%, #f8b500 50%, #fceabb 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
-        }
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-        .heart-particle {
-            position: fixed;
-            color: var(--accent-purple);
-            pointer-events: none;
-            z-index: 0;
-            animation: floating-hearts 15s linear infinite;
-        }
-        @keyframes floating-hearts {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-        .shimmer {
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        .pulse-btn {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-        .gradient-border-glow {
-            position: relative;
-            z-index: 1;
-        }
-        .gradient-border-glow::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(45deg, #7C3AED, #f8b500, #7C3AED);
-            z-index: -1;
-            border-radius: inherit;
-            opacity: 0.3;
-            filter: blur(12px);
-        }
-    </style>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
-  }
 }
-</script>
-<link rel="stylesheet" href="/index.css">
+
+// ============================================================
+// Membership plans - SERVER-SIDE SOURCE OF TRUTH
+// (client mirrors this, but server validates against it so
+// nobody can tamper with the submitted price)
+//
+// Single unified 5-tier plan list shown to every user regardless
+// of country: Rs.100 / Rs.500 / Rs.1500 / Rs.2500 / Rs.5000
+// ============================================================
+function getMembershipPlans($country = null) {
+    return [
+        'Starter'  => 100,
+        'Basic'    => 500,
+        'Premium'  => 1500,
+        'Gold'     => 2500,
+        'VIP'      => 5000,
+    ];
+}
+
+// ============================================================
+// PHP Helper Functions
+// ============================================================
+
+function firebase_get($path) {
+    $url = FIREBASE_DB_URL . $path . '.json';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($response, true);
+}
+
+function firebase_put($path, $data) {
+    $url = FIREBASE_DB_URL . $path . '.json';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($response, true);
+}
+
+function generateUID() {
+    return uniqid() . '_' . bin2hex(random_bytes(8));
+}
+
+function getNextUserID() {
+    $users = firebase_get('/users');
+    if (!$users) return 1;
+    $max = 0;
+    foreach ($users as $user) {
+        if (isset($user['userID']) && $user['userID'] > $max) {
+            $max = $user['userID'];
+        }
+    }
+    return $max + 1;
+}
+
+function checkUserExists($fullName) {
+    $users = firebase_get('/users');
+    if (!$users) return false;
+    foreach ($users as $user) {
+        if (isset($user['fullName']) && strtolower($user['fullName']) === strtolower($fullName)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function sanitizeInput($str) {
+    return htmlspecialchars(trim($str), ENT_QUOTES, 'UTF-8');
+}
+
+// Detects real image type from file bytes rather than trusting the
+// extension/name — safer against spoofed uploads, and works with
+// HEIC/HEIF from newer iOS/Android camera captures where possible.
+function detectRealImageType($tmpPath) {
+    $info = @getimagesize($tmpPath);
+    if ($info !== false) {
+        return $info['mime'];
+    }
+    // Fallback: check magic bytes for HEIC/HEIF containers
+    $handle = @fopen($tmpPath, 'rb');
+    if ($handle) {
+        $bytes = fread($handle, 12);
+        fclose($handle);
+        if (strlen($bytes) >= 12 && substr($bytes, 4, 4) === 'ftyp') {
+            $brand = substr($bytes, 8, 4);
+            if (in_array($brand, ['heic', 'heix', 'mif1', 'msf1', 'heim', 'heis'])) {
+                return 'image/heic';
+            }
+        }
+    }
+    return false;
+}
+
+function uploadFile($file, $uid, $type) {
+    if (!isset($file['error']) || $file['error'] !== UPLOAD_ERR_OK) {
+        $errMap = [
+            UPLOAD_ERR_INI_SIZE   => 'File too large (server limit)',
+            UPLOAD_ERR_FORM_SIZE  => 'File too large (form limit)',
+            UPLOAD_ERR_PARTIAL    => 'File upload was interrupted, please try again',
+            UPLOAD_ERR_NO_FILE    => 'No file was uploaded',
+        ];
+        $code = $file['error'] ?? -1;
+        return ['success' => false, 'error' => $errMap[$code] ?? ('Upload error code: ' . $code)];
+    }
+
+    if ($file['size'] > MAX_UPLOAD_SIZE) {
+        return ['success' => false, 'error' => 'File too large. Maximum size is 5MB'];
+    }
+
+    $mime = detectRealImageType($file['tmp_name']);
+    $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic', 'image/heif'];
+    if (!$mime || !in_array($mime, $allowedMimes)) {
+        return ['success' => false, 'error' => 'Invalid file type. Allowed: JPG, PNG, GIF, WEBP, HEIC'];
+    }
+
+    $subdir = ($type === 'profile') ? 'profiles/' : 'payments/';
+    $filename = $uid . '_' . $type . '_' . time() . '.jpg';
+    $target = UPLOAD_DIR . $subdir . $filename;
+
+    $img = null;
+    switch ($mime) {
+        case 'image/jpeg':
+            $img = @imagecreatefromjpeg($file['tmp_name']);
+            break;
+        case 'image/png':
+            $img = @imagecreatefrompng($file['tmp_name']);
+            if ($img) {
+                $bg = imagecreatetruecolor(imagesx($img), imagesy($img));
+                imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+                imagealphablending($bg, true);
+                imagecopy($bg, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
+                imagedestroy($img);
+                $img = $bg;
+            }
+            break;
+        case 'image/gif':
+            $img = @imagecreatefromgif($file['tmp_name']);
+            break;
+        case 'image/webp':
+            if (function_exists('imagecreatefromwebp')) {
+                $img = @imagecreatefromwebp($file['tmp_name']);
+            }
+            break;
+        case 'image/heic':
+        case 'image/heif':
+            // Most shared hosting GD builds cannot decode HEIC.
+            // Fall back to storing the original bytes; the browser/CDN
+            // can still serve it, though transcoding to JPEG isn't possible here.
+            break;
+    }
+
+    if ($img) {
+        // Resize down if huge (protect disk + bandwidth), preserve orientation
+        $maxDim = 1600;
+        $w = imagesx($img);
+        $h = imagesy($img);
+        if ($w > $maxDim || $h > $maxDim) {
+            $ratio = min($maxDim / $w, $maxDim / $h);
+            $newW = (int) round($w * $ratio);
+            $newH = (int) round($h * $ratio);
+            $resized = imagecreatetruecolor($newW, $newH);
+            imagefill($resized, 0, 0, imagecolorallocate($resized, 255, 255, 255));
+            imagecopyresampled($resized, $img, 0, 0, 0, 0, $newW, $newH, $w, $h);
+            imagedestroy($img);
+            $img = $resized;
+        }
+        imagejpeg($img, $target, 82);
+        imagedestroy($img);
+    } else {
+        // Store original bytes (e.g. HEIC, or GD decode failure)
+        move_uploaded_file($file['tmp_name'], $target);
+    }
+
+    if (file_exists($target)) {
+        return ['success' => true, 'url' => UPLOAD_URL . $subdir . $filename];
+    }
+    return ['success' => false, 'error' => 'Failed to save file'];
+}
+
+// Very small in-memory-per-request duplicate-submission guard using a
+// session token so double-taps on flaky in-app browsers don't create
+// two records.
+session_start();
+
+// ============================================================
+// Handle AJAX Submission
+// ============================================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+
+    if ($_POST['action'] === 'register') {
+
+        // CSRF check
+        $csrfToken = $_POST['csrf_token'] ?? '';
+        if (empty($csrfToken) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
+            echo json_encode(['success' => false, 'errors' => ['Session expired. Please refresh the page and try again.']]);
+            exit;
+        }
+
+        // Duplicate-submission guard
+        $requestId = $_POST['request_id'] ?? '';
+        if (empty($requestId)) {
+            echo json_encode(['success' => false, 'errors' => ['Invalid request']]);
+            exit;
+        }
+        if (isset($_SESSION['last_request_id']) && $_SESSION['last_request_id'] === $requestId) {
+            echo json_encode(['success' => false, 'errors' => ['Duplicate submission detected']]);
+            exit;
+        }
+
+        $fullName          = sanitizeInput($_POST['fullName'] ?? '');
+        $currentCountry    = sanitizeInput($_POST['currentCountry'] ?? '');
+        $gender            = sanitizeInput($_POST['gender'] ?? '');
+        $age               = intval($_POST['age'] ?? 0);
+        $caste             = sanitizeInput($_POST['caste'] ?? '');
+        $education         = sanitizeInput($_POST['education'] ?? '');
+        $occupation        = sanitizeInput($_POST['occupation'] ?? '');
+        $preferredAge      = sanitizeInput($_POST['preferredAge'] ?? '');
+        $preferredCaste    = sanitizeInput($_POST['preferredCaste'] ?? '');
+        $preferredCountry  = sanitizeInput($_POST['preferredCountry'] ?? '');
+        $paymentMethod     = sanitizeInput($_POST['paymentMethod'] ?? '');
+        $membership        = sanitizeInput($_POST['membership'] ?? '');
+        $lang              = sanitizeInput($_POST['lang'] ?? 'ne');
+
+        // Validate required fields
+        $errors = [];
+        if (empty($fullName) || strlen($fullName) > 100) $errors[] = 'Valid Full Name is required';
+        if (empty($currentCountry)) $errors[] = 'Current Country is required';
+        if (!in_array($gender, ['Male', 'Female', 'Other'])) $errors[] = 'Gender is required';
+        if ($age < 18 || $age > 80) $errors[] = 'Age must be between 18 and 80';
+        if (empty($caste)) $errors[] = 'Caste is required';
+        if (empty($education)) $errors[] = 'Education is required';
+        if (empty($occupation)) $errors[] = 'Occupation is required';
+        if (!in_array($paymentMethod, ['eSewa', 'Khalti', 'Bank'])) $errors[] = 'Valid payment method is required';
+
+        // SERVER-SIDE membership + price validation (never trust client price)
+        $validPlans = getMembershipPlans($currentCountry);
+        if (!array_key_exists($membership, $validPlans)) {
+            $errors[] = 'Invalid membership plan for selected country';
+            $membershipPrice = 0;
+        } else {
+            $membershipPrice = $validPlans[$membership];
+        }
+
+        if (checkUserExists($fullName)) {
+            $errors[] = 'This user is already registered. Please login.';
+        }
+
+        if (!isset($_FILES['profilePhoto']) || $_FILES['profilePhoto']['error'] === UPLOAD_ERR_NO_FILE) {
+            $errors[] = 'Profile photo is required';
+        }
+        if (!isset($_FILES['paymentScreenshot']) || $_FILES['paymentScreenshot']['error'] === UPLOAD_ERR_NO_FILE) {
+            $errors[] = 'Payment screenshot is required';
+        }
+
+        if (!empty($errors)) {
+            echo json_encode(['success' => false, 'errors' => $errors]);
+            exit;
+        }
+
+        $uid = generateUID();
+        $userID = getNextUserID();
+
+        $profileResult = uploadFile($_FILES['profilePhoto'], $uid, 'profile');
+        if (!$profileResult['success']) {
+            echo json_encode(['success' => false, 'errors' => ['Profile photo: ' . $profileResult['error']]]);
+            exit;
+        }
+
+        $paymentResult = uploadFile($_FILES['paymentScreenshot'], $uid, 'payment');
+        if (!$paymentResult['success']) {
+            echo json_encode(['success' => false, 'errors' => ['Payment screenshot: ' . $paymentResult['error']]]);
+            exit;
+        }
+
+        $userData = [
+            'userID'             => $userID,
+            'fullName'           => $fullName,
+            'currentCountry'     => $currentCountry,
+            'gender'             => $gender,
+            'age'                => $age,
+            'caste'              => $caste,
+            'education'          => $education,
+            'occupation'         => $occupation,
+            'preferredAge'       => $preferredAge,
+            'preferredCaste'     => $preferredCaste,
+            'preferredCountry'   => $preferredCountry,
+            'profilePhoto'       => $profileResult['url'],
+            'paymentMethod'      => $paymentMethod,
+            'paymentScreenshot'  => $paymentResult['url'],
+            'membership'         => $membership,
+            'membershipPrice'    => $membershipPrice,
+            'registrationFee'    => $membershipPrice,
+            'paymentStatus'      => 'Pending',
+            'accountStatus'      => 'Pending Verification',
+            'createdAt'          => time() * 1000,
+            'language'           => $lang
+        ];
+
+        try {
+            firebase_put('/users/' . $uid, $userData);
+            $_SESSION['last_request_id'] = $requestId;
+            echo json_encode([
+                'success'    => true,
+                'uid'        => $uid,
+                'userID'     => $userID,
+                'name'       => $fullName,
+                'membership' => $membership,
+                'price'      => $membershipPrice
+            ]);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'errors' => ['Server error. Please try again.']]);
+        }
+        exit;
+    }
+}
+
+// Generate CSRF token for this session
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfTokenForPage = $_SESSION['csrf_token'];
+
+// ============================================================
+// Server-rendered membership plan data (mirrors getMembershipPlans)
+// passed to JS so the client and server never drift apart.
+// Same 5 plans shown to everyone, regardless of country.
+// ============================================================
+$plansAll = getMembershipPlans();
+?>
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#7B1FA2">
+
+<title>SetMandu · नेपालको प्रिमियम मिलन सम्बन्ध | जोडिन्छ मन, बन्छ जीवन</title>
+<meta name="description" content="SetMandu नेपालको उत्कृष्ट मिलन सम्बन्ध प्लेटफर्म हो। विवाह, मिलन, साथी, जीवनसाथी, प्रेम, सम्बन्ध, नेपाली विवाह सेवा।">
+<meta name="robots" content="index, follow">
+<meta name="author" content="SetMandu">
+<meta property="og:title" content="SetMandu · नेपालको प्रिमियम मिलन सम्बन्ध">
+<meta property="og:description" content="जोडिन्छ मन, बन्छ जीवन - SetMandu मा आफ्नो जीवनसाथी खोज्नुहोस्।">
+<meta property="og:image" content="https://setmandu.com/assets/og-image.jpg">
+<meta property="og:url" content="https://setmandu.com">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://setmandu.com">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
+
+<style>
+:root{
+  --primary:#8E24AA;
+  --primary-dark:#4A148C;
+  --primary-light:#CE93D8;
+  --accent:#E53935;
+  --gold:#D4AF37;
+  --ink:#241B2F;
+  --muted:#6b5f76;
+  --surface:rgba(255,255,255,0.62);
+  --surface-strong:rgba(255,255,255,0.85);
+  --radius-lg:32px;
+  --radius-md:22px;
+  --radius-sm:14px;
+  --shadow-soft:0 20px 50px rgba(74,20,140,0.16);
+  --shadow-pop:0 10px 30px rgba(142,36,170,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  min-height:100vh;
+  min-height:100dvh;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(206,147,216,0.35), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(212,175,55,0.18), transparent 40%),
+    linear-gradient(160deg,#fbeaff 0%, #fff3e9 55%, #ffe9ef 100%);
+  display:flex;justify-content:center;align-items:flex-start;
+  padding:24px 14px 48px;
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  color:var(--ink);
+  transition:background .4s ease;
+  overflow-x:hidden;
+}
+body.dark{
+  background:
+    radial-gradient(circle at 15% 10%, rgba(142,36,170,0.25), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(212,175,55,0.10), transparent 40%),
+    linear-gradient(160deg,#160c1f 0%, #1c1024 55%, #170b16 100%);
+  color:#f2e9f6;
+}
+.np{font-family:'Noto Sans Devanagari','Poppins',sans-serif;}
+
+/* ============ WELCOME MODAL ============ */
+.welcome-modal{
+  position:fixed;inset:0;background:rgba(20,8,28,0.72);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;justify-content:center;align-items:center;z-index:9999;
+  padding:16px;animation:fadeIn .5s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.welcome-content{
+  background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.92));
+  backdrop-filter:blur(24px);
+  border-radius:44px;padding:42px 30px 32px;max-width:440px;width:100%;
+  text-align:center;box-shadow:0 50px 100px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.4) inset;
+  position:relative;overflow:hidden;animation:popScale .5s cubic-bezier(.2,.9,.3,1.3);
+}
+@keyframes popScale{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+body.dark .welcome-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
+.welcome-icon{font-size:60px;display:block;margin-bottom:6px;animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.welcome-title{font-family:'Baloo 2',cursive;font-size:44px;font-weight:800;letter-spacing:1px;
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary),var(--accent));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+body.dark .welcome-title{filter:brightness(1.3);}
+.welcome-tagline{font-family:'Baloo 2',cursive;font-size:24px;font-weight:700;color:var(--primary);margin:8px 0 2px;}
+body.dark .welcome-tagline{color:var(--primary-light);}
+.welcome-sub{font-family:'Baloo 2',cursive;font-size:16px;font-weight:600;color:var(--muted);margin-bottom:14px;}
+body.dark .welcome-sub{color:#c9b6d4;}
+.welcome-divider{width:70px;height:3px;margin:6px auto 16px;border-radius:6px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);}
+.welcome-features{display:flex;justify-content:center;gap:10px;margin:14px 0 22px;flex-wrap:wrap;}
+.feature-item{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--primary-dark);
+  background:rgba(142,36,170,0.08);padding:7px 14px;border-radius:30px;border:1px solid rgba(142,36,170,0.15);}
+body.dark .feature-item{color:var(--primary-light);background:rgba(142,36,170,0.18);}
+.feature-item .material-symbols-outlined{font-size:17px;color:var(--primary);}
+.lang-select{display:flex;gap:10px;justify-content:center;margin:16px 0 22px;}
+.lang-btn{padding:11px 18px;border:2px solid rgba(142,36,170,0.22);border-radius:40px;background:transparent;
+  font-weight:600;font-size:13.5px;cursor:pointer;transition:.25s;color:var(--ink);flex:1;max-width:150px;}
+body.dark .lang-btn{color:#f2e9f6;}
+.lang-btn.active{border-color:var(--primary);background:rgba(142,36,170,0.14);color:var(--primary-dark);
+  box-shadow:0 0 0 4px rgba(142,36,170,0.1);}
+body.dark .lang-btn.active{color:var(--primary-light);}
+.lang-btn:active{transform:scale(.96);}
+
+.btn{padding:15px 28px;border:none;border-radius:50px;font-weight:700;font-size:16px;cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease;display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;width:100%;font-family:inherit;-webkit-appearance:none;}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none !important;}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;
+  box-shadow:0 12px 28px rgba(142,36,170,0.35);}
+.btn-primary:hover{box-shadow:0 16px 36px rgba(142,36,170,0.45);}
+.btn-secondary{background:rgba(142,36,170,0.08);color:var(--primary-dark);box-shadow:none;}
+body.dark .btn-secondary{background:rgba(206,147,216,0.15);color:var(--primary-light);}
+.welcome-footer{margin-top:14px;font-size:12.5px;color:var(--muted);}
+body.dark .welcome-footer{color:#b8a3c3;}
+
+/* ============ GLASS CARD APP SHELL ============ */
+.glass-card{
+  width:100%;max-width:500px;background:var(--surface);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-radius:36px;padding:22px 18px 28px;
+  box-shadow:var(--shadow-soft), 0 1px 0 rgba(255,255,255,0.5) inset;
+  border:1px solid rgba(255,255,255,0.4);
+  transition:background .3s;position:relative;
+}
+body.dark .glass-card{background:rgba(28,16,36,0.68);border-color:rgba(206,147,216,0.15);
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.logo{font-weight:800;font-size:26px;letter-spacing:-.5px;font-family:'Baloo 2',cursive;
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary));-webkit-background-clip:text;
+  background-clip:text;-webkit-text-fill-color:transparent;}
+.theme-toggle{background:rgba(142,36,170,0.1);border:none;border-radius:40px;padding:7px 12px;color:var(--primary);
+  font-size:20px;display:flex;gap:6px;align-items:center;cursor:pointer;transition:.2s;}
+.theme-toggle:active{transform:scale(.92);}
+body.dark .theme-toggle{color:var(--primary-light);background:rgba(206,147,216,0.15);}
+
+.progress-wrap{background:rgba(0,0,0,0.07);height:7px;border-radius:12px;margin:10px 0 16px;overflow:hidden;}
+body.dark .progress-wrap{background:rgba(255,255,255,0.08);}
+.progress-fill{width:0%;height:100%;border-radius:12px;transition:width .5s cubic-bezier(.2,.9,.3,1.2);
+  background:linear-gradient(90deg,var(--primary),var(--accent));}
+.step-indicator{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);
+  margin-bottom:16px;padding:0 2px;}
+body.dark .step-indicator{color:#c9b6d4;}
+
+.step{display:none;animation:slideUp .4s ease;}
+.step.active{display:block;}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.step-title{font-weight:700;font-size:19px;margin-bottom:18px;display:flex;align-items:center;gap:9px;
+  font-family:'Baloo 2',cursive;color:var(--ink);}
+body.dark .step-title{color:#f2e9f6;}
+.step-title .material-symbols-outlined{color:var(--primary);font-size:26px;}
+
+.form-group{margin-bottom:15px;position:relative;}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px;letter-spacing:.2px;}
+body.dark label{color:#e2d3ea;}
+input,select,textarea{
+  width:100%;padding:13px 16px;border:2px solid rgba(142,36,170,0.16);border-radius:20px;
+  background:rgba(255,255,255,0.55);backdrop-filter:blur(4px);font-size:15px;transition:.25s;outline:none;
+  color:var(--ink);font-family:inherit;
+}
+body.dark input,body.dark select,body.dark textarea{background:rgba(50,32,58,0.55);border-color:rgba(206,147,216,0.2);color:#f2e9f6;}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(142,36,170,0.12);}
+input.error,select.error{border-color:#c62828;box-shadow:0 0 0 4px rgba(198,40,40,0.12);}
+.error-msg{color:#c62828;font-size:12px;margin-top:4px;display:none;font-weight:500;}
+.error-msg.show{display:block;}
+
+.btn-group{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+.btn-group .btn{flex:1;padding:14px 10px;font-size:15px;}
+.btn-group .btn-secondary{flex:.5;}
+
+.file-upload{border:2px dashed rgba(142,36,170,0.3);border-radius:24px;padding:22px;text-align:center;
+  background:rgba(255,255,255,0.2);cursor:pointer;transition:.25s;}
+body.dark .file-upload{background:rgba(50,32,58,0.3);}
+.file-upload:active{border-color:var(--primary);background:rgba(142,36,170,0.06);}
+.file-upload .material-symbols-outlined{font-size:34px;color:var(--primary);display:block;margin-bottom:4px;}
+.file-upload input{display:none;}
+.file-preview{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+.file-preview img{width:72px;height:72px;object-fit:cover;border-radius:16px;border:3px solid rgba(142,36,170,0.2);}
+.upload-progress{height:5px;background:rgba(142,36,170,0.12);border-radius:6px;margin-top:8px;overflow:hidden;display:none;}
+.upload-progress.show{display:block;}
+.upload-progress-fill{height:100%;width:0%;background:var(--primary);transition:width .3s;}
+
+.payment-options{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 12px;}
+.payment-option{flex:1;min-width:78px;padding:12px 8px;background:rgba(255,255,255,0.28);
+  border:2px solid rgba(142,36,170,0.14);border-radius:20px;text-align:center;cursor:pointer;transition:.25s;
+  font-weight:600;font-size:13.5px;color:var(--ink);}
+body.dark .payment-option{color:#f2e9f6;background:rgba(50,32,58,0.4);}
+.payment-option:active{transform:scale(.96);}
+.payment-option.selected{border-color:var(--primary);background:rgba(142,36,170,0.12);
+  box-shadow:0 0 0 3px rgba(142,36,170,0.14);}
+
+.fee-badge{display:inline-block;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;padding:7px 26px;border-radius:40px;font-weight:800;font-size:22px;margin:4px 0;
+  box-shadow:0 8px 20px rgba(142,36,170,.28); transition: all .3s ease;}
+.fee-badge.bump{animation:bump .35s ease;}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+.qr-container{background:rgba(255,255,255,0.75);border-radius:22px;padding:18px;margin:12px 0;text-align:center;
+  border:1px solid rgba(142,36,170,0.12);animation:slideUp .35s ease;}
+body.dark .qr-container{background:rgba(50,32,58,0.55);}
+.qr-container .detail{font-size:13.5px;color:var(--ink);margin:4px 0;font-weight:500;}
+body.dark .qr-container .detail{color:#e2d3ea;}
+.qr-container .qr-image{max-width:190px;width:100%;height:auto;border-radius:16px;margin:8px 0;
+  border:2px solid rgba(142,36,170,0.12);background:#fff;}
+.qr-actions{display:flex;gap:9px;justify-content:center;margin-top:9px;flex-wrap:wrap;}
+.qr-actions .btn-sm{padding:8px 16px;border:none;border-radius:40px;font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:5px;}
+.btn-download{background:#43a047;color:#fff;}
+.btn-download:active{transform:scale(.95);}
+.btn-print{background:#1E88E5;color:#fff;}
+.btn-print:active{transform:scale(.95);}
+
+.loader{border:4px solid rgba(142,36,170,0.12);border-top:4px solid var(--primary);border-radius:50%;
+  width:50px;height:50px;animation:spin .8s linear infinite;margin:30px auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.success-screen{text-align:center;padding:16px 0;}
+.success-screen .material-symbols-outlined.big-check{font-size:76px;color:var(--primary);animation:popIn .6s ease;}
+@keyframes popIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+.hidden{display:none !important;}
+
+.confirm-box{background:rgba(142,36,170,0.045);padding:18px;border-radius:22px;border:1px solid rgba(142,36,170,0.12);}
+.confirm-box .row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;
+  border-bottom:1px solid rgba(142,36,170,0.06);}
+.confirm-box .row:last-child{border-bottom:none;}
+.confirm-box .label{font-weight:500;color:var(--muted);}
+body.dark .confirm-box .label{color:#c9b6d4;}
+.confirm-box .value{font-weight:600;color:var(--ink);text-align:right;}
+body.dark .confirm-box .value{color:#f2e9f6;}
+
+/* Membership cards */
+.membership-container{display:flex;flex-direction:column;gap:12px;margin:12px 0;}
+.membership-card{background:rgba(255,255,255,0.32);border:2px solid rgba(142,36,170,0.14);border-radius:22px;
+  padding:16px 18px;cursor:pointer;transition:.3s;position:relative;overflow:hidden;animation:cardIn .35s ease;}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+body.dark .membership-card{background:rgba(50,32,58,0.42);}
+.membership-card:active{transform:scale(.98);}
+.membership-card.selected{border-color:var(--primary);background:rgba(142,36,170,0.09);
+  box-shadow:0 0 0 3px rgba(142,36,170,0.14);}
+body.dark .membership-card.selected{background:rgba(142,36,170,0.2);}
+.membership-card .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;}
+.membership-card .card-name{font-weight:700;font-size:17px;color:var(--ink);}
+body.dark .membership-card .card-name{color:#f2e9f6;}
+.membership-card .card-price{font-weight:800;font-size:20px;color:var(--primary-dark);white-space:nowrap;}
+body.dark .membership-card .card-price{color:var(--primary-light);}
+.membership-card .card-features{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.7;}
+body.dark .membership-card .card-features{color:#c9b6d4;}
+.membership-card .card-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#3a2b00;
+  font-size:9.5px;font-weight:800;padding:3px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;}
+.membership-card .card-check{display:none;position:absolute;bottom:10px;right:12px;color:#43a047;font-size:22px;}
+.membership-card.selected .card-check{display:block;}
+.membership-note{font-size:11.5px;color:var(--muted);text-align:center;margin:6px 0;font-style:italic;}
+body.dark .membership-note{color:#b8a3c3;}
+.plan-switch-fade{animation:planFade .35s ease;}
+@keyframes planFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Alert dialog */
+.alert-dialog{position:fixed;inset:0;background:rgba(20,8,28,0.65);backdrop-filter:blur(10px);display:none;
+  justify-content:center;align-items:center;z-index:10000;padding:20px;}
+.alert-dialog.show{display:flex;}
+.alert-content{background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.94));
+  border-radius:36px;padding:30px 26px;max-width:420px;width:100%;text-align:center;animation:slideUp .4s ease;
+  box-shadow:0 40px 80px rgba(0,0,0,0.35);}
+body.dark .alert-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
+.alert-content .alert-icon{font-size:50px;margin-bottom:10px;display:block;}
+.alert-content h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--ink);margin-bottom:8px;}
+body.dark .alert-content h3{color:#f2e9f6;}
+.alert-content p{color:var(--muted);font-size:13.5px;line-height:1.65;}
+body.dark .alert-content p{color:#c9b6d4;}
+.alert-content .btn{margin-top:16px;}
+
+/* AI chat modal */
+.ai-chat-modal{position:fixed;inset:0;background:rgba(20,8,28,0.72);backdrop-filter:blur(12px);display:none;
+  justify-content:center;align-items:center;z-index:9998;padding:16px;}
+.ai-chat-modal.show{display:flex;}
+.ai-chat-content{background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.94));
+  border-radius:36px;padding:28px 24px;max-width:480px;width:100%;max-height:82vh;overflow-y:auto;
+  animation:slideUp .4s ease;box-shadow:0 40px 80px rgba(0,0,0,0.35);}
+body.dark .ai-chat-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
+.chat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;
+  border-bottom:2px solid rgba(142,36,170,0.1);}
+.chat-header h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--primary);}
+.chat-header .close-btn{background:none;border:none;font-size:26px;cursor:pointer;color:var(--muted);}
+.chat-body{padding:10px 0;max-height:320px;overflow-y:auto;}
+.chat-message{padding:11px 15px;border-radius:20px;margin-bottom:9px;max-width:85%;font-size:13.5px;line-height:1.6;}
+.chat-message.ai{background:rgba(142,36,170,0.08);color:var(--ink);margin-right:auto;border-bottom-left-radius:4px;}
+body.dark .chat-message.ai{background:rgba(206,147,216,0.15);color:#f2e9f6;}
+.chat-message.user{background:var(--primary);color:#fff;margin-left:auto;border-bottom-right-radius:4px;}
+.chat-input-area{display:flex;gap:9px;margin-top:14px;padding-top:10px;border-top:1px solid rgba(142,36,170,0.1);}
+.chat-input-area input{flex:1;padding:11px 15px;border:2px solid rgba(142,36,170,0.18);border-radius:30px;
+  background:rgba(255,255,255,0.5);font-size:13.5px;outline:none;}
+body.dark .chat-input-area input{background:rgba(50,32,58,0.55);color:#f2e9f6;}
+.btn-send{padding:11px 22px;border:none;border-radius:30px;background:var(--primary);color:#fff;font-weight:600;
+  cursor:pointer;transition:.25s;}
+.btn-send:active{transform:scale(.95);}
+
+@media (max-width:480px){
+  .welcome-content{padding:30px 18px 24px;border-radius:36px;}
+  .welcome-title{font-size:34px;}
+  .welcome-tagline{font-size:19px;}
+  .glass-card{padding:16px 12px 22px;border-radius:28px;}
+  .logo{font-size:21px;}
+  .step-title{font-size:17px;}
+  .btn{font-size:14px;padding:13px 18px;}
+  .payment-option{min-width:58px;font-size:11.5px;padding:10px 5px;}
+  .fee-badge{font-size:18px;padding:5px 18px;}
+  .membership-card .card-price{font-size:17px;}
+  .membership-card .card-name{font-size:15px;}
+}
+
+/* Respect safe areas on notch phones */
+@supports (padding: max(0px)) {
+  body{padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right));}
+}
+</style>
 </head>
 <body>
-    <div class="atmosphere"></div>
-    <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+
+<div class="alert-dialog" id="alertDialog">
+  <div class="alert-content">
+    <span class="alert-icon">⚠️</span>
+    <h3 class="np">महत्वपूर्ण सूचना</h3>
+    <p class="np">
+      <strong>नक्कली फेक पेमेन्ट स्क्रिनसट अपलोड गर्नुहोस् भने</strong><br>
+      तपाईंको SetMandu मा <strong>कहिले पनि दर्ता हुन सक्दैन</strong>।<br><br>
+      कृपया <strong>वास्तविक भुक्तानी</strong> गरी स्क्रिनसट अपलोड गर्नुहोस्।<br>
+      धन्यवाद! 🙏
+    </p>
+    <button class="btn btn-primary" onclick="closeAlert()">
+      <span class="material-symbols-outlined">check</span> <span class="np">बुझें</span> / I Understand
+    </button>
+  </div>
+</div>
+
+<div class="ai-chat-modal" id="aiChatModal">
+  <div class="ai-chat-content">
+    <div class="chat-header">
+      <h3>🤖 SetMandu AI <span class="np">सहायक</span></h3>
+      <button class="close-btn" onclick="closeAIChat()">✕</button>
+    </div>
+    <div class="chat-body np" id="chatBody">
+      <div class="chat-message ai">
+        👋 नमस्ते! म SetMandu AI सहायक हुँ।<br>
+        तपाईं पहिले नै दर्ता भइसक्नुभएको छ।<br>
+        के सहयोग चाहियो? म यहाँ छु! 😊
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" class="np" placeholder="तपाईंको प्रश्न लेख्नुहोस्..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+      <button class="btn-send np" onclick="sendChatMessage()">पठाउनुहोस्</button>
+    </div>
+  </div>
+</div>
+
+<div class="welcome-modal" id="welcomeModal">
+  <div class="welcome-content">
+    <span class="welcome-icon">❤️</span>
+    <h1 class="welcome-title">Set<span>Mandu</span></h1>
+    <div class="welcome-tagline np">✨ जोडिन्छ मन, बन्छ जीवन ✨</div>
+    <div class="welcome-sub np">💝 प्रिमियम मिलन सम्बन्ध</div>
+    <div class="welcome-divider"></div>
+
+    <div class="welcome-features">
+      <div class="feature-item np"><span class="material-symbols-outlined">verified</span><span>प्रमाणित</span></div>
+      <div class="feature-item np"><span class="material-symbols-outlined">security</span><span>सुरक्षित</span></div>
+      <div class="feature-item np"><span class="material-symbols-outlined">favorite</span><span>भरपर्दो</span></div>
+    </div>
+
+    <div class="lang-select">
+      <button class="lang-btn active" data-lang="ne" onclick="selectLanguage('ne')">🇳🇵 नेपाली</button>
+      <button class="lang-btn" data-lang="en" onclick="selectLanguage('en')">🇬🇧 English</button>
+    </div>
+
+    <button class="btn btn-primary" onclick="startRegistration()" id="startBtn">
+      <span class="material-symbols-outlined">arrow_forward</span>
+      <span id="startText" class="np">सुरु गर्नुहोस्</span>
+    </button>
+
+    <p class="welcome-footer np">"काठमाडौंले स्वागत गर्दा, SetManduले जीवन जोड्दछ" 💖</p>
+  </div>
+</div>
+
+<div class="glass-card" id="app">
+  <div class="header">
+    <span class="logo">✦ SetMandu</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <span class="material-symbols-outlined">dark_mode</span>
+    </button>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="step-indicator np">
+    <span>चरण <span id="stepNum">1</span>/4</span>
+    <span id="stepLabel">व्यक्तिगत विवरण</span>
+  </div>
+
+  <div id="stepsContainer"></div>
+  <div id="successArea" class="hidden"></div>
+</div>
+
+<script>
+'use strict';
+
+// ============================================================
+// SERVER-PROVIDED CONSTANTS
+// ============================================================
+const CSRF_TOKEN = <?php echo json_encode($csrfTokenForPage); ?>;
+const QR_ESEWA = <?php echo json_encode(QR_ESEWA); ?>;
+const QR_KHALTI = <?php echo json_encode(QR_KHALTI); ?>;
+const QR_BANK = <?php echo json_encode(QR_BANK); ?>;
+const WHATSAPP_NUMBER = <?php echo json_encode(WHATSAPP_NUMBER); ?>;
+const TIKTOK_URL = <?php echo json_encode(TIKTOK_URL); ?>;
+const MAX_UPLOAD_SIZE = <?php echo MAX_UPLOAD_SIZE; ?>;
+
+// Membership plans mirrored from server (server re-validates on submit)
+const ALL_PLANS = <?php echo json_encode($plansAll, JSON_UNESCAPED_UNICODE); ?>;
+
+// ============================================================
+// STATE
+// ============================================================
+let currentStep = 1;
+let selectedLang = 'ne';
+let selectedPayment = null;
+let selectedMembership = null;
+let selectedMembershipPrice = 0;
+let formData = {};
+let fileData = { profilePhoto: null, paymentScreenshot: null };
+let isSubmitting = false;
+let requestId = null;
+const STEPS = 4;
+
+const stepsContainer = document.getElementById('stepsContainer');
+const progressFill = document.getElementById('progressFill');
+const stepNum = document.getElementById('stepNum');
+const stepLabel = document.getElementById('stepLabel');
+const successArea = document.getElementById('successArea');
+const welcomeModal = document.getElementById('welcomeModal');
+const alertDialog = document.getElementById('alertDialog');
+const aiChatModal = document.getElementById('aiChatModal');
+
+// In-memory storage fallback: some in-app browsers (older TikTok/FB
+// webviews in private-ish modes) throw on localStorage access.
+// This wrapper prevents that from crashing the whole page.
+const safeStorage = {
+  _mem: {},
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { this._mem[k] = v; } },
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return this._mem[k] ?? null; } },
+  remove(k) { try { localStorage.removeItem(k); } catch (e) { delete this._mem[k]; } }
+};
+
+function genRequestId() {
+  return 'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+}
+
+const countries = [
+"Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
+"Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
+"Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde",
+"Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros",
+"Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
+"Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini",
+"Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece",
+"Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India",
+"Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan",
+"Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya",
+"Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta",
+"Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia",
+"Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand",
+"Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine",
+"Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania",
+"Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino",
+"Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore",
+"Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","Spain","Sri Lanka",
+"Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand",
+"Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
+"Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan",
+"Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
+];
+
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const t = {
+  ne: {
+    stepTitles: ['व्यक्तिगत विवरण','साथीको विवरण','सदस्यता योजना','फोटो र भुक्तानी'],
+    stepLabels: ['व्यक्तिगत','साथीको रुचि','सदस्यता','फोटो र भुक्तानी'],
+    fullName:'पूरा नाम *', currentCountry:'हालको देश *', gender:'लिङ्ग *', age:'उमेर *',
+    caste:'जाति / जनजाति *', education:'शिक्षा *', occupation:'पेशा *',
+    preferredAge:'रुचाइएको उमेर', preferredCaste:'रुचाइएको जाति (वैकल्पिक)', preferredCountry:'रुचाइएको देश',
+    profilePhoto:'प्रोफाइल फोटो * (अनिवार्य)', selectPayment:'भुक्तानी विधि *',
+    esewa:'इ-सेवा', khalti:'खल्ती', bank:'बैंक',
+    uploadScreenshot:'भुक्तानी स्क्रिनसट * (अनिवार्य)', submit:'दर्ता गर्नुहोस्', back:'पछाडि', next:'अर्को',
+    registrationFee:'दर्ता शुल्क', success:'🎉 दर्ता सफल भयो!', welcome:'SetMandu मा स्वागत छ,',
+    paymentReceived:'✓ रु. को भुक्तानी प्राप्त भयो', pendingVerification:'तपाईंको खाता प्रमाणीकरणको लागि पेन्डिङ छ।',
+    startOver:'पुनः सुरु गर्नुहोस्', processing:'तपाईंको दर्ता प्रक्रिया भइरहेको छ...',
+    required:'कृपया यो फिल्ड भर्नुहोस्', uploadRequired:'कृपया फोटो अपलोड गर्नुहोस्',
+    paymentRequired:'कृपया भुक्तानी विधि चयन गर्नुहोस्', screenshotRequired:'कृपया भुक्तानी स्क्रिनसट अपलोड गर्नुहोस्',
+    fee:'दर्ता शुल्क: रु.', confirm:'सबै विवरण जाँच गर्नुहोस्',
+    confirmTitle:'पुष्टि गर्नुहोस्', yourID:'तपाईंको SetMandu युजर आइडी',
+    whatsapp:'WhatsApp मा सम्पर्क गर्नुहोस्', tiktok:'TikTok मा फलो गर्नुहोस्',
+    alreadyRegistered:'तपाईं पहिले नै दर्ता भइसक्नुभएको छ। कृपया लगइन गर्नुहोस्।',
+    downloadQR:'QR डाउनलोड गर्नुहोस्', printQR:'QR प्रिन्ट गर्नुहोस्',
+    selectPaymentMethod:'कृपया पहिले भुक्तानी विधि चयन गर्नुहोस्', membershipPlan:'सदस्यता योजना *',
+    selectMembership:'कृपया सदस्यता योजना चयन गर्नुहोस्',
+    nepalNote:'✨ तपाईंको लागि उपलब्ध सदस्यता योजनाहरू',
+    fileTooLarge:'फाइल धेरै ठूलो छ (अधिकतम ५MB)', invalidFileType:'अमान्य फाइल प्रकार',
+    ageInvalid:'उमेर १८ देखि ८० को बीचमा हुनुपर्छ', networkError:'नेटवर्क त्रुटि, फेरि प्रयास गर्नुहोस्',
+    duplicateSubmit:'पहिले नै पेश गरिएको छ',
+    starterPlan:'Starter', basicPlan:'Basic', premiumPlan:'Premium', goldPlan:'Gold', vipPlan:'VIP',
+    starterFeatures:'✅ १ जनासँग मात्र कुराकानी\n✅ आधारभूत प्रोफाइल हेराइ\n✅ सामान्य प्रमाणीकरण',
+    basicFeatures:'✅ २-३ जनासँग कुराकानी\n✅ आधारभूत मिलान\n✅ सामान्य प्रमाणीकरण',
+    premiumFeatures:'✅ बढी प्रोफाइल दृश्यता\n✅ बढी च्याट पहुँच\n✅ छिटो प्रमाणीकरण\n✅ राम्रो मिलान',
+    goldFeatures:'✅ असीमित च्याट अनुरोध\n✅ प्राथमिकता सहयोग\n✅ उच्च दृश्यता\n✅ छिटो प्रमाणीकरण',
+    vipFeatures:'✅ सबै असीमित\n✅ VIP प्राथमिकता सहयोग\n✅ उच्चतम दृश्यता\n✅ व्यक्तिगत सहायता\n✅ विवाह नभएसम्म सेवा'
+  },
+  en: {
+    stepTitles: ['Personal Details','Partner Details','Membership Plan','Photo & Payment'],
+    stepLabels: ['Personal','Partner','Membership','Photo & Payment'],
+    fullName:'Full Name *', currentCountry:'Current Country *', gender:'Gender *', age:'Age *',
+    caste:'Caste / Ethnicity *', education:'Education *', occupation:'Occupation *',
+    preferredAge:'Preferred Age', preferredCaste:'Preferred Caste (Optional)', preferredCountry:'Preferred Country',
+    profilePhoto:'Profile Photo * (Required)', selectPayment:'Payment Method *',
+    esewa:'eSewa', khalti:'Khalti', bank:'Bank',
+    uploadScreenshot:'Payment Screenshot * (Required)', submit:'Register', back:'Back', next:'Next',
+    registrationFee:'Registration Fee', success:'🎉 Registration Successful!', welcome:'Welcome to SetMandu,',
+    paymentReceived:'✓ Payment of Rs. received', pendingVerification:'Your account is pending verification.',
+    startOver:'Start Over', processing:'Processing your registration...',
+    required:'Please fill this field', uploadRequired:'Please upload photo',
+    paymentRequired:'Please select payment method', screenshotRequired:'Please upload payment screenshot',
+    fee:'Registration Fee: Rs.', confirm:'Please review all details',
+    confirmTitle:'Confirm', yourID:'Your SetMandu User ID',
+    whatsapp:'Contact on WhatsApp', tiktok:'Follow on TikTok',
+    alreadyRegistered:'You are already registered. Please login.',
+    downloadQR:'Download QR', printQR:'Print QR',
+    selectPaymentMethod:'Please select payment method first', membershipPlan:'Membership Plan *',
+    selectMembership:'Please select a membership plan',
+    nepalNote:'✨ Membership plans available for you',
+    fileTooLarge:'File too large (max 5MB)', invalidFileType:'Invalid file type',
+    ageInvalid:'Age must be between 18 and 80', networkError:'Network error, please try again',
+    duplicateSubmit:'Already submitted',
+    starterPlan:'Starter', basicPlan:'Basic', premiumPlan:'Premium', goldPlan:'Gold', vipPlan:'VIP',
+    starterFeatures:'✅ Chat with only 1 person\n✅ Basic profile viewing\n✅ Normal verification',
+    basicFeatures:'✅ Chat with 2-3 people\n✅ Basic matching\n✅ Normal verification',
+    premiumFeatures:'✅ More profile visibility\n✅ More chat access\n✅ Faster verification\n✅ Better matching',
+    goldFeatures:'✅ Unlimited chat requests\n✅ Priority support\n✅ Higher visibility\n✅ Fast verification',
+    vipFeatures:'✅ Unlimited everything\n✅ VIP priority support\n✅ Highest visibility\n✅ Personal assistance\n✅ Until marriage support'
+  }
+};
+
+function getText(key) { return t[selectedLang][key] || key; }
+
+function isNepalSelected() {
+  const el = document.getElementById('currentCountry');
+  return el && el.value === 'Nepal';
+}
+
+// Same 5 plans for every country now — kept as a function so future
+// country-specific logic can be reintroduced in one place if needed.
+function getActivePlans() {
+  return ALL_PLANS;
+}
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+function selectLanguage(lang) {
+  selectedLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+  document.getElementById('startText').textContent = lang === 'ne' ? 'सुरु गर्नुहोस्' : 'Start';
+}
+
+function startRegistration() {
+  const registered = safeStorage.get('setmandu_registered');
+  if (registered === 'true') {
+    welcomeModal.style.display = 'none';
+    showAIChat();
+    return;
+  }
+  welcomeModal.style.display = 'none';
+  renderStep(1);
+}
+
+// ============================================================
+// AI CHAT
+// ============================================================
+function showAIChat() {
+  aiChatModal.classList.add('show');
+  document.getElementById('chatBody').innerHTML = `
+    <div class="chat-message ai">
+      👋 नमस्ते! म SetMandu AI सहायक हुँ।<br>
+      तपाईं पहिले नै दर्ता भइसक्नुभएको छ।<br>
+      के सहयोग चाहियो? म यहाँ छु! 😊
+    </div>`;
+}
+function closeAIChat() { aiChatModal.classList.remove('show'); }
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const chatBody = document.getElementById('chatBody');
+  const safeMsg = msg.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  chatBody.innerHTML += `<div class="chat-message user">${safeMsg}</div>`;
+  input.value = '';
+  setTimeout(() => {
+    const responses = [
+      'धन्यवाद! म तपाईंको प्रश्न बुझ्दै छु। 😊',
+      'SetMandu मा तपाईंको दर्ता सफल भएको छ। कृपया प्रमाणीकरणको लागि पर्खनुहोस्।',
+      'तपाईंको युजर आइडी प्रयोग गरी लगइन गर्न सक्नुहुन्छ।',
+      'थप जानकारीको लागि WhatsApp मा सम्पर्क गर्नुहोस्।',
+      'हामी तपाईंको लागि उत्तम जीवनसाथी खोज्दै छौं। 💖'
+    ];
+    const aiResponse = responses[Math.floor(Math.random() * responses.length)];
+    chatBody.innerHTML += `<div class="chat-message ai">🤖 ${aiResponse}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 500);
+}
+
+// ============================================================
+// ALERT DIALOG
+// ============================================================
+function showAlert() { alertDialog.classList.add('show'); }
+function closeAlert() { alertDialog.classList.remove('show'); }
+
+// ============================================================
+// STEP DEFINITIONS
+// ============================================================
+function getStepFields() {
+  return [
+    { title: getText('stepTitles')[0], fields: [
+        { id:'fullName', label:getText('fullName'), type:'text', required:true },
+        { id:'currentCountry', label:getText('currentCountry'), type:'select', options:countries, required:true },
+        { id:'gender', label:getText('gender'), type:'select', options:['Male','Female','Other'], required:true },
+        { id:'age', label:getText('age'), type:'number', required:true, min:18, max:80 },
+        { id:'caste', label:getText('caste'), type:'text', required:true },
+        { id:'education', label:getText('education'), type:'text', required:true },
+        { id:'occupation', label:getText('occupation'), type:'text', required:true }
+    ]},
+    { title: getText('stepTitles')[1], fields: [
+        { id:'preferredAge', label:getText('preferredAge'), type:'text', required:false },
+        { id:'preferredCaste', label:getText('preferredCaste'), type:'text', required:false },
+        { id:'preferredCountry', label:getText('preferredCountry'), type:'text', required:false }
+    ]},
+    { title: getText('stepTitles')[2], fields: [
+        { id:'membership', label:getText('membershipPlan'), type:'membership', required:true }
+    ]},
+    { title: getText('stepTitles')[3], fields: [
+        { id:'profilePhoto', label:getText('profilePhoto'), type:'file', accept:'image/*,image/heic,image/heif', required:true },
+        { id:'paymentMethod', label:getText('selectPayment'), type:'payment', required:true },
+        { id:'paymentScreenshot', label:getText('uploadScreenshot'), type:'file', accept:'image/*,image/heic,image/heif', required:true }
+    ]}
+  ];
+}
+
+// ============================================================
+// RENDER STEP
+// ============================================================
+function renderStep(step) {
+  const stepDefs = getStepFields();
+  const data = stepDefs[step - 1];
+  let html = `<div class="step active"><div class="step-title np"><span class="material-symbols-outlined">check_circle</span> ${data.title}</div>`;
+
+  data.fields.forEach(f => {
+    if (f.type === 'select') {
+      const opts = f.options.map(o => `<option value="${o}">${o}</option>`).join('');
+      html += `<div class="form-group">
+        <label class="np">${f.label}</label>
+        <select id="${f.id}" ${f.required ? 'required' : ''} onchange="validateField('${f.id}'); onCountryChange()">
+          <option value="">${selectedLang === 'ne' ? 'छनौट गर्नुहोस्' : 'Select'}</option>${opts}
+        </select>
+        <div class="error-msg np" id="${f.id}_error">${getText('required')}</div>
+      </div>`;
+    } else if (f.type === 'file') {
+      html += `<div class="form-group">
+        <div class="file-upload" onclick="document.getElementById('${f.id}').click()">
+          <span class="material-symbols-outlined">cloud_upload</span>
+          <div style="font-size:13.5px;font-weight:500;" class="np">${f.label}</div>
+        </div>
+        <input type="file" id="${f.id}" accept="${f.accept}" capture="environment" style="display:none" onchange="handleFileSelect('${f.id}', this)">
+        <div class="upload-progress" id="progress-${f.id}"><div class="upload-progress-fill" id="progress-fill-${f.id}"></div></div>
+        <div class="file-preview" id="preview-${f.id}"></div>
+        <div class="error-msg np" id="${f.id}_error">${getText('uploadRequired')}</div>
+      </div>`;
+    } else if (f.type === 'membership') {
+      html += `<div class="form-group">
+        <label class="np">${f.label}</label>
+        <div class="membership-container" id="membershipContainer">${getMembershipHTML()}</div>
+        <div class="error-msg np" id="membership_error">${getText('selectMembership')}</div>
+      </div>`;
+    } else if (f.type === 'payment') {
+      html += `<div class="form-group">
+        <label class="np">${f.label}</label>
+        <div class="payment-options" id="paymentOptions">
+          <div class="payment-option" data-method="eSewa" onclick="selectPayment('eSewa')">${getText('esewa')}</div>
+          <div class="payment-option" data-method="Khalti" onclick="selectPayment('Khalti')">${getText('khalti')}</div>
+          <div class="payment-option" data-method="Bank" onclick="selectPayment('Bank')">${getText('bank')}</div>
+        </div>
+        <div id="qrDisplay"></div>
+        <div class="error-msg np" id="payment_error">${getText('paymentRequired')}</div>
+        <div style="text-align:center;margin-top:10px;">
+          <span class="fee-badge" id="feeDisplay">रु. ${selectedMembershipPrice || 0}</span>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:4px;" class="np">${getText('registrationFee')}</div>
+        </div>
+      </div>`;
+    } else {
+      const attrs = f.min ? `min="${f.min}" max="${f.max}"` : '';
+      html += `<div class="form-group">
+        <label class="np">${f.label}</label>
+        <input type="${f.type}" id="${f.id}" ${f.required ? 'required' : ''} ${attrs}
+          onchange="validateField('${f.id}')" oninput="validateField('${f.id}')" inputmode="${f.type === 'number' ? 'numeric' : 'text'}">
+        <div class="error-msg np" id="${f.id}_error">${getText('required')}</div>
+      </div>`;
+    }
+  });
+
+  if (step === 4) {
+    html += `<div class="confirm-box np" style="margin-top:16px;">
+      <div style="font-weight:600;margin-bottom:12px;">📋 ${getText('confirm')}</div>
+      <div class="row"><span class="label">${getText('fullName')}</span><span class="value" id="confirmName">-</span></div>
+      <div class="row"><span class="label">${getText('currentCountry')}</span><span class="value" id="confirmCountry">-</span></div>
+      <div class="row"><span class="label">${getText('gender')}</span><span class="value" id="confirmGender">-</span></div>
+      <div class="row"><span class="label">${getText('age')}</span><span class="value" id="confirmAge">-</span></div>
+      <div class="row"><span class="label">${getText('caste')}</span><span class="value" id="confirmCaste">-</span></div>
+      <div class="row"><span class="label">${getText('education')}</span><span class="value" id="confirmEducation">-</span></div>
+      <div class="row"><span class="label">${getText('occupation')}</span><span class="value" id="confirmOccupation">-</span></div>
+      <div class="row"><span class="label">${getText('preferredAge')}</span><span class="value" id="confirmPrefAge">-</span></div>
+      <div class="row"><span class="label">${getText('preferredCaste')}</span><span class="value" id="confirmPrefCaste">-</span></div>
+      <div class="row"><span class="label">${getText('preferredCountry')}</span><span class="value" id="confirmPrefCountry">-</span></div>
+      <div class="row"><span class="label">${getText('membershipPlan')}</span><span class="value" id="confirmMembership">-</span></div>
+      <div class="row"><span class="label">${getText('selectPayment')}</span><span class="value" id="confirmPayment">-</span></div>
+      <div class="row" style="border-top:2px solid var(--primary);padding-top:10px;margin-top:6px;">
+        <span class="label" style="font-weight:700;color:var(--primary-dark);">${getText('registrationFee')}</span>
+        <span class="value" style="font-weight:700;color:var(--primary-dark);" id="confirmFee">रु. ${selectedMembershipPrice || 0}</span>
+      </div>
+    </div>`;
+  }
+
+  const prevDisabled = step === 1 ? 'disabled' : '';
+  const nextLabel = step === STEPS ? getText('submit') : getText('next');
+  const nextAction = step === STEPS ? 'submitForm()' : `goToStep(${step + 1})`;
+  html += `<div class="btn-group">
+    <button class="btn btn-secondary np" onclick="goToStep(${step - 1})" ${prevDisabled}>
+      <span class="material-symbols-outlined">arrow_back</span> ${getText('back')}
+    </button>
+    <button class="btn btn-primary np" onclick="${nextAction}" id="nextBtn">
+      <span class="material-symbols-outlined">${step === STEPS ? 'check' : 'arrow_forward'}</span> ${nextLabel}
+    </button>
+  </div></div>`;
+
+  stepsContainer.innerHTML = html;
+
+  data.fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (el && formData[f.id] !== undefined && f.type !== 'file' && f.type !== 'payment' && f.type !== 'membership') {
+      el.value = formData[f.id];
+    }
+  });
+
+  Object.keys(fileData).forEach(key => {
+    const preview = document.getElementById(`preview-${key}`);
+    if (preview && fileData[key] instanceof File) {
+      preview.innerHTML = `<img src="${URL.createObjectURL(fileData[key])}" />`;
+    }
+  });
+
+  if (selectedPayment) {
+    showQR(selectedPayment);
+    document.querySelectorAll('.payment-option').forEach(el => {
+      if (el.dataset.method === selectedPayment) el.classList.add('selected');
+    });
+  }
+
+  if (step === 4) {
+    document.getElementById('confirmName').textContent = formData.fullName || '-';
+    document.getElementById('confirmCountry').textContent = formData.currentCountry || '-';
+    document.getElementById('confirmGender').textContent = formData.gender || '-';
+    document.getElementById('confirmAge').textContent = formData.age || '-';
+    document.getElementById('confirmCaste').textContent = formData.caste || '-';
+    document.getElementById('confirmEducation').textContent = formData.education || '-';
+    document.getElementById('confirmOccupation').textContent = formData.occupation || '-';
+    document.getElementById('confirmPrefAge').textContent = formData.preferredAge || '-';
+    document.getElementById('confirmPrefCaste').textContent = formData.preferredCaste || '-';
+    document.getElementById('confirmPrefCountry').textContent = formData.preferredCountry || '-';
+    document.getElementById('confirmMembership').textContent = selectedMembership || '-';
+    document.getElementById('confirmPayment').textContent = selectedPayment || '-';
+    document.getElementById('confirmFee').textContent = `रु. ${selectedMembershipPrice || 0}`;
+  }
+
+  const feeDisplay = document.getElementById('feeDisplay');
+  if (feeDisplay) feeDisplay.textContent = `रु. ${selectedMembershipPrice || 0}`;
+
+  updateProgress(step);
+  stepNum.textContent = step;
+  stepLabel.textContent = getText('stepLabels')[step - 1];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (step === 4) setTimeout(showAlert, 500);
+}
+
+// ============================================================
+// MEMBERSHIP — 5 unified plans (Rs.100 / 500 / 1500 / 2500 / 5000)
+// Same plans shown to every user regardless of country.
+// ============================================================
+function planKeyToTextKeys(planName) {
+  const map = {
+    'Starter': { name:'starterPlan', feat:'starterFeatures', icon:'💬' },
+    'Basic':   { name:'basicPlan',   feat:'basicFeatures',   icon:'🌱' },
+    'Premium': { name:'premiumPlan', feat:'premiumFeatures', icon:'⭐' },
+    'Gold':    { name:'goldPlan',    feat:'goldFeatures',    icon:'🏆' },
+    'VIP':     { name:'vipPlan',     feat:'vipFeatures',     icon:'👑' }
+  };
+  return map[planName] || { name:null, feat:null, icon:'✨' };
+}
+
+// Builds the membership card markup for a given plans map. Pure
+// function — no DOM reads, no globals besides text/i18n lookup — so
+// it never duplicates logic between initial render and re-render.
+function buildMembershipCardsHTML(plans) {
+  const planNames = Object.keys(plans);
+  let html = '';
+  planNames.forEach(planName => {
+    const price = plans[planName];
+    const meta = planKeyToTextKeys(planName);
+    const label = meta.name ? getText(meta.name) : planName;
+    const features = meta.feat ? getText(meta.feat) : '';
+    const isSelected = selectedMembership === planName;
+    const isBest = planName === 'VIP';
+    html += `
+      <div class="membership-card plan-switch-fade ${isSelected ? 'selected' : ''}" data-plan="${planName}" data-price="${price}" onclick="selectMembership('${planName}', ${price})">
+        <div class="card-header">
+          <span class="card-name">${meta.icon} ${label}</span>
+          <span class="card-price">रु. ${price.toLocaleString()}</span>
+        </div>
+        <div class="card-features np">${features}</div>
+        ${isBest ? '<span class="card-badge">BEST</span>' : ''}
+        <span class="card-check">✅</span>
+      </div>`;
+  });
+  html += `<div class="membership-note np">${getText('nepalNote')}</div>`;
+  return html;
+}
+
+// Used by renderStep() on first paint of the membership step.
+function getMembershipHTML() {
+  return buildMembershipCardsHTML(ALL_PLANS);
+}
+
+// ============================================================
+// updateMembershipPlans(country) — SINGLE SOURCE OF TRUTH
+// Kept as the named entry point for country-driven UI hooks. The
+// plan list itself is now identical for every country, but calling
+// this still rebuilds the cards instantly, re-syncs the fee badge,
+// QR block, and confirmation screen — all without a page reload.
+// ============================================================
+function updateMembershipPlans(country) {
+  const plans = ALL_PLANS;
+
+  // Clear the selected plan only if it no longer exists (defensive —
+  // with a single unified plan list this should never trigger, but
+  // keeps behavior correct if plans are customized per-country later)
+  if (selectedMembership && !(selectedMembership in plans)) {
+    selectedMembership = null;
+    selectedMembershipPrice = 0;
+    formData.membership = null;
+    formData.membershipPrice = 0;
+  }
+
+  const membershipContainer = document.getElementById('membershipContainer');
+  if (membershipContainer) {
+    membershipContainer.innerHTML = buildMembershipCardsHTML(plans);
+  }
+
+  syncFeeEverywhere();
+  saveToLocal();
+}
+
+// ============================================================
+// COUNTRY CHANGE HANDLER — fired from the Step 1 <select> onchange
+// ============================================================
+function onCountryChange() {
+  const countrySelect = document.getElementById('currentCountry');
+  if (!countrySelect) return;
+  updateMembershipPlans(countrySelect.value);
+}
+
+// ============================================================
+// SELECT MEMBERSHIP — syncs payment amount, QR, confirm, success
+// ============================================================
+function selectMembership(plan, price) {
+  selectedMembership = plan;
+  selectedMembershipPrice = price;
+  formData.membership = plan;
+  formData.membershipPrice = price;
+
+  document.querySelectorAll('.membership-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.plan === plan);
+  });
+
+  const errorEl = document.getElementById('membership_error');
+  if (errorEl) errorEl.classList.remove('show');
+
+  syncFeeEverywhere();
+  saveToLocal();
+}
+
+function syncFeeEverywhere() {
+  const feeDisplay = document.getElementById('feeDisplay');
+  if (feeDisplay) {
+    feeDisplay.textContent = `रु. ${selectedMembershipPrice || 0}`;
+    feeDisplay.classList.remove('bump');
+    void feeDisplay.offsetWidth; // restart animation
+    feeDisplay.classList.add('bump');
+  }
+  const confirmFee = document.getElementById('confirmFee');
+  if (confirmFee) confirmFee.textContent = `रु. ${selectedMembershipPrice || 0}`;
+  const confirmMembership = document.getElementById('confirmMembership');
+  if (confirmMembership) confirmMembership.textContent = selectedMembership || '-';
+
+  // Refresh QR block (it shows the fee too)
+  if (selectedPayment) showQR(selectedPayment);
+}
+
+// ============================================================
+// VALIDATION
+// ============================================================
+function validateField(id) {
+  const el = document.getElementById(id);
+  const errorEl = document.getElementById(id + '_error');
+  if (!el || !errorEl) return true;
+
+  if (id === 'age') {
+    const val = parseInt(el.value, 10);
+    if (isNaN(val) || val < 18 || val > 80) {
+      el.classList.add('error');
+      errorEl.textContent = getText('ageInvalid');
+      errorEl.classList.add('show');
+      return false;
+    }
+  }
+
+  if (el.hasAttribute('required') || el.required) {
+    if (!el.value || el.value.trim() === '') {
+      el.classList.add('error');
+      errorEl.classList.add('show');
+      return false;
+    }
+  }
+  el.classList.remove('error');
+  errorEl.classList.remove('show');
+  return true;
+}
+
+function validateAllFields(step) {
+  const stepDefs = getStepFields();
+  const fields = stepDefs[step - 1].fields;
+  let valid = true;
+
+  fields.forEach(f => {
+    if (f.type === 'file') {
+      if (f.required && !fileData[f.id]) {
+        document.getElementById(f.id + '_error')?.classList.add('show');
+        valid = false;
+      }
+    } else if (f.type === 'membership') {
+      if (f.required && !selectedMembership) {
+        document.getElementById('membership_error')?.classList.add('show');
+        valid = false;
+      }
+    } else if (f.type === 'payment') {
+      if (f.required && !selectedPayment) {
+        document.getElementById('payment_error')?.classList.add('show');
+        valid = false;
+      }
+    } else {
+      if (!validateField(f.id) && f.required) valid = false;
+    }
+  });
+
+  return valid;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goToStep(step) {
+  if (step < 1 || step > STEPS) return;
+  if (step > currentStep && !validateAllFields(currentStep)) return;
+  collectStepData(currentStep);
+  currentStep = step;
+  renderStep(step);
+  saveToLocal();
+}
+
+function updateProgress(step) {
+  progressFill.style.width = (((step - 1) / (STEPS - 1)) * 100) + '%';
+}
+
+function collectStepData(step) {
+  const stepDefs = getStepFields();
+  const fields = stepDefs[step - 1].fields;
+  fields.forEach(f => {
+    if (f.type === 'file' || f.type === 'payment' || f.type === 'membership') return;
+    const el = document.getElementById(f.id);
+    if (el) formData[f.id] = el.value;
+  });
+}
+
+// ============================================================
+// PAYMENT
+// ============================================================
+function selectPayment(method) {
+  selectedPayment = method;
+  formData.paymentMethod = method;
+  document.querySelectorAll('.payment-option').forEach(el => el.classList.toggle('selected', el.dataset.method === method));
+  document.getElementById('payment_error')?.classList.remove('show');
+  showQR(method);
+  saveToLocal();
+}
+
+function showQR(method) {
+  const qrDisplay = document.getElementById('qrDisplay');
+  if (!qrDisplay) return;
+
+  let qrImage = '', methodName = '', accountInfo = '';
+  if (method === 'eSewa') {
+    qrImage = QR_ESEWA; methodName = 'eSewa';
+    accountInfo = '📱 नम्बर: 9861513184<br>👤 खाता धनी: BISHAL GHIMIRE';
+  } else if (method === 'Khalti') {
+    qrImage = QR_KHALTI; methodName = 'Khalti';
+    accountInfo = '📱 नम्बर: 9861513184<br>👤 खाता धनी: BISHAL GHIMIRE';
+  } else if (method === 'Bank') {
+    qrImage = QR_BANK; methodName = 'कृषि विकास बैंक (ADBL)';
+    accountInfo = '🏦 खाता नम्बर: 0228202511791016<br>👤 खाता धनी: BISHAL GHIMIRE';
+  }
+
+  qrDisplay.innerHTML = `<div class="qr-container">
+    <div style="font-weight:700;font-size:19px;color:var(--primary-dark);">${methodName}</div>
+    <div class="detail np">${accountInfo}</div>
+    <img src="${qrImage}" alt="QR Code" class="qr-image" id="qrImageToDownload" onerror="this.style.display='none'" loading="lazy">
+    <div style="font-size:12.5px;color:var(--muted);margin-top:4px;" class="np">QR स्क्यान गरी भुक्तानी गर्नुहोस्</div>
+    <div style="margin-top:8px;font-weight:600;color:var(--primary-dark);" class="np">${getText('fee')} ${selectedMembershipPrice || 0}</div>
+    <div class="qr-actions">
+      <button class="btn-sm btn-download np" onclick="downloadQR('${qrImage}')">
+        <span class="material-symbols-outlined" style="font-size:15px;">download</span> ${getText('downloadQR')}
+      </button>
+      <button class="btn-sm btn-print np" onclick="printQR()">
+        <span class="material-symbols-outlined" style="font-size:15px;">print</span> ${getText('printQR')}
+      </button>
+    </div>
+  </div>`;
+}
+
+function downloadQR(imageUrl) {
+  if (!selectedPayment) { alert(getText('selectPaymentMethod')); return; }
+  window.open(imageUrl, '_blank');
+}
+
+function printQR() {
+  if (!selectedPayment) { alert(getText('selectPaymentMethod')); return; }
+  const qrImage = document.getElementById('qrImageToDownload');
+  if (qrImage) {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) { alert(selectedLang === 'ne' ? 'पप-अप ब्लक भयो, कृपया अनुमति दिनुहोस्' : 'Popup blocked, please allow popups'); return; }
+    printWindow.document.write(`<html><head><title>QR Code</title>
+      <style>body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#fff;}
+      img{max-width:80%;border:2px solid #8E24AA;border-radius:16px;padding:20px;}</style>
+      </head><body><img src="${qrImage.src}" alt="QR Code"></body></html>`);
+    printWindow.document.close();
+    setTimeout(() => { printWindow.print(); }, 500);
+  }
+}
+
+// ============================================================
+// FILE HANDLING — hardened for in-app browsers (TikTok/FB/IG/Messenger)
+// ============================================================
+function handleFileSelect(id, input) {
+  const files = input.files;
+  if (!files || !files.length) return;
+  const file = files[0];
+  const errorEl = document.getElementById(id + '_error');
+
+  // Validate size client-side (server re-validates too)
+  if (file.size > MAX_UPLOAD_SIZE) {
+    if (errorEl) { errorEl.textContent = getText('fileTooLarge'); errorEl.classList.add('show'); }
+    input.value = '';
+    return;
+  }
+
+  // Validate type loosely — some in-app browsers report empty/odd MIME
+  // types for camera captures, so we also allow common image extensions.
+  const validTypes = ['image/jpeg','image/jpg','image/png','image/gif','image/webp','image/heic','image/heif'];
+  const nameLower = (file.name || '').toLowerCase();
+  const hasValidExt = /\.(jpe?g|png|gif|webp|heic|heif)$/.test(nameLower);
+  const hasValidType = validTypes.includes(file.type);
+  if (file.type && !hasValidType && !hasValidExt) {
+    if (errorEl) { errorEl.textContent = getText('invalidFileType'); errorEl.classList.add('show'); }
+    input.value = '';
+    return;
+  }
+
+  fileData[id] = file;
+  const preview = document.getElementById(`preview-${id}`);
+  if (preview) {
+    try {
+      const objectUrl = URL.createObjectURL(file);
+      preview.innerHTML = `<img src="${objectUrl}" onload="URL.revokeObjectURL('${objectUrl}')" />`;
+    } catch (e) {
+      // Some webviews restrict createObjectURL; fall back to FileReader
+      const reader = new FileReader();
+      reader.onload = ev => { preview.innerHTML = `<img src="${ev.target.result}" />`; };
+      reader.readAsDataURL(file);
+    }
+  }
+  if (errorEl) errorEl.classList.remove('show');
+  saveToLocal();
+}
+
+// ============================================================
+// LOCAL STORAGE (safe wrapper — never crashes in restrictive webviews)
+// ============================================================
+function saveToLocal() {
+  const data = {
+    formData, step: currentStep, payment: selectedPayment,
+    membership: selectedMembership, membershipPrice: selectedMembershipPrice, lang: selectedLang
+  };
+  safeStorage.set('setmandu_reg', JSON.stringify(data));
+}
+
+function loadFromLocal() {
+  const raw = safeStorage.get('setmandu_reg');
+  if (!raw) return;
+  try {
+    const saved = JSON.parse(raw);
+    if (saved.formData) Object.assign(formData, saved.formData);
+    if (saved.step && saved.step <= STEPS) currentStep = saved.step;
+    if (saved.payment) selectedPayment = saved.payment;
+    if (saved.membership) {
+      selectedMembership = saved.membership;
+      selectedMembershipPrice = saved.membershipPrice || 0;
+    }
+    if (saved.lang) selectedLang = saved.lang;
+  } catch (e) { /* corrupted data — ignore and start fresh */ }
+}
+
+// ============================================================
+// SUBMIT — AJAX to PHP, hardened against double-submit & failures
+// ============================================================
+async function submitForm() {
+  if (isSubmitting) return;
+  if (!validateAllFields(currentStep)) return;
+  collectStepData(currentStep);
+
+  if (!selectedMembership) { document.getElementById('membership_error')?.classList.add('show'); return; }
+  if (!selectedPayment) { document.getElementById('payment_error')?.classList.add('show'); return; }
+  if (!fileData.paymentScreenshot) { document.getElementById('paymentScreenshot_error')?.classList.add('show'); return; }
+  if (!fileData.profilePhoto) { document.getElementById('profilePhoto_error')?.classList.add('show'); return; }
+
+  isSubmitting = true;
+  requestId = genRequestId();
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.disabled = true;
+  showLoader(true);
+
+  const fd = new FormData();
+  fd.append('action', 'register');
+  fd.append('csrf_token', CSRF_TOKEN);
+  fd.append('request_id', requestId);
+  fd.append('fullName', formData.fullName || '');
+  fd.append('currentCountry', formData.currentCountry || '');
+  fd.append('gender', formData.gender || '');
+  fd.append('age', formData.age || '');
+  fd.append('caste', formData.caste || '');
+  fd.append('education', formData.education || '');
+  fd.append('occupation', formData.occupation || '');
+  fd.append('preferredAge', formData.preferredAge || '');
+  fd.append('preferredCaste', formData.preferredCaste || '');
+  fd.append('preferredCountry', formData.preferredCountry || '');
+  fd.append('paymentMethod', selectedPayment);
+  fd.append('membership', selectedMembership);
+  fd.append('membershipPrice', selectedMembershipPrice);
+  fd.append('lang', selectedLang);
+  fd.append('profilePhoto', fileData.profilePhoto);
+  fd.append('paymentScreenshot', fileData.paymentScreenshot);
+
+  try {
+    const response = await fetchWithTimeout(window.location.href, { method: 'POST', body: fd }, 30000);
+    const result = await response.json();
+
+    if (result.success) {
+      safeStorage.set('setmandu_registered', 'true');
+      safeStorage.set('setmandu_user', JSON.stringify({
+        name: result.name, userID: result.userID, membership: result.membership, price: result.price
+      }));
+      showSuccess(result.name, result.userID, result.membership, result.price);
+      safeStorage.remove('setmandu_reg');
+    } else {
+      const errors = result.errors || ['Registration failed'];
+      if (errors.some(e => e.includes('already registered'))) {
+        safeStorage.set('setmandu_registered', 'true');
+        showAIChat();
+        isSubmitting = false;
+        return;
+      }
+      alert('Error:\n' + errors.join('\n'));
+      isSubmitting = false;
+      showLoader(false);
+      if (nextBtn) nextBtn.disabled = false;
+    }
+  } catch (err) {
+    alert(getText('networkError') + (err && err.message ? ('\n' + err.message) : ''));
+    isSubmitting = false;
+    showLoader(false);
+    if (nextBtn) nextBtn.disabled = false;
+  }
+}
+
+function fetchWithTimeout(url, options, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = setTimeout(() => {
+      if (controller) controller.abort();
+      reject(new Error('Request timed out'));
+    }, timeoutMs);
+    if (controller) options.signal = controller.signal;
+    fetch(url, options).then(res => { clearTimeout(timer); resolve(res); })
+      .catch(err => { clearTimeout(timer); reject(err); });
+  });
+}
+
+function showLoader(show) {
+  if (show) {
+    stepsContainer.innerHTML = `<div class="loader"></div>
+      <p style="text-align:center;margin-top:10px;color:var(--primary-dark);font-weight:600;" class="np">${getText('processing')}</p>`;
+    successArea.classList.add('hidden');
+  } else {
+    renderStep(currentStep);
+  }
+}
+
+function showSuccess(name, userID, membership, price) {
+  stepsContainer.innerHTML = '';
+  const meta = planKeyToTextKeys(membership);
+  const membershipDisplay = meta.name ? getText(meta.name) : membership;
+  const safeName = (name || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  successArea.innerHTML = `<div class="success-screen">
+    <span class="material-symbols-outlined big-check">verified</span>
+    <h2 class="np" style="color:var(--ink);margin:8px 0;font-family:'Baloo 2',cursive;font-size:30px;">${getText('success')}</h2>
+    <p class="np" style="color:var(--ink);font-size:17px;font-weight:500;">${getText('welcome')} ${safeName} 💖</p>
+
+    <div style="background:rgba(142,36,170,0.1);padding:16px;border-radius:24px;margin:16px 0;border:2px solid rgba(142,36,170,0.15);">
+      <div class="np" style="font-size:12.5px;color:var(--muted);">${getText('yourID')}</div>
+      <div style="font-size:30px;font-weight:800;color:var(--primary-dark);font-family:'Baloo 2',cursive;">SM-${String(userID).padStart(4,'0')}</div>
+      <div class="np" style="font-size:13.5px;color:var(--muted);margin-top:4px;">${membershipDisplay} · रु. ${price}</div>
+    </div>
+
+    <div style="background:rgba(67,160,71,0.08);padding:12px;border-radius:24px;margin:12px 0;border:1px solid rgba(67,160,71,0.2);">
+      <p class="np" style="font-size:15px;color:#43a047;font-weight:600;">${getText('paymentReceived')} ${price}</p>
+      <p class="np" style="font-size:13.5px;color:var(--muted);margin-top:4px;">${getText('pendingVerification')}</p>
+    </div>
+
+    <div class="np" style="font-family:'Baloo 2',cursive;font-size:19px;color:var(--primary-dark);margin:12px 0;">
+      "जोडिन्छ मन, बन्छ जीवन" ✨
+    </div>
+
+    <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap;justify-content:center;">
+      <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('नमस्ते सेटमान्डु मा रजिस्टेड गरिसकेको छु। मेरो SetMandu युजर आइडी SM-' + String(userID).padStart(4,'0') + ' हो। ' + membership + ' सदस्यता लिएको छु। अब प्रक्रिया अगाडि बढाइदिनुहोस्।')}"
+        target="_blank" rel="noopener" style="flex:1;min-width:140px;padding:12px 18px;background:#25D366;color:#fff;border-radius:40px;
+        text-decoration:none;font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px;">
+        <span style="font-size:22px;">💬</span> ${getText('whatsapp')}
+      </a>
+      <a href="${TIKTOK_URL}" target="_blank" rel="noopener" style="flex:1;min-width:140px;padding:12px 18px;background:#000;color:#fff;
+        border-radius:40px;text-decoration:none;font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px;">
+        <span style="font-size:22px;">🎵</span> ${getText('tiktok')}
+      </a>
+    </div>
+
+    <button class="btn btn-primary np" style="margin-top:12px;" onclick="location.reload()">
+      <span class="material-symbols-outlined">refresh</span> ${getText('startOver')}
+    </button>
+  </div>`;
+  successArea.classList.remove('hidden');
+  safeStorage.set('setmandu_registered', 'true');
+}
+
+// ============================================================
+// THEME TOGGLE
+// ============================================================
+document.getElementById('themeToggle').addEventListener('click', function () {
+  document.body.classList.toggle('dark');
+  const icon = this.querySelector('.material-symbols-outlined');
+  icon.textContent = document.body.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+  safeStorage.set('setmandu_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadFromLocal();
+
+if (safeStorage.get('setmandu_theme') === 'dark') {
+  document.body.classList.add('dark');
+  document.querySelector('#themeToggle .material-symbols-outlined').textContent = 'light_mode';
+}
+
+if (safeStorage.get('setmandu_registered') === 'true') {
+  welcomeModal.style.display = 'none';
+  showAIChat();
+} else {
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === selectedLang));
+  welcomeModal.style.display = 'flex';
+}
+</script>
 </body>
 </html>
