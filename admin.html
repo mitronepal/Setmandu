@@ -4,11 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
 <meta name="theme-color" content="#1a0a2e">
-<title>SetMandu · एडमिन प्यानल</title>
+<title>SetMandu · एडमिन प्यानल (Real Database)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
 <style>
 :root{
   --primary:#8E24AA;
@@ -51,7 +56,6 @@ body{
 .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24;vertical-align:middle;line-height:1;}
 .icon-fill{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;}
 
-/* ============ GLASS CONTAINER ============ */
 .admin-wrapper{
   width:100%;max-width:1200px;
 }
@@ -89,7 +93,6 @@ body{
   box-shadow:var(--shadow-soft), 0 0 40px rgba(142,36,170,0.05);
 }
 
-/* ============ STATS ============ */
 .stats-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:20px;
 }
@@ -113,7 +116,6 @@ body{
 .stat-card .stat-number{font-size:28px;font-weight:800;color:#fff;font-family:'Baloo 2',cursive;}
 .stat-card .stat-label{font-size:12.5px;color:var(--muted);font-weight:500;}
 
-/* ============ TOOLBAR ============ */
 .toolbar{
   display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;align-items:center;
 }
@@ -142,7 +144,6 @@ body{
 .toolbar .filter-btn.active{background:rgba(142,36,170,0.2);border-color:var(--primary);color:var(--primary-light);}
 .toolbar .filter-btn .count{background:rgba(255,255,255,0.08);padding:1px 8px;border-radius:20px;font-size:10px;margin-left:4px;}
 
-/* ============ TABLE ============ */
 .table-wrap{overflow-x:auto;border-radius:var(--radius-md);}
 table{width:100%;border-collapse:collapse;font-size:13.5px;}
 thead tr{background:rgba(255,255,255,0.03);border-bottom:2px solid rgba(255,255,255,0.05);}
@@ -184,13 +185,11 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .action-btn.view:hover{background:rgba(142,36,170,0.22);}
 .action-btn .material-symbols-rounded{font-size:14px;}
 
-/* ============ EMPTY STATE ============ */
 .empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
 .empty-state .material-symbols-rounded{font-size:56px;color:rgba(255,255,255,0.04);margin-bottom:12px;}
 .empty-state h3{color:#fff;font-family:'Baloo 2',cursive;font-size:22px;margin-bottom:6px;}
 .empty-state p{font-size:14px;}
 
-/* ============ DETAIL MODAL ============ */
 .detail-modal{
   position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);
   display:none;justify-content:center;align-items:center;z-index:10000;padding:20px;
@@ -230,7 +229,6 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .btn-success{background:linear-gradient(135deg,var(--success),#2e7d32);color:#fff;}
 .btn-danger{background:linear-gradient(135deg,var(--danger),#b71c1c);color:#fff;}
 
-/* ============ TOAST ============ */
 .toast-container{
   position:fixed;bottom:30px;right:30px;z-index:99999;display:flex;flex-direction:column;gap:10px;max-width:380px;width:100%;
 }
@@ -247,7 +245,17 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .toast.success .toast-icon{color:var(--success-light);}
 .toast.error .toast-icon{color:var(--danger);}
 
-/* ============ RESPONSIVE ============ */
+.loading-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);
+  display:none;justify-content:center;align-items:center;z-index:99998;
+}
+.loading-overlay.show{display:flex;}
+.loading-overlay .spinner{
+  width:50px;height:50px;border-radius:50%;border:3px solid rgba(142,36,170,0.2);
+  border-top:3px solid var(--primary-light);animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 @media (max-width:768px){
   .admin-header .logo{font-size:24px;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
@@ -275,9 +283,12 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 </head>
 <body>
 
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
+
 <div class="admin-wrapper">
 
-  <!-- HEADER -->
   <div class="admin-header">
     <span class="logo"><span class="material-symbols-rounded icon-fill">shield</span>SetMandu · Admin</span>
     <span class="badge">
@@ -289,7 +300,6 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     </span>
   </div>
 
-  <!-- STATS -->
   <div class="stats-grid" id="statsGrid">
     <div class="stat-card">
       <div class="stat-icon purple"><span class="material-symbols-rounded icon-fill">people</span></div>
@@ -313,7 +323,6 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     </div>
   </div>
 
-  <!-- MAIN TABLE -->
   <div class="glass-card">
     <div class="toolbar">
       <div class="search-box">
@@ -340,7 +349,10 @@ tr:hover td{background:rgba(255,255,255,0.02);}
           </tr>
         </thead>
         <tbody id="userTableBody">
-          <!-- Dynamic rows -->
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">
+            <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">sync</span>
+            डाटा लोड हुँदै...
+          </td></tr>
         </tbody>
       </table>
     </div>
@@ -351,13 +363,11 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     </div>
   </div>
 
-  <!-- FOOTER -->
   <div style="text-align:center;font-size:12px;color:var(--muted);padding:12px 0;border-top:1px solid rgba(255,255,255,0.04);">
-    SetMandu Admin Panel v2.0 · <span class="np">सबै अधिकार सुरक्षित</span>
+    SetMandu Admin Panel v3.0 · Firebase Realtime Database
   </div>
 </div>
 
-<!-- DETAIL MODAL -->
 <div class="detail-modal" id="detailModal">
   <div class="detail-content">
     <button class="close-modal" onclick="closeDetail()"><span class="material-symbols-rounded">close</span></button>
@@ -367,11 +377,35 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   </div>
 </div>
 
-<!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
 'use strict';
+
+// ============================================================
+// FIREBASE CONFIG - तपाईंको आफ्नै Config यहाँ राख्नुहोस्
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyDummyKey_Replace_With_Your_Real_Key",
+  authDomain: "your-project.firebaseapp.com",
+  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+  projectId: "your-project",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef123456"
+};
+
+// Initialize Firebase
+let database;
+try {
+  firebase.initializeApp(firebaseConfig);
+  database = firebase.database();
+  console.log('🔥 Firebase initialized successfully');
+} catch (e) {
+  console.error('❌ Firebase init error:', e);
+  // Fallback to localStorage if Firebase fails
+  console.warn('⚠️ Using localStorage fallback');
+}
 
 // ============================================================
 // STATE
@@ -379,23 +413,68 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 let users = [];
 let currentFilter = 'all';
 let searchQuery = '';
+let userIdCounter = 1000;
 
 // ============================================================
-// LOAD USERS FROM LOCAL STORAGE
+// DATABASE OPERATIONS
 // ============================================================
-function loadUsers() {
+
+// Load users from Firebase
+function loadUsersFromDB() {
+  showLoading(true);
+
+  if (database) {
+    // Real database - Firebase
+    const usersRef = database.ref('users');
+    usersRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      users = [];
+      
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const user = data[key];
+          user._key = key; // store firebase key for updates
+          users.push(user);
+        });
+      }
+
+      // Sort by registration date (newest first)
+      users.sort((a, b) => {
+        const dateA = a.registrationDate ? new Date(a.registrationDate) : new Date(0);
+        const dateB = b.registrationDate ? new Date(b.registrationDate) : new Date(0);
+        return dateB - dateA;
+      });
+
+      renderStats();
+      renderTable();
+      showLoading(false);
+      showToast(`✅ ${users.length} प्रयोगकर्ता लोड गरियो`, 'success');
+    }, (error) => {
+      console.error('Database error:', error);
+      showLoading(false);
+      // Fallback to localStorage
+      loadFromLocalStorage();
+    });
+  } else {
+    // Fallback to localStorage
+    loadFromLocalStorage();
+  }
+}
+
+// Fallback: Load from localStorage
+function loadFromLocalStorage() {
   users = [];
-  // Scan localStorage for users
+  
+  // Check for individual user
   const registered = localStorage.getItem('setmandu_registered');
   if (registered === 'true') {
     const userData = localStorage.getItem('setmandu_user');
     if (userData) {
       try {
         const data = JSON.parse(userData);
-        // Ensure all fields exist
         const user = {
           id: data.userID || Math.floor(Math.random() * 9000) + 1000,
-          fullName: data.name || data.fullName || 'Unknown User',
+          fullName: data.name || data.fullName || 'Unknown',
           currentCountry: data.currentCountry || 'Nepal',
           gender: data.gender || 'Other',
           age: data.age || 'N/A',
@@ -417,14 +496,13 @@ function loadUsers() {
     }
   }
 
-  // Also check for multiple users if stored as array
+  // Check for multiple users
   const multiUsers = localStorage.getItem('setmandu_users');
   if (multiUsers) {
     try {
       const parsed = JSON.parse(multiUsers);
       if (Array.isArray(parsed)) {
         parsed.forEach(u => {
-          // Avoid duplicates
           if (!users.some(ex => ex.id === u.id)) {
             users.push(u);
           }
@@ -433,133 +511,190 @@ function loadUsers() {
     } catch(e) {}
   }
 
-  // If no users, add demo users
+  // If still no users, create a demo user
   if (users.length === 0) {
-    users = getDemoUsers();
+    const demo = {
+      id: 1001,
+      fullName: 'Demo User',
+      currentCountry: 'Nepal',
+      gender: 'Male',
+      age: '25',
+      caste: 'Brahmin',
+      education: 'Bachelor\'s',
+      occupation: 'Student',
+      preferredAge: '22-28',
+      preferredCaste: 'Any',
+      preferredCountry: 'Nepal',
+      membership: 'Starter',
+      price: 100,
+      verified: false,
+      registrationDate: new Date().toISOString(),
+      verificationDate: null,
+      transactionCode: 'DEMO123',
+      _key: 'demo_user'
+    };
+    users.push(demo);
     localStorage.setItem('setmandu_users', JSON.stringify(users));
   }
 
   renderStats();
   renderTable();
+  showLoading(false);
 }
 
-// ============================================================
-// DEMO USERS
-// ============================================================
-function getDemoUsers() {
-  return [
-    {
-      id: 1001,
-      fullName: 'Bishal Ghimire',
-      currentCountry: 'Nepal',
-      gender: 'Male',
-      age: '28',
-      caste: 'Chhetri',
-      education: 'Master\'s',
-      occupation: 'Software Engineer',
-      preferredAge: '24-30',
-      preferredCaste: 'Any',
-      preferredCountry: 'Nepal',
-      membership: 'VIP',
-      price: 5000,
-      verified: true,
-      registrationDate: '2026-07-28T10:00:00.000Z',
-      verificationDate: '2026-07-29T08:00:00.000Z',
-      transactionCode: 'TXN123456789'
-    },
-    {
-      id: 1002,
-      fullName: 'Sita Sharma',
-      currentCountry: 'Nepal',
-      gender: 'Female',
-      age: '25',
-      caste: 'Brahmin',
-      education: 'Bachelor\'s',
-      occupation: 'Teacher',
-      preferredAge: '26-32',
-      preferredCaste: 'Brahmin',
-      preferredCountry: 'Nepal',
-      membership: 'Gold',
-      price: 2500,
-      verified: false,
-      registrationDate: '2026-07-30T05:00:00.000Z',
-      verificationDate: null,
-      transactionCode: 'TXN987654321'
-    },
-    {
-      id: 1003,
-      fullName: 'Ramesh Adhikari',
-      currentCountry: 'Australia',
-      gender: 'Male',
-      age: '32',
-      caste: 'Gurung',
-      education: 'PhD',
-      occupation: 'Researcher',
-      preferredAge: '28-34',
-      preferredCaste: 'Any',
-      preferredCountry: 'Nepal',
-      membership: 'Premium',
-      price: 1500,
-      verified: true,
-      registrationDate: '2026-07-25T14:00:00.000Z',
-      verificationDate: '2026-07-26T10:00:00.000Z',
-      transactionCode: 'TXN456789123'
-    },
-    {
-      id: 1004,
-      fullName: 'Priya Karki',
-      currentCountry: 'UK',
-      gender: 'Female',
-      age: '27',
-      caste: 'Newar',
-      education: 'Master\'s',
-      occupation: 'Nurse',
-      preferredAge: '28-35',
-      preferredCaste: 'Newar',
-      preferredCountry: 'Nepal',
-      membership: 'Basic',
-      price: 500,
-      verified: false,
-      registrationDate: '2026-07-29T09:00:00.000Z',
-      verificationDate: null,
-      transactionCode: 'TXN789123456'
-    },
-    {
-      id: 1005,
-      fullName: 'Sujan Thapa',
-      currentCountry: 'Nepal',
-      gender: 'Male',
-      age: '30',
-      caste: 'Thapa',
-      education: 'Bachelor\'s',
-      occupation: 'Business',
-      preferredAge: '26-32',
-      preferredCaste: 'Any',
-      preferredCountry: 'Nepal',
-      membership: 'Starter',
-      price: 100,
-      verified: true,
-      registrationDate: '2026-07-20T11:00:00.000Z',
-      verificationDate: '2026-07-21T09:00:00.000Z',
-      transactionCode: 'TXN321654987'
-    }
-  ];
+// Save user to Firebase
+function saveUserToDB(userData) {
+  if (database) {
+    const usersRef = database.ref('users');
+    const newUserRef = usersRef.push();
+    const userToSave = {
+      ...userData,
+      id: userData.id || Math.floor(Math.random() * 9000) + 1000,
+      registrationDate: userData.registrationDate || new Date().toISOString(),
+      verified: userData.verified || false
+    };
+    
+    newUserRef.set(userToSave)
+      .then(() => {
+        showToast('✅ प्रयोगकर्ता सेभ गरियो', 'success');
+        // Also save to localStorage as backup
+        saveToLocalBackup(userToSave);
+      })
+      .catch((error) => {
+        console.error('Save error:', error);
+        showToast('❌ सेभ गर्न असफल: ' + error.message, 'error');
+        // Fallback to localStorage
+        saveToLocalBackup(userToSave);
+      });
+  } else {
+    saveToLocalBackup(userData);
+  }
 }
 
-// ============================================================
-// SAVE USERS
-// ============================================================
-function saveUsers() {
+// Backup to localStorage
+function saveToLocalBackup(userData) {
+  // Update users array
+  const existing = users.findIndex(u => u.id === userData.id);
+  if (existing >= 0) {
+    users[existing] = { ...users[existing], ...userData };
+  } else {
+    users.push(userData);
+  }
   localStorage.setItem('setmandu_users', JSON.stringify(users));
-  // Also save individual user for compatibility
-  if (users.length > 0) {
-    localStorage.setItem('setmandu_user', JSON.stringify(users[0]));
-    localStorage.setItem('setmandu_registered', 'true');
+  // Also save as individual
+  localStorage.setItem('setmandu_user', JSON.stringify(userData));
+  localStorage.setItem('setmandu_registered', 'true');
+  renderStats();
+  renderTable();
+}
+
+// Update user verification status in Firebase
+function updateVerificationInDB(userId, verified) {
+  showLoading(true);
+  
+  if (database) {
+    // Find user by id
+    const userRef = database.ref('users');
+    userRef.orderByChild('id').equalTo(userId).once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const key = Object.keys(data)[0];
+          const updates = {
+            verified: verified,
+            verificationDate: verified ? new Date().toISOString() : null
+          };
+          
+          database.ref('users/' + key).update(updates)
+            .then(() => {
+              showLoading(false);
+              showToast('✅ प्रमाणीकरण अद्यावधिक गरियो', 'success');
+              loadUsersFromDB(); // reload
+            })
+            .catch((error) => {
+              showLoading(false);
+              showToast('❌ अपडेट गर्न असफल: ' + error.message, 'error');
+            });
+        } else {
+          showLoading(false);
+          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+        }
+      })
+      .catch((error) => {
+        showLoading(false);
+        showToast('❌ खोजी गर्न असफल: ' + error.message, 'error');
+      });
+  } else {
+    // localStorage fallback
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      user.verified = verified;
+      user.verificationDate = verified ? new Date().toISOString() : null;
+      localStorage.setItem('setmandu_users', JSON.stringify(users));
+      localStorage.setItem('setmandu_user', JSON.stringify(user));
+      showLoading(false);
+      renderStats();
+      renderTable();
+      showToast(`✅ ${user.fullName} ${verified ? 'प्रमाणित' : 'अप्रमाणित'} गरियो`, 'success');
+    } else {
+      showLoading(false);
+      showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+    }
+  }
+}
+
+// Delete user from Firebase
+function deleteUserFromDB(userId) {
+  if (!confirm('के तपाईं यो प्रयोगकर्ता हटाउन निश्चित हुनुहुन्छ?')) return;
+  
+  showLoading(true);
+  
+  if (database) {
+    const userRef = database.ref('users');
+    userRef.orderByChild('id').equalTo(userId).once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const key = Object.keys(data)[0];
+          database.ref('users/' + key).remove()
+            .then(() => {
+              showLoading(false);
+              showToast('🗑️ प्रयोगकर्ता हटाइयो', 'success');
+              loadUsersFromDB(); // reload
+            })
+            .catch((error) => {
+              showLoading(false);
+              showToast('❌ हटाउन असफल: ' + error.message, 'error');
+            });
+        } else {
+          showLoading(false);
+          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+        }
+      })
+      .catch((error) => {
+        showLoading(false);
+        showToast('❌ खोजी गर्न असफल: ' + error.message, 'error');
+      });
+  } else {
+    // localStorage fallback
+    const user = users.find(u => u.id === userId);
+    users = users.filter(u => u.id !== userId);
+    localStorage.setItem('setmandu_users', JSON.stringify(users));
+    if (users.length > 0) {
+      localStorage.setItem('setmandu_user', JSON.stringify(users[0]));
+    } else {
+      localStorage.removeItem('setmandu_user');
+      localStorage.removeItem('setmandu_registered');
+    }
+    showLoading(false);
+    renderStats();
+    renderTable();
+    showToast(`🗑️ ${user ? user.fullName : 'प्रयोगकर्ता'} हटाइयो`, 'success');
   }
 }
 
 // ============================================================
-// RENDER STATS
+// RENDER FUNCTIONS
 // ============================================================
 function renderStats() {
   const total = users.length;
@@ -579,9 +714,6 @@ function renderStats() {
   document.getElementById('fPending').textContent = pending;
 }
 
-// ============================================================
-// RENDER TABLE
-// ============================================================
 function renderTable() {
   const tbody = document.getElementById('userTableBody');
   const empty = document.getElementById('emptyState');
@@ -593,9 +725,9 @@ function renderTable() {
   if (searchQuery.trim()) {
     const q = searchQuery.trim().toLowerCase();
     filtered = filtered.filter(u =>
-      u.fullName.toLowerCase().includes(q) ||
+      (u.fullName || '').toLowerCase().includes(q) ||
       String(u.id).includes(q) ||
-      u.currentCountry.toLowerCase().includes(q)
+      (u.currentCountry || '').toLowerCase().includes(q)
     );
   }
 
@@ -613,21 +745,21 @@ function renderTable() {
       'Gold':'military_tech', 'VIP':'workspace_premium'
     };
     const icon = membershipIcons[u.membership] || 'auto_awesome';
-    const initials = u.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+    const initials = (u.fullName || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
 
     return `<tr>
       <td>
         <div class="user-info">
           <div class="user-avatar">${initials}</div>
           <div>
-            <div class="user-name">${escapeHtml(u.fullName)}</div>
-            <div class="user-id">${escapeHtml(u.currentCountry)}</div>
+            <div class="user-name">${escapeHtml(u.fullName || 'Unknown')}</div>
+            <div class="user-id">${escapeHtml(u.currentCountry || 'N/A')}</div>
           </div>
         </div>
       </td>
       <td><span style="font-weight:600;color:var(--muted);">SM-${String(u.id).padStart(4,'0')}</span></td>
-      <td>${escapeHtml(u.currentCountry)}</td>
-      <td><span class="plan-badge"><span class="material-symbols-rounded">${icon}</span>${u.membership}</span></td>
+      <td>${escapeHtml(u.currentCountry || 'N/A')}</td>
+      <td><span class="plan-badge"><span class="material-symbols-rounded">${icon}</span>${u.membership || 'Starter'}</span></td>
       <td><span class="badge-status ${verified ? 'verified' : 'pending'}">
         <span class="material-symbols-rounded">${verified ? 'verified' : 'pending'}</span>
         ${verified ? 'प्रमाणित' : 'पेन्डिङ'}
@@ -644,6 +776,7 @@ function renderTable() {
 }
 
 function escapeHtml(str) {
+  if (!str) return '';
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
@@ -670,37 +803,27 @@ function filterTable() {
 // ============================================================
 function verifyUser(id) {
   const user = users.find(u => u.id === id);
-  if (!user) return;
+  if (!user) {
+    showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+    return;
+  }
   if (user.verified) {
     showToast('यो प्रयोगकर्ता पहिले नै प्रमाणित छ', 'error');
     return;
   }
-  user.verified = true;
-  user.verificationDate = new Date().toISOString();
-  saveUsers();
-  renderStats();
-  renderTable();
-  showToast(`${user.fullName} सफलतापूर्वक प्रमाणित गरियो`, 'success');
-
-  // Also update individual user in storage
-  if (users.length > 0) {
-    localStorage.setItem('setmandu_user', JSON.stringify(users[0]));
-  }
+  updateVerificationInDB(id, true);
 }
 
 function deleteUser(id) {
-  if (!confirm('के तपाईं यो प्रयोगकर्ता हटाउन निश्चित हुनुहुन्छ?')) return;
-  const user = users.find(u => u.id === id);
-  users = users.filter(u => u.id !== id);
-  saveUsers();
-  renderStats();
-  renderTable();
-  showToast(`${user ? user.fullName : 'प्रयोगकर्ता'} हटाइयो`, 'error');
+  deleteUserFromDB(id);
 }
 
 function viewUser(id) {
   const user = users.find(u => u.id === id);
-  if (!user) return;
+  if (!user) {
+    showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+    return;
+  }
   openDetail(user);
 }
 
@@ -718,13 +841,14 @@ function openDetail(user) {
   };
   const icon = membershipIcons[user.membership] || 'auto_awesome';
 
+  const fullName = user.fullName || 'Unknown';
+  const initials = fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+
   body.innerHTML = `
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06);">
-      <div class="user-avatar" style="width:48px;height:48px;font-size:20px;">
-        ${user.fullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
-      </div>
+      <div class="user-avatar" style="width:48px;height:48px;font-size:20px;">${initials}</div>
       <div>
-        <div style="font-size:18px;font-weight:700;color:#fff;">${escapeHtml(user.fullName)}</div>
+        <div style="font-size:18px;font-weight:700;color:#fff;">${escapeHtml(fullName)}</div>
         <div style="font-size:12px;color:var(--muted);">SM-${String(user.id).padStart(4,'0')}</div>
       </div>
       <span class="badge-status ${user.verified ? 'verified' : 'pending'}" style="margin-left:auto;">
@@ -732,19 +856,19 @@ function openDetail(user) {
         ${user.verified ? 'प्रमाणित' : 'पेन्डिङ'}
       </span>
     </div>
-    <div class="detail-row"><span class="label">पूरा नाम</span><span class="value">${escapeHtml(user.fullName)}</span></div>
-    <div class="detail-row"><span class="label">देश</span><span class="value">${escapeHtml(user.currentCountry)}</span></div>
-    <div class="detail-row"><span class="label">लिङ्ग</span><span class="value">${escapeHtml(user.gender)}</span></div>
-    <div class="detail-row"><span class="label">उमेर</span><span class="value">${escapeHtml(user.age)}</span></div>
-    <div class="detail-row"><span class="label">जाति</span><span class="value">${escapeHtml(user.caste)}</span></div>
-    <div class="detail-row"><span class="label">शिक्षा</span><span class="value">${escapeHtml(user.education)}</span></div>
-    <div class="detail-row"><span class="label">पेशा</span><span class="value">${escapeHtml(user.occupation)}</span></div>
-    <div class="detail-row"><span class="label">रुचाइएको उमेर</span><span class="value">${escapeHtml(user.preferredAge)}</span></div>
-    <div class="detail-row"><span class="label">रुचाइएको जाति</span><span class="value">${escapeHtml(user.preferredCaste)}</span></div>
-    <div class="detail-row"><span class="label">रुचाइएको देश</span><span class="value">${escapeHtml(user.preferredCountry)}</span></div>
-    <div class="detail-row"><span class="label">सदस्यता</span><span class="value"><span class="material-symbols-rounded" style="font-size:16px;vertical-align:middle;">${icon}</span> ${user.membership} (रु. ${user.price})</span></div>
-    <div class="detail-row"><span class="label">ट्रान्जेक्सन कोड</span><span class="value" style="font-size:12px;font-family:monospace;">${escapeHtml(user.transactionCode)}</span></div>
-    <div class="detail-row"><span class="label">दर्ता मिति</span><span class="value">${new Date(user.registrationDate).toLocaleDateString()}</span></div>
+    <div class="detail-row"><span class="label">पूरा नाम</span><span class="value">${escapeHtml(fullName)}</span></div>
+    <div class="detail-row"><span class="label">देश</span><span class="value">${escapeHtml(user.currentCountry || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">लिङ्ग</span><span class="value">${escapeHtml(user.gender || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">उमेर</span><span class="value">${escapeHtml(user.age || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">जाति</span><span class="value">${escapeHtml(user.caste || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">शिक्षा</span><span class="value">${escapeHtml(user.education || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">पेशा</span><span class="value">${escapeHtml(user.occupation || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">रुचाइएको उमेर</span><span class="value">${escapeHtml(user.preferredAge || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">रुचाइएको जाति</span><span class="value">${escapeHtml(user.preferredCaste || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">रुचाइएको देश</span><span class="value">${escapeHtml(user.preferredCountry || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">सदस्यता</span><span class="value"><span class="material-symbols-rounded" style="font-size:16px;vertical-align:middle;">${icon}</span> ${user.membership || 'Starter'} (रु. ${user.price || 0})</span></div>
+    <div class="detail-row"><span class="label">ट्रान्जेक्सन कोड</span><span class="value" style="font-size:12px;font-family:monospace;">${escapeHtml(user.transactionCode || 'N/A')}</span></div>
+    <div class="detail-row"><span class="label">दर्ता मिति</span><span class="value">${user.registrationDate ? new Date(user.registrationDate).toLocaleDateString() : 'N/A'}</span></div>
     ${user.verificationDate ? `<div class="detail-row"><span class="label">प्रमाणीकरण मिति</span><span class="value">${new Date(user.verificationDate).toLocaleDateString()}</span></div>` : ''}
   `;
 
@@ -763,13 +887,12 @@ function closeDetail() {
   document.body.style.overflow = '';
 }
 
-// Close modal on background click
 document.getElementById('detailModal').addEventListener('click', function(e) {
   if (e.target === this) closeDetail();
 });
 
 // ============================================================
-// TOAST SYSTEM
+// TOAST
 // ============================================================
 function showToast(message, type = 'success') {
   const container = document.getElementById('toastContainer');
@@ -784,7 +907,14 @@ function showToast(message, type = 'success') {
   container.appendChild(toast);
   setTimeout(() => {
     if (toast.parentElement) toast.remove();
-  }, 4000);
+  }, 4500);
+}
+
+// ============================================================
+// LOADING
+// ============================================================
+function showLoading(show) {
+  document.getElementById('loadingOverlay').classList.toggle('show', show);
 }
 
 // ============================================================
@@ -799,9 +929,50 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ============================================================
+// ADD DEMO USER BUTTON (for testing)
+// ============================================================
+function addDemoUser() {
+  const demo = {
+    id: Math.floor(Math.random() * 9000) + 1000,
+    fullName: 'Test User ' + new Date().getTime().toString().slice(-4),
+    currentCountry: 'Nepal',
+    gender: 'Male',
+    age: '25',
+    caste: 'Brahmin',
+    education: 'Bachelor\'s',
+    occupation: 'Student',
+    preferredAge: '22-28',
+    preferredCaste: 'Any',
+    preferredCountry: 'Nepal',
+    membership: 'Starter',
+    price: 100,
+    verified: false,
+    registrationDate: new Date().toISOString(),
+    verificationDate: null,
+    transactionCode: 'TXN' + Math.random().toString(36).slice(2,8).toUpperCase()
+  };
+  
+  saveUserToDB(demo);
+}
+
+// Add a small floating button for testing
+const testBtn = document.createElement('button');
+testBtn.innerHTML = '+ Demo';
+testBtn.style.cssText = `
+  position:fixed;bottom:100px;right:20px;z-index:9999;
+  padding:10px 16px;border:none;border-radius:40px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;font-weight:700;font-size:13px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(142,36,170,0.4);
+  font-family:inherit;
+`;
+testBtn.onclick = addDemoUser;
+document.body.appendChild(testBtn);
+
+// ============================================================
 // INIT
 // ============================================================
-loadUsers();
+loadUsersFromDB();
 
 // Expose to global
 window.setFilter = setFilter;
@@ -812,6 +983,7 @@ window.viewUser = viewUser;
 window.openDetail = openDetail;
 window.closeDetail = closeDetail;
 window.showToast = showToast;
+window.addDemoUser = addDemoUser;
 </script>
 </body>
 </html>
