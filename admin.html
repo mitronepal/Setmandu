@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#1a0a2e">
+<title>SetMandu · एडमिन प्यानल</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+<style>
+:root{
+  --primary:#8E24AA;
+  --primary-dark:#4A148C;
+  --primary-light:#CE93D8;
+  --accent:#E53935;
+  --gold:#D4AF37;
+  --gold-dark:#9C7A17;
+  --success:#43a047;
+  --success-light:#66bb6a;
+  --warning:#f9a825;
+  --danger:#e53935;
+  --ink:#1a0a2e;
+  --muted:#7a6a8a;
+  --surface:rgba(255,255,255,0.08);
+  --surface-strong:rgba(255,255,255,0.12);
+  --radius-lg:28px;
+  --radius-md:18px;
+  --radius-sm:12px;
+  --shadow-soft:0 20px 60px rgba(0,0,0,0.3);
+  --shadow-pop:0 10px 30px rgba(142,36,170,0.25);
+  --ease-pop:cubic-bezier(.2,.9,.3,1.3);
+  --glass-bg:rgba(255,255,255,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  min-height:100vh;min-height:100dvh;
+  background:
+    radial-gradient(ellipse at 10% 20%, rgba(142,36,170,0.15), transparent 50%),
+    radial-gradient(ellipse at 90% 80%, rgba(212,175,55,0.08), transparent 40%),
+    linear-gradient(160deg,#0d0618 0%, #1a0a2e 40%, #12081f 100%);
+  display:flex;justify-content:center;align-items:flex-start;
+  padding:20px 14px 40px;
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  color:#f0e8f6;
+  overflow-x:hidden;
+}
+.np{font-family:'Noto Sans Devanagari','Poppins',sans-serif;}
+.material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24;vertical-align:middle;line-height:1;}
+.icon-fill{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;}
+
+/* ============ GLASS CONTAINER ============ */
+.admin-wrapper{
+  width:100%;max-width:1200px;
+}
+.admin-header{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;
+}
+.admin-header .logo{
+  font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;
+  background:linear-gradient(135deg,var(--primary-light),var(--gold));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  display:flex;align-items:center;gap:8px;
+}
+.admin-header .logo .material-symbols-rounded{font-size:28px;-webkit-text-fill-color:var(--gold);}
+.admin-header .badge{
+  background:rgba(255,255,255,0.06);padding:8px 18px;border-radius:40px;
+  font-size:13px;font-weight:500;color:var(--muted);
+  border:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;gap:8px;
+}
+.admin-header .badge .material-symbols-rounded{font-size:16px;color:var(--gold);}
+.admin-header .badge .count{color:#fff;font-weight:700;}
+
+.glass-card{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:var(--shadow-soft), 0 1px 0 rgba(255,255,255,0.04) inset;
+  padding:24px 22px 28px;
+  margin-bottom:20px;
+  transition:all .3s ease;
+}
+.glass-card:hover{
+  border-color:rgba(255,255,255,0.1);
+  box-shadow:var(--shadow-soft), 0 0 40px rgba(142,36,170,0.05);
+}
+
+/* ============ STATS ============ */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:20px;
+}
+.stat-card{
+  background:rgba(255,255,255,0.03);border-radius:var(--radius-md);
+  padding:18px 20px;border:1px solid rgba(255,255,255,0.05);
+  transition:all .3s ease;cursor:default;
+}
+.stat-card:hover{
+  background:rgba(255,255,255,0.06);transform:translateY(-2px);
+  border-color:rgba(142,36,170,0.2);
+}
+.stat-card .stat-icon{
+  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:8px;font-size:20px;
+}
+.stat-card .stat-icon.purple{background:rgba(142,36,170,0.2);color:var(--primary-light);}
+.stat-card .stat-icon.gold{background:rgba(212,175,55,0.15);color:var(--gold);}
+.stat-card .stat-icon.green{background:rgba(67,160,71,0.15);color:var(--success-light);}
+.stat-card .stat-icon.orange{background:rgba(249,168,37,0.15);color:var(--warning);}
+.stat-card .stat-number{font-size:28px;font-weight:800;color:#fff;font-family:'Baloo 2',cursive;}
+.stat-card .stat-label{font-size:12.5px;color:var(--muted);font-weight:500;}
+
+/* ============ TOOLBAR ============ */
+.toolbar{
+  display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;align-items:center;
+}
+.toolbar .search-box{
+  flex:1;min-width:200px;display:flex;align-items:center;
+  background:rgba(255,255,255,0.04);border-radius:40px;padding:0 16px;
+  border:1px solid rgba(255,255,255,0.06);transition:.3s;
+}
+.toolbar .search-box:focus-within{
+  border-color:var(--primary);background:rgba(255,255,255,0.06);
+  box-shadow:0 0 0 3px rgba(142,36,170,0.1);
+}
+.toolbar .search-box .material-symbols-rounded{color:var(--muted);font-size:20px;}
+.toolbar .search-box input{
+  background:transparent;border:none;padding:12px 12px;color:#fff;font-size:14px;
+  width:100%;outline:none;font-family:inherit;
+}
+.toolbar .search-box input::placeholder{color:var(--muted);}
+.toolbar .filter-group{display:flex;gap:8px;flex-wrap:wrap;}
+.toolbar .filter-btn{
+  padding:8px 18px;border-radius:40px;border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.03);color:var(--muted);font-size:12.5px;font-weight:500;
+  cursor:pointer;transition:.3s;font-family:inherit;
+}
+.toolbar .filter-btn:hover{background:rgba(255,255,255,0.06);color:#fff;}
+.toolbar .filter-btn.active{background:rgba(142,36,170,0.2);border-color:var(--primary);color:var(--primary-light);}
+.toolbar .filter-btn .count{background:rgba(255,255,255,0.08);padding:1px 8px;border-radius:20px;font-size:10px;margin-left:4px;}
+
+/* ============ TABLE ============ */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-md);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+thead tr{background:rgba(255,255,255,0.03);border-bottom:2px solid rgba(255,255,255,0.05);}
+th{text-align:left;padding:14px 14px;font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;}
+td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.user-info{display:flex;align-items:center;gap:10px;}
+.user-avatar{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  font-weight:600;font-size:14px;color:#fff;flex-shrink:0;
+}
+.user-name{font-weight:600;color:#fff;}
+.user-id{font-size:11px;color:var(--muted);}
+.badge-status{
+  display:inline-flex;align-items:center;gap:4px;padding:3px 12px;border-radius:30px;
+  font-size:11px;font-weight:600;
+}
+.badge-status.verified{background:rgba(67,160,71,0.15);color:var(--success-light);}
+.badge-status.pending{background:rgba(249,168,37,0.15);color:var(--warning);}
+.badge-status .material-symbols-rounded{font-size:14px;}
+.plan-badge{
+  display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:30px;
+  font-size:11px;font-weight:600;background:rgba(212,175,55,0.12);color:var(--gold);
+}
+.plan-badge .material-symbols-rounded{font-size:14px;}
+.action-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.action-btn{
+  padding:5px 12px;border:none;border-radius:30px;font-size:11px;font-weight:600;
+  cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:4px;
+  font-family:inherit;
+}
+.action-btn:active{transform:scale(.95);}
+.action-btn.verify{background:rgba(67,160,71,0.15);color:var(--success-light);}
+.action-btn.verify:hover{background:rgba(67,160,71,0.25);}
+.action-btn.delete{background:rgba(229,57,53,0.12);color:var(--danger);}
+.action-btn.delete:hover{background:rgba(229,57,53,0.22);}
+.action-btn.view{background:rgba(142,36,170,0.12);color:var(--primary-light);}
+.action-btn.view:hover{background:rgba(142,36,170,0.22);}
+.action-btn .material-symbols-rounded{font-size:14px;}
+
+/* ============ EMPTY STATE ============ */
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-state .material-symbols-rounded{font-size:56px;color:rgba(255,255,255,0.04);margin-bottom:12px;}
+.empty-state h3{color:#fff;font-family:'Baloo 2',cursive;font-size:22px;margin-bottom:6px;}
+.empty-state p{font-size:14px;}
+
+/* ============ DETAIL MODAL ============ */
+.detail-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);
+  display:none;justify-content:center;align-items:center;z-index:10000;padding:20px;
+}
+.detail-modal.show{display:flex;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.detail-content{
+  background:linear-gradient(160deg, rgba(20,10,35,0.97), rgba(30,15,45,0.95));
+  border-radius:var(--radius-lg);padding:28px 26px;max-width:500px;width:100%;
+  max-height:85vh;overflow-y:auto;border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 40px 80px rgba(0,0,0,0.5);animation:slideUp .4s var(--ease-pop);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.detail-content .close-modal{
+  float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;
+}
+.detail-content .close-modal:hover{color:#fff;}
+.detail-content .detail-title{
+  font-family:'Baloo 2',cursive;font-size:22px;color:#fff;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.detail-content .detail-title .material-symbols-rounded{font-size:26px;color:var(--gold);}
+.detail-content .detail-row{
+  display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:13.5px;gap:12px;
+}
+.detail-content .detail-row .label{color:var(--muted);font-weight:500;}
+.detail-content .detail-row .value{color:#fff;font-weight:500;text-align:right;word-break:break-word;}
+.detail-content .detail-actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
+.detail-content .detail-actions .btn{
+  flex:1;padding:12px;border:none;border-radius:40px;font-weight:600;font-size:14px;
+  cursor:pointer;transition:.25s;display:inline-flex;align-items:center;justify-content:center;
+  gap:6px;font-family:inherit;
+}
+.detail-content .detail-actions .btn:active{transform:scale(.97);}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;}
+.btn-success{background:linear-gradient(135deg,var(--success),#2e7d32);color:#fff;}
+.btn-danger{background:linear-gradient(135deg,var(--danger),#b71c1c);color:#fff;}
+
+/* ============ TOAST ============ */
+.toast-container{
+  position:fixed;bottom:30px;right:30px;z-index:99999;display:flex;flex-direction:column;gap:10px;max-width:380px;width:100%;
+}
+.toast{
+  background:rgba(20,10,35,0.95);backdrop-filter:blur(12px);border-radius:var(--radius-md);
+  padding:14px 20px;border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;
+  animation:slideInRight .4s var(--ease-pop);
+}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.toast .toast-icon{font-size:22px;}
+.toast .toast-msg{font-size:13px;font-weight:500;color:#fff;flex:1;}
+.toast .toast-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;}
+.toast.success .toast-icon{color:var(--success-light);}
+.toast.error .toast-icon{color:var(--danger);}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:768px){
+  .admin-header .logo{font-size:24px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .glass-card{padding:16px 14px 20px;border-radius:var(--radius-md);}
+  .toolbar .search-box{min-width:140px;}
+  .toolbar .filter-btn{font-size:11px;padding:6px 14px;}
+  td,th{padding:10px 10px;font-size:12px;}
+  .user-avatar{width:28px;height:28px;font-size:12px;}
+  .action-btn{font-size:10px;padding:4px 10px;}
+  .detail-content{padding:20px 16px;}
+  .toast-container{bottom:16px;right:16px;left:16px;max-width:100%;}
+}
+@media (max-width:480px){
+  body{padding:12px 8px 30px;}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-card{padding:14px 12px;}
+  .stat-card .stat-number{font-size:22px;}
+  .admin-header .badge{font-size:11px;padding:6px 12px;}
+  .table-wrap{font-size:11px;}
+  td,th{padding:8px 6px;}
+  .user-info{gap:6px;}
+  .user-name{font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+
+  <!-- HEADER -->
+  <div class="admin-header">
+    <span class="logo"><span class="material-symbols-rounded icon-fill">shield</span>SetMandu · Admin</span>
+    <span class="badge">
+      <span class="material-symbols-rounded">people</span>
+      कुल प्रयोगकर्ता: <span class="count" id="totalUsers">0</span>
+      <span style="margin:0 4px;">·</span>
+      <span class="material-symbols-rounded" style="color:var(--success-light);">verified</span>
+      <span class="count" id="verifiedUsers">0</span>
+    </span>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card">
+      <div class="stat-icon purple"><span class="material-symbols-rounded icon-fill">people</span></div>
+      <div class="stat-number" id="statTotal">0</div>
+      <div class="stat-label">कुल प्रयोगकर्ता</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><span class="material-symbols-rounded icon-fill">verified</span></div>
+      <div class="stat-number" id="statVerified">0</div>
+      <div class="stat-label">प्रमाणित</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><span class="material-symbols-rounded icon-fill">pending</span></div>
+      <div class="stat-number" id="statPending">0</div>
+      <div class="stat-label">पेन्डिङ</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon gold"><span class="material-symbols-rounded icon-fill">workspace_premium</span></div>
+      <div class="stat-number" id="statVIP">0</div>
+      <div class="stat-label">VIP सदस्य</div>
+    </div>
+  </div>
+
+  <!-- MAIN TABLE -->
+  <div class="glass-card">
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="material-symbols-rounded">search</span>
+        <input type="text" id="searchInput" placeholder="नाम, आइडी, देश खोज्नुहोस्..." oninput="filterTable()">
+      </div>
+      <div class="filter-group" id="filterGroup">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">सबै <span class="count" id="fAll">0</span></button>
+        <button class="filter-btn" data-filter="verified" onclick="setFilter('verified')">प्रमाणित <span class="count" id="fVerified">0</span></button>
+        <button class="filter-btn" data-filter="pending" onclick="setFilter('pending')">पेन्डिङ <span class="count" id="fPending">0</span></button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>प्रयोगकर्ता</th>
+            <th>आइडी</th>
+            <th>देश</th>
+            <th>सदस्यता</th>
+            <th>स्थिति</th>
+            <th style="text-align:right;">कार्य</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <!-- Dynamic rows -->
+        </tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <span class="material-symbols-rounded">inbox</span>
+      <h3>कुनै प्रयोगकर्ता फेला परेन</h3>
+      <p>खोजी मापदण्ड मिल्ने कुनै प्रयोगकर्ता छैन।</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;font-size:12px;color:var(--muted);padding:12px 0;border-top:1px solid rgba(255,255,255,0.04);">
+    SetMandu Admin Panel v2.0 · <span class="np">सबै अधिकार सुरक्षित</span>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="detail-modal" id="detailModal">
+  <div class="detail-content">
+    <button class="close-modal" onclick="closeDetail()"><span class="material-symbols-rounded">close</span></button>
+    <div class="detail-title"><span class="material-symbols-rounded icon-fill">person</span> प्रयोगकर्ता विवरण</div>
+    <div id="detailBody"></div>
+    <div class="detail-actions" id="detailActions"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+'use strict';
+
+// ============================================================
+// STATE
+// ============================================================
+let users = [];
+let currentFilter = 'all';
+let searchQuery = '';
+
+// ============================================================
+// LOAD USERS FROM LOCAL STORAGE
+// ============================================================
+function loadUsers() {
+  users = [];
+  // Scan localStorage for users
+  const registered = localStorage.getItem('setmandu_registered');
+  if (registered === 'true') {
+    const userData = localStorage.getItem('setmandu_user');
+    if (userData) {
+      try {
+        const data = JSON.parse(userData);
+        // Ensure all fields exist
+        const user = {
+          id: data.userID || Math.floor(Math.random() * 9000) + 1000,
+          fullName: data.name || data.fullName || 'Unknown User',
+          currentCountry: data.currentCountry || 'Nepal',
+          gender: data.gender || 'Other',
+          age: data.age || 'N/A',
+          caste: data.caste || 'N/A',
+          education: data.education || 'N/A',
+          occupation: data.occupation || 'N/A',
+          preferredAge: data.preferredAge || 'N/A',
+          preferredCaste: data.preferredCaste || 'N/A',
+          preferredCountry: data.preferredCountry || 'N/A',
+          membership: data.membership || 'Starter',
+          price: data.price || 0,
+          verified: data.verified || false,
+          registrationDate: data.registrationDate || new Date().toISOString(),
+          verificationDate: data.verificationDate || null,
+          transactionCode: data.transactionCode || 'N/A'
+        };
+        users.push(user);
+      } catch(e) {}
+    }
+  }
+
+  // Also check for multiple users if stored as array
+  const multiUsers = localStorage.getItem('setmandu_users');
+  if (multiUsers) {
+    try {
+      const parsed = JSON.parse(multiUsers);
+      if (Array.isArray(parsed)) {
+        parsed.forEach(u => {
+          // Avoid duplicates
+          if (!users.some(ex => ex.id === u.id)) {
+            users.push(u);
+          }
+        });
+      }
+    } catch(e) {}
+  }
+
+  // If no users, add demo users
+  if (users.length === 0) {
+    users = getDemoUsers();
+    localStorage.setItem('setmandu_users', JSON.stringify(users));
+  }
+
+  renderStats();
+  renderTable();
+}
+
+// ============================================================
+// DEMO USERS
+// ============================================================
+function getDemoUsers() {
+  return [
+    {
+      id: 1001,
+      fullName: 'Bishal Ghimire',
+      currentCountry: 'Nepal',
+      gender: 'Male',
+      age: '28',
+      caste: 'Chhetri',
+      education: 'Master\'s',
+      occupation: 'Software Engineer',
+      preferredAge: '24-30',
+      preferredCaste: 'Any',
+      preferredCountry: 'Nepal',
+      membership: 'VIP',
+      price: 5000,
+      verified: true,
+      registrationDate: '2026-07-28T10:00:00.000Z',
+      verificationDate: '2026-07-29T08:00:00.000Z',
+      transactionCode: 'TXN123456789'
+    },
+    {
+      id: 1002,
+      fullName: 'Sita Sharma',
+      currentCountry: 'Nepal',
+      gender: 'Female',
+      age: '25',
+      caste: 'Brahmin',
+      education: 'Bachelor\'s',
+      occupation: 'Teacher',
+      preferredAge: '26-32',
+      preferredCaste: 'Brahmin',
+      preferredCountry: 'Nepal',
+      membership: 'Gold',
+      price: 2500,
+      verified: false,
+      registrationDate: '2026-07-30T05:00:00.000Z',
+      verificationDate: null,
+      transactionCode: 'TXN987654321'
+    },
+    {
+      id: 1003,
+      fullName: 'Ramesh Adhikari',
+      currentCountry: 'Australia',
+      gender: 'Male',
+      age: '32',
+      caste: 'Gurung',
+      education: 'PhD',
+      occupation: 'Researcher',
+      preferredAge: '28-34',
+      preferredCaste: 'Any',
+      preferredCountry: 'Nepal',
+      membership: 'Premium',
+      price: 1500,
+      verified: true,
+      registrationDate: '2026-07-25T14:00:00.000Z',
+      verificationDate: '2026-07-26T10:00:00.000Z',
+      transactionCode: 'TXN456789123'
+    },
+    {
+      id: 1004,
+      fullName: 'Priya Karki',
+      currentCountry: 'UK',
+      gender: 'Female',
+      age: '27',
+      caste: 'Newar',
+      education: 'Master\'s',
+      occupation: 'Nurse',
+      preferredAge: '28-35',
+      preferredCaste: 'Newar',
+      preferredCountry: 'Nepal',
+      membership: 'Basic',
+      price: 500,
+      verified: false,
+      registrationDate: '2026-07-29T09:00:00.000Z',
+      verificationDate: null,
+      transactionCode: 'TXN789123456'
+    },
+    {
+      id: 1005,
+      fullName: 'Sujan Thapa',
+      currentCountry: 'Nepal',
+      gender: 'Male',
+      age: '30',
+      caste: 'Thapa',
+      education: 'Bachelor\'s',
+      occupation: 'Business',
+      preferredAge: '26-32',
+      preferredCaste: 'Any',
+      preferredCountry: 'Nepal',
+      membership: 'Starter',
+      price: 100,
+      verified: true,
+      registrationDate: '2026-07-20T11:00:00.000Z',
+      verificationDate: '2026-07-21T09:00:00.000Z',
+      transactionCode: 'TXN321654987'
+    }
+  ];
+}
+
+// ============================================================
+// SAVE USERS
+// ============================================================
+function saveUsers() {
+  localStorage.setItem('setmandu_users', JSON.stringify(users));
+  // Also save individual user for compatibility
+  if (users.length > 0) {
+    localStorage.setItem('setmandu_user', JSON.stringify(users[0]));
+    localStorage.setItem('setmandu_registered', 'true');
+  }
+}
+
+// ============================================================
+// RENDER STATS
+// ============================================================
+function renderStats() {
+  const total = users.length;
+  const verified = users.filter(u => u.verified).length;
+  const pending = total - verified;
+  const vip = users.filter(u => u.membership === 'VIP').length;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statVerified').textContent = verified;
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statVIP').textContent = vip;
+  document.getElementById('totalUsers').textContent = total;
+  document.getElementById('verifiedUsers').textContent = verified;
+
+  document.getElementById('fAll').textContent = total;
+  document.getElementById('fVerified').textContent = verified;
+  document.getElementById('fPending').textContent = pending;
+}
+
+// ============================================================
+// RENDER TABLE
+// ============================================================
+function renderTable() {
+  const tbody = document.getElementById('userTableBody');
+  const empty = document.getElementById('emptyState');
+
+  let filtered = users;
+  if (currentFilter === 'verified') filtered = filtered.filter(u => u.verified);
+  else if (currentFilter === 'pending') filtered = filtered.filter(u => !u.verified);
+
+  if (searchQuery.trim()) {
+    const q = searchQuery.trim().toLowerCase();
+    filtered = filtered.filter(u =>
+      u.fullName.toLowerCase().includes(q) ||
+      String(u.id).includes(q) ||
+      u.currentCountry.toLowerCase().includes(q)
+    );
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(u => {
+    const verified = u.verified;
+    const membershipIcons = {
+      'Starter':'chat_bubble', 'Basic':'eco', 'Premium':'auto_awesome',
+      'Gold':'military_tech', 'VIP':'workspace_premium'
+    };
+    const icon = membershipIcons[u.membership] || 'auto_awesome';
+    const initials = u.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+
+    return `<tr>
+      <td>
+        <div class="user-info">
+          <div class="user-avatar">${initials}</div>
+          <div>
+            <div class="user-name">${escapeHtml(u.fullName)}</div>
+            <div class="user-id">${escapeHtml(u.currentCountry)}</div>
+          </div>
+        </div>
+      </td>
+      <td><span style="font-weight:600;color:var(--muted);">SM-${String(u.id).padStart(4,'0')}</span></td>
+      <td>${escapeHtml(u.currentCountry)}</td>
+      <td><span class="plan-badge"><span class="material-symbols-rounded">${icon}</span>${u.membership}</span></td>
+      <td><span class="badge-status ${verified ? 'verified' : 'pending'}">
+        <span class="material-symbols-rounded">${verified ? 'verified' : 'pending'}</span>
+        ${verified ? 'प्रमाणित' : 'पेन्डिङ'}
+      </span></td>
+      <td style="text-align:right;">
+        <div class="action-btns" style="justify-content:flex-end;">
+          <button class="action-btn view" onclick="viewUser(${u.id})"><span class="material-symbols-rounded">visibility</span></button>
+          ${!verified ? `<button class="action-btn verify" onclick="verifyUser(${u.id})"><span class="material-symbols-rounded">check_circle</span></button>` : ''}
+          <button class="action-btn delete" onclick="deleteUser(${u.id})"><span class="material-symbols-rounded">delete</span></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// FILTERS
+// ============================================================
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+  renderTable();
+}
+
+function filterTable() {
+  searchQuery = document.getElementById('searchInput').value;
+  renderTable();
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function verifyUser(id) {
+  const user = users.find(u => u.id === id);
+  if (!user) return;
+  if (user.verified) {
+    showToast('यो प्रयोगकर्ता पहिले नै प्रमाणित छ', 'error');
+    return;
+  }
+  user.verified = true;
+  user.verificationDate = new Date().toISOString();
+  saveUsers();
+  renderStats();
+  renderTable();
+  showToast(`${user.fullName} सफलतापूर्वक प्रमाणित गरियो`, 'success');
+
+  // Also update individual user in storage
+  if (users.length > 0) {
+    localStorage.setItem('setmandu_user', JSON.stringify(users[0]));
+  }
+}
+
+function deleteUser(id) {
+  if (!confirm('के तपाईं यो प्रयोगकर्ता हटाउन निश्चित हुनुहुन्छ?')) return;
+  const user = users.find(u => u.id === id);
+  users = users.filter(u => u.id !== id);
+  saveUsers();
+  renderStats();
+  renderTable();
+  showToast(`${user ? user.fullName : 'प्रयोगकर्ता'} हटाइयो`, 'error');
+}
+
+function viewUser(id) {
+  const user = users.find(u => u.id === id);
+  if (!user) return;
+  openDetail(user);
+}
+
+// ============================================================
+// DETAIL MODAL
+// ============================================================
+function openDetail(user) {
+  const modal = document.getElementById('detailModal');
+  const body = document.getElementById('detailBody');
+  const actions = document.getElementById('detailActions');
+
+  const membershipIcons = {
+    'Starter':'chat_bubble', 'Basic':'eco', 'Premium':'auto_awesome',
+    'Gold':'military_tech', 'VIP':'workspace_premium'
+  };
+  const icon = membershipIcons[user.membership] || 'auto_awesome';
+
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06);">
+      <div class="user-avatar" style="width:48px;height:48px;font-size:20px;">
+        ${user.fullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
+      </div>
+      <div>
+        <div style="font-size:18px;font-weight:700;color:#fff;">${escapeHtml(user.fullName)}</div>
+        <div style="font-size:12px;color:var(--muted);">SM-${String(user.id).padStart(4,'0')}</div>
+      </div>
+      <span class="badge-status ${user.verified ? 'verified' : 'pending'}" style="margin-left:auto;">
+        <span class="material-symbols-rounded">${user.verified ? 'verified' : 'pending'}</span>
+        ${user.verified ? 'प्रमाणित' : 'पेन्डिङ'}
+      </span>
+    </div>
+    <div class="detail-row"><span class="label">पूरा नाम</span><span class="value">${escapeHtml(user.fullName)}</span></div>
+    <div class="detail-row"><span class="label">देश</span><span class="value">${escapeHtml(user.currentCountry)}</span></div>
+    <div class="detail-row"><span class="label">लिङ्ग</span><span class="value">${escapeHtml(user.gender)}</span></div>
+    <div class="detail-row"><span class="label">उमेर</span><span class="value">${escapeHtml(user.age)}</span></div>
+    <div class="detail-row"><span class="label">जाति</span><span class="value">${escapeHtml(user.caste)}</span></div>
+    <div class="detail-row"><span class="label">शिक्षा</span><span class="value">${escapeHtml(user.education)}</span></div>
+    <div class="detail-row"><span class="label">पेशा</span><span class="value">${escapeHtml(user.occupation)}</span></div>
+    <div class="detail-row"><span class="label">रुचाइएको उमेर</span><span class="value">${escapeHtml(user.preferredAge)}</span></div>
+    <div class="detail-row"><span class="label">रुचाइएको जाति</span><span class="value">${escapeHtml(user.preferredCaste)}</span></div>
+    <div class="detail-row"><span class="label">रुचाइएको देश</span><span class="value">${escapeHtml(user.preferredCountry)}</span></div>
+    <div class="detail-row"><span class="label">सदस्यता</span><span class="value"><span class="material-symbols-rounded" style="font-size:16px;vertical-align:middle;">${icon}</span> ${user.membership} (रु. ${user.price})</span></div>
+    <div class="detail-row"><span class="label">ट्रान्जेक्सन कोड</span><span class="value" style="font-size:12px;font-family:monospace;">${escapeHtml(user.transactionCode)}</span></div>
+    <div class="detail-row"><span class="label">दर्ता मिति</span><span class="value">${new Date(user.registrationDate).toLocaleDateString()}</span></div>
+    ${user.verificationDate ? `<div class="detail-row"><span class="label">प्रमाणीकरण मिति</span><span class="value">${new Date(user.verificationDate).toLocaleDateString()}</span></div>` : ''}
+  `;
+
+  actions.innerHTML = `
+    ${!user.verified ? `<button class="btn btn-success" onclick="verifyUser(${user.id});closeDetail();"><span class="material-symbols-rounded">verified</span> प्रमाणित गर्नुहोस्</button>` : ''}
+    <button class="btn btn-danger" onclick="deleteUser(${user.id});closeDetail();"><span class="material-symbols-rounded">delete</span> हटाउनुहोस्</button>
+    <button class="btn btn-primary" onclick="closeDetail();"><span class="material-symbols-rounded">close</span> बन्द गर्नुहोस्</button>
+  `;
+
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('detailModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// Close modal on background click
+document.getElementById('detailModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDetail();
+});
+
+// ============================================================
+// TOAST SYSTEM
+// ============================================================
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icon = type === 'success' ? 'check_circle' : 'error';
+  toast.innerHTML = `
+    <span class="toast-icon material-symbols-rounded icon-fill">${icon}</span>
+    <span class="toast-msg">${message}</span>
+    <button class="toast-close" onclick="this.parentElement.remove()"><span class="material-symbols-rounded">close</span></button>
+  `;
+  container.appendChild(toast);
+  setTimeout(() => {
+    if (toast.parentElement) toast.remove();
+  }, 4000);
+}
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeDetail();
+  if (e.ctrlKey && e.key === 'f') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadUsers();
+
+// Expose to global
+window.setFilter = setFilter;
+window.filterTable = filterTable;
+window.verifyUser = verifyUser;
+window.deleteUser = deleteUser;
+window.viewUser = viewUser;
+window.openDetail = openDetail;
+window.closeDetail = closeDetail;
+window.showToast = showToast;
+</script>
+</body>
+</html>
