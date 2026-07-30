@@ -1,314 +1,463 @@
 <!DOCTYPE html>
 <html lang="ne">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <meta name="theme-color" content="#7B1FA2">
-  <title>SetMandu · नेपालको प्रिमियम मिलन सम्बन्ध</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
-  <style>
-    :root{
-      --primary:#8E24AA;
-      --primary-dark:#4A148C;
-      --primary-light:#CE93D8;
-      --accent:#E53935;
-      --gold:#D4AF37;
-      --ink:#241B2F;
-      --muted:#6b5f76;
-      --surface:rgba(255,255,255,0.62);
-      --surface-strong:rgba(255,255,255,0.85);
-      --radius-lg:32px;
-      --radius-md:22px;
-      --radius-sm:14px;
-      --shadow-soft:0 20px 50px rgba(74,20,140,0.16);
-      --shadow-pop:0 10px 30px rgba(142,36,170,0.25);
-    }
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-    html{-webkit-text-size-adjust:100%;}
-    body{
-      min-height:100vh;
-      min-height:100dvh;
-      background:
-        radial-gradient(circle at 15% 10%, rgba(206,147,216,0.35), transparent 45%),
-        radial-gradient(circle at 85% 90%, rgba(212,175,55,0.18), transparent 40%),
-        linear-gradient(160deg,#fbeaff 0%, #fff3e9 55%, #ffe9ef 100%);
-      display:flex;justify-content:center;align-items:flex-start;
-      padding:24px 14px 48px;
-      font-family:'Poppins','Noto Sans Devanagari',sans-serif;
-      color:var(--ink);
-      transition:background .4s ease;
-      overflow-x:hidden;
-    }
-    body.dark{
-      background:
-        radial-gradient(circle at 15% 10%, rgba(142,36,170,0.25), transparent 45%),
-        radial-gradient(circle at 85% 90%, rgba(212,175,55,0.10), transparent 40%),
-        linear-gradient(160deg,#160c1f 0%, #1c1024 55%, #170b16 100%);
-      color:#f2e9f6;
-    }
-    .np{font-family:'Noto Sans Devanagari','Poppins',sans-serif;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#4A148C">
+<title>SetMandu · नेपालको प्रिमियम मिलन सम्बन्ध</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+<style>
+:root{
+  --primary:#8E24AA;
+  --primary-dark:#4A148C;
+  --primary-light:#CE93D8;
+  --accent:#E53935;
+  --gold:#D4AF37;
+  --gold-dark:#9C7A17;
+  --gold-light:#F4E4B8;
+  --ink:#241B2F;
+  --muted:#6b5f76;
+  --surface:rgba(255,255,255,0.62);
+  --surface-strong:rgba(255,255,255,0.85);
+  --radius-lg:32px;
+  --radius-md:22px;
+  --radius-sm:14px;
+  --shadow-soft:0 20px 50px rgba(74,20,140,0.16);
+  --shadow-pop:0 10px 30px rgba(142,36,170,0.25);
+  --ease-pop:cubic-bezier(.2,.9,.3,1.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+body{
+  min-height:100vh;min-height:100dvh;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(206,147,216,0.35), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(212,175,55,0.18), transparent 40%),
+    linear-gradient(160deg,#fbeaff 0%, #fff3e9 55%, #ffe9ef 100%);
+  display:flex;justify-content:center;align-items:flex-start;
+  padding:24px 14px 48px;
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  color:var(--ink);
+  transition:background .4s ease;
+  overflow-x:hidden;
+}
+body.dark{
+  background:
+    radial-gradient(circle at 15% 10%, rgba(142,36,170,0.25), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(212,175,55,0.10), transparent 40%),
+    linear-gradient(160deg,#160c1f 0%, #1c1024 55%, #170b16 100%);
+  color:#f2e9f6;
+}
+.np{font-family:'Noto Sans Devanagari','Poppins',sans-serif;}
+.material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24;vertical-align:middle;line-height:1;}
+.icon-fill{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;}
 
-    /* ============ WELCOME MODAL ============ */
-    .welcome-modal{
-      position:fixed;inset:0;background:rgba(20,8,28,0.72);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-      display:flex;justify-content:center;align-items:center;z-index:9999;
-      padding:16px;animation:fadeIn .5s ease;
-    }
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .welcome-content{
-      background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.92));
-      backdrop-filter:blur(24px);
-      border-radius:44px;padding:42px 30px 32px;max-width:440px;width:100%;
-      text-align:center;box-shadow:0 50px 100px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.4) inset;
-      position:relative;overflow:hidden;animation:popScale .5s cubic-bezier(.2,.9,.3,1.3);
-    }
-    @keyframes popScale{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
-    body.dark .welcome-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
-    .welcome-icon{font-size:60px;display:block;margin-bottom:6px;animation:pulse 2.4s ease-in-out infinite;}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-    .welcome-title{font-family:'Baloo 2',cursive;font-size:44px;font-weight:800;letter-spacing:1px;
-      background:linear-gradient(135deg,var(--primary-dark),var(--primary),var(--accent));
-      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-    body.dark .welcome-title{filter:brightness(1.3);}
-    .welcome-tagline{font-family:'Baloo 2',cursive;font-size:24px;font-weight:700;color:var(--primary);margin:8px 0 2px;}
-    body.dark .welcome-tagline{color:var(--primary-light);}
-    .welcome-sub{font-family:'Baloo 2',cursive;font-size:16px;font-weight:600;color:var(--muted);margin-bottom:14px;}
-    body.dark .welcome-sub{color:#c9b6d4;}
-    .welcome-divider{width:70px;height:3px;margin:6px auto 16px;border-radius:6px;
-      background:linear-gradient(90deg,transparent,var(--primary),transparent);}
-    .welcome-features{display:flex;justify-content:center;gap:10px;margin:14px 0 22px;flex-wrap:wrap;}
-    .feature-item{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--primary-dark);
-      background:rgba(142,36,170,0.08);padding:7px 14px;border-radius:30px;border:1px solid rgba(142,36,170,0.15);}
-    body.dark .feature-item{color:var(--primary-light);background:rgba(142,36,170,0.18);}
-    .feature-item .material-symbols-outlined{font-size:17px;color:var(--primary);}
-    .lang-select{display:flex;gap:10px;justify-content:center;margin:16px 0 22px;}
-    .lang-btn{padding:11px 18px;border:2px solid rgba(142,36,170,0.22);border-radius:40px;background:transparent;
-      font-weight:600;font-size:13.5px;cursor:pointer;transition:.25s;color:var(--ink);flex:1;max-width:150px;}
-    body.dark .lang-btn{color:#f2e9f6;}
-    .lang-btn.active{border-color:var(--primary);background:rgba(142,36,170,0.14);color:var(--primary-dark);
-      box-shadow:0 0 0 4px rgba(142,36,170,0.1);}
-    body.dark .lang-btn.active{color:var(--primary-light);}
-    .lang-btn:active{transform:scale(.96);}
+/* ============ WELCOME MODAL ============ */
+.welcome-modal{
+  position:fixed;inset:0;background:rgba(20,8,28,0.72);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;justify-content:center;align-items:center;z-index:9999;
+  padding:16px;animation:fadeIn .5s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.welcome-content{
+  background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.92));
+  backdrop-filter:blur(24px);
+  border-radius:44px;padding:42px 30px 32px;max-width:440px;width:100%;
+  text-align:center;box-shadow:0 50px 100px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.4) inset;
+  position:relative;overflow:hidden;animation:popScale .5s var(--ease-pop);
+}
+@keyframes popScale{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+body.dark .welcome-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
+.welcome-icon-wrap{
+  width:72px;height:72px;border-radius:26px;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  box-shadow:0 14px 30px rgba(142,36,170,.35);
+  animation:pulse 2.6s ease-in-out infinite;
+}
+.welcome-icon-wrap .material-symbols-rounded{font-size:38px;color:#fff;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.welcome-title{font-family:'Baloo 2',cursive;font-size:44px;font-weight:800;letter-spacing:1px;
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary),var(--accent));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+body.dark .welcome-title{filter:brightness(1.3);}
+.welcome-tagline{font-family:'Baloo 2',cursive;font-size:24px;font-weight:700;color:var(--primary);margin:8px 0 2px;display:flex;align-items:center;justify-content:center;gap:8px;}
+body.dark .welcome-tagline{color:var(--primary-light);}
+.welcome-tagline .material-symbols-rounded{font-size:20px;color:var(--gold);}
+.welcome-sub{font-family:'Baloo 2',cursive;font-size:16px;font-weight:600;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
+body.dark .welcome-sub{color:#c9b6d4;}
+.welcome-sub .material-symbols-rounded{font-size:17px;}
+.welcome-divider{width:70px;height:3px;margin:6px auto 16px;border-radius:6px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);}
+.welcome-features{display:flex;justify-content:center;gap:10px;margin:14px 0 22px;flex-wrap:wrap;}
+.feature-item{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--primary-dark);
+  background:rgba(142,36,170,0.08);padding:7px 14px;border-radius:30px;border:1px solid rgba(142,36,170,0.15);
+  transition:transform .25s var(--ease-pop);}
+.feature-item:hover{transform:translateY(-2px);}
+body.dark .feature-item{color:var(--primary-light);background:rgba(142,36,170,0.18);}
+.feature-item .material-symbols-rounded{font-size:17px;color:var(--primary);}
+.lang-select{display:flex;gap:10px;justify-content:center;margin:16px 0 22px;}
+.lang-btn{padding:11px 18px;border:2px solid rgba(142,36,170,0.22);border-radius:40px;background:transparent;
+  font-weight:600;font-size:13.5px;cursor:pointer;transition:.25s;color:var(--ink);flex:1;max-width:150px;
+  display:flex;align-items:center;justify-content:center;gap:6px;}
+body.dark .lang-btn{color:#f2e9f6;}
+.lang-btn .flag-dot{width:9px;height:9px;border-radius:50%;background:var(--primary);opacity:.4;}
+.lang-btn.active .flag-dot{opacity:1;}
+.lang-btn.active{border-color:var(--primary);background:rgba(142,36,170,0.14);color:var(--primary-dark);
+  box-shadow:0 0 0 4px rgba(142,36,170,0.1);}
+body.dark .lang-btn.active{color:var(--primary-light);}
+.lang-btn:active{transform:scale(.96);}
 
-    .btn{padding:15px 28px;border:none;border-radius:50px;font-weight:700;font-size:16px;cursor:pointer;
-      transition:transform .2s ease, box-shadow .2s ease;display:inline-flex;align-items:center;justify-content:center;
-      gap:8px;width:100%;font-family:inherit;-webkit-appearance:none;}
-    .btn:active{transform:scale(.97);}
-    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none !important;}
-    .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;
-      box-shadow:0 12px 28px rgba(142,36,170,0.35);}
-    .btn-primary:hover{box-shadow:0 16px 36px rgba(142,36,170,0.45);}
-    .btn-secondary{background:rgba(142,36,170,0.08);color:var(--primary-dark);box-shadow:none;}
-    body.dark .btn-secondary{background:rgba(206,147,216,0.15);color:var(--primary-light);}
-    .welcome-footer{margin-top:14px;font-size:12.5px;color:var(--muted);}
-    body.dark .welcome-footer{color:#b8a3c3;}
+.btn{padding:15px 28px;border:none;border-radius:50px;font-weight:700;font-size:16px;cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease;display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;width:100%;font-family:inherit;-webkit-appearance:none;position:relative;overflow:hidden;}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none !important;}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;
+  box-shadow:0 12px 28px rgba(142,36,170,0.35);}
+.btn-primary:hover{box-shadow:0 16px 36px rgba(142,36,170,0.45);}
+.btn-secondary{background:rgba(142,36,170,0.08);color:var(--primary-dark);box-shadow:none;}
+body.dark .btn-secondary{background:rgba(206,147,216,0.15);color:var(--primary-light);}
+.welcome-footer{margin-top:14px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;}
+body.dark .welcome-footer{color:#b8a3c3;}
+.welcome-footer .material-symbols-rounded{font-size:15px;color:var(--gold);}
 
-    /* ============ GLASS CARD APP SHELL ============ */
-    .glass-card{
-      width:100%;max-width:500px;background:var(--surface);
-      backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
-      border-radius:36px;padding:22px 18px 28px;
-      box-shadow:var(--shadow-soft), 0 1px 0 rgba(255,255,255,0.5) inset;
-      border:1px solid rgba(255,255,255,0.4);
-      transition:background .3s;position:relative;
-    }
-    body.dark .glass-card{background:rgba(28,16,36,0.68);border-color:rgba(206,147,216,0.15);
-      box-shadow:0 20px 50px rgba(0,0,0,0.5);}
-    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-    .logo{font-weight:800;font-size:26px;letter-spacing:-.5px;font-family:'Baloo 2',cursive;
-      background:linear-gradient(135deg,var(--primary-dark),var(--primary));-webkit-background-clip:text;
-      background-clip:text;-webkit-text-fill-color:transparent;}
-    .theme-toggle{background:rgba(142,36,170,0.1);border:none;border-radius:40px;padding:7px 12px;color:var(--primary);
-      font-size:20px;display:flex;gap:6px;align-items:center;cursor:pointer;transition:.2s;}
-    .theme-toggle:active{transform:scale(.92);}
-    body.dark .theme-toggle{color:var(--primary-light);background:rgba(206,147,216,0.15);}
+/* ============ GLASS CARD APP SHELL ============ */
+.glass-card{
+  width:100%;max-width:500px;background:var(--surface);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-radius:36px;padding:22px 18px 28px;
+  box-shadow:var(--shadow-soft), 0 1px 0 rgba(255,255,255,0.5) inset;
+  border:1px solid rgba(255,255,255,0.4);
+  transition:background .3s;position:relative;
+}
+body.dark .glass-card{background:rgba(28,16,36,0.68);border-color:rgba(206,147,216,0.15);
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.logo{font-weight:800;font-size:26px;letter-spacing:-.5px;font-family:'Baloo 2',cursive;
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary));-webkit-background-clip:text;
+  background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:6px;}
+.logo .material-symbols-rounded{font-size:22px;color:var(--primary);-webkit-text-fill-color:var(--primary);}
+.theme-toggle{background:rgba(142,36,170,0.1);border:none;border-radius:40px;padding:8px;color:var(--primary);
+  font-size:20px;display:flex;gap:6px;align-items:center;cursor:pointer;transition:.2s;}
+.theme-toggle:active{transform:scale(.92);}
+body.dark .theme-toggle{color:var(--primary-light);background:rgba(206,147,216,0.15);}
 
-    .progress-wrap{background:rgba(0,0,0,0.07);height:7px;border-radius:12px;margin:10px 0 16px;overflow:hidden;}
-    body.dark .progress-wrap{background:rgba(255,255,255,0.08);}
-    .progress-fill{width:0%;height:100%;border-radius:12px;transition:width .5s cubic-bezier(.2,.9,.3,1.2);
-      background:linear-gradient(90deg,var(--primary),var(--accent));}
-    .step-indicator{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);
-      margin-bottom:16px;padding:0 2px;}
-    body.dark .step-indicator{color:#c9b6d4;}
+.progress-wrap{background:rgba(0,0,0,0.07);height:8px;border-radius:12px;margin:10px 0 6px;overflow:hidden;position:relative;}
+body.dark .progress-wrap{background:rgba(255,255,255,0.08);}
+.progress-fill{width:0%;height:100%;border-radius:12px;transition:width .6s var(--ease-pop);
+  background:linear-gradient(90deg,var(--primary),var(--accent));position:relative;overflow:hidden;}
+.progress-fill::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+  animation:shimmer 1.8s linear infinite;}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.step-dots{display:flex;justify-content:space-between;margin-bottom:14px;padding:0 1px;}
+.step-dot{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.step-dot .dot{width:22px;height:22px;border-radius:50%;background:rgba(142,36,170,0.12);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);
+  transition:all .35s var(--ease-pop);border:2px solid transparent;}
+body.dark .step-dot .dot{background:rgba(206,147,216,0.12);color:#c9b6d4;}
+.step-dot.done .dot{background:var(--primary);color:#fff;}
+.step-dot.done .dot .material-symbols-rounded{font-size:14px;}
+.step-dot.current .dot{border-color:var(--primary);color:var(--primary-dark);background:rgba(142,36,170,0.18);
+  box-shadow:0 0 0 4px rgba(142,36,170,0.12);}
+body.dark .step-dot.current .dot{color:var(--primary-light);}
+.step-dot .dot-label{font-size:9.5px;font-weight:600;color:var(--muted);text-align:center;}
+body.dark .step-dot .dot-label{color:#b8a3c3;}
+.step-dot.current .dot-label{color:var(--primary-dark);font-weight:700;}
+body.dark .step-dot.current .dot-label{color:var(--primary-light);}
 
-    .step{display:none;animation:slideUp .4s ease;}
-    .step.active{display:block;}
-    @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-    .step-title{font-weight:700;font-size:19px;margin-bottom:18px;display:flex;align-items:center;gap:9px;
-      font-family:'Baloo 2',cursive;color:var(--ink);}
-    body.dark .step-title{color:#f2e9f6;}
-    .step-title .material-symbols-outlined{color:var(--primary);font-size:26px;}
+.step{display:none;}
+.step.active{display:block;animation:slideUp .4s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.step-title{font-weight:700;font-size:19px;margin-bottom:18px;display:flex;align-items:center;gap:9px;
+  font-family:'Baloo 2',cursive;color:var(--ink);}
+body.dark .step-title{color:#f2e9f6;}
+.step-title .icon-badge{width:38px;height:38px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));flex-shrink:0;box-shadow:0 6px 16px rgba(142,36,170,.3);}
+.step-title .icon-badge .material-symbols-rounded{color:#fff;font-size:20px;}
 
-    .form-group{margin-bottom:15px;position:relative;}
-    label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px;letter-spacing:.2px;}
-    body.dark label{color:#e2d3ea;}
-    input,select,textarea{
-      width:100%;padding:13px 16px;border:2px solid rgba(142,36,170,0.16);border-radius:20px;
-      background:rgba(255,255,255,0.55);backdrop-filter:blur(4px);font-size:15px;transition:.25s;outline:none;
-      color:var(--ink);font-family:inherit;
-    }
-    body.dark input,body.dark select,body.dark textarea{background:rgba(50,32,58,0.55);border-color:rgba(206,147,216,0.2);color:#f2e9f6;}
-    input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(142,36,170,0.12);}
-    input.error,select.error{border-color:#c62828;box-shadow:0 0 0 4px rgba(198,40,40,0.12);}
-    .error-msg{color:#c62828;font-size:12px;margin-top:4px;display:none;font-weight:500;}
-    .error-msg.show{display:block;}
+.form-group{margin-bottom:15px;position:relative;animation:fieldIn .4s ease backwards;}
+@keyframes fieldIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px;letter-spacing:.2px;}
+body.dark label{color:#e2d3ea;}
+input,select,textarea{
+  width:100%;padding:13px 16px;border:2px solid rgba(142,36,170,0.16);border-radius:20px;
+  background:rgba(255,255,255,0.55);backdrop-filter:blur(4px);font-size:15px;transition:.25s;outline:none;
+  color:var(--ink);font-family:inherit;
+}
+body.dark input,body.dark select,body.dark textarea{background:rgba(50,32,58,0.55);border-color:rgba(206,147,216,0.2);color:#f2e9f6;}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(142,36,170,0.12);}
+input.error,select.error{border-color:#c62828;box-shadow:0 0 0 4px rgba(198,40,40,0.12);animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+input.valid,select.valid{border-color:#43a047;}
+.error-msg{color:#c62828;font-size:12px;margin-top:4px;display:flex;align-items:center;gap:4px;font-weight:500;
+  max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.error-msg.show{max-height:30px;display:flex;}
+.error-msg .material-symbols-rounded{font-size:14px;}
 
-    .btn-group{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
-    .btn-group .btn{flex:1;padding:14px 10px;font-size:15px;}
-    .btn-group .btn-secondary{flex:.5;}
+.btn-group{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+.btn-group .btn{flex:1;padding:14px 10px;font-size:15px;}
+.btn-group .btn-secondary{flex:.5;}
 
-    .payment-options{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 12px;}
-    .payment-option{flex:1;min-width:78px;padding:12px 8px;background:rgba(255,255,255,0.28);
-      border:2px solid rgba(142,36,170,0.14);border-radius:20px;text-align:center;cursor:pointer;transition:.25s;
-      font-weight:600;font-size:13.5px;color:var(--ink);}
-    body.dark .payment-option{color:#f2e9f6;background:rgba(50,32,58,0.4);}
-    .payment-option:active{transform:scale(.96);}
-    .payment-option.selected{border-color:var(--primary);background:rgba(142,36,170,0.12);
-      box-shadow:0 0 0 3px rgba(142,36,170,0.14);}
+.payment-options{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 12px;}
+.payment-option{flex:1;min-width:78px;padding:12px 8px;background:rgba(255,255,255,0.28);
+  border:2px solid rgba(142,36,170,0.14);border-radius:20px;text-align:center;cursor:pointer;transition:.25s;
+  font-weight:600;font-size:13.5px;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:4px;}
+body.dark .payment-option{color:#f2e9f6;background:rgba(50,32,58,0.4);}
+.payment-option .material-symbols-rounded{font-size:22px;color:var(--primary);}
+.payment-option:active{transform:scale(.96);}
+.payment-option.selected{border-color:var(--primary);background:rgba(142,36,170,0.12);
+  box-shadow:0 0 0 3px rgba(142,36,170,0.14);}
 
-    .fee-badge{display:inline-block;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      color:#fff;padding:7px 26px;border-radius:40px;font-weight:800;font-size:22px;margin:4px 0;
-      box-shadow:0 8px 20px rgba(142,36,170,.28); transition: all .3s ease;}
-    .fee-badge.bump{animation:bump .35s ease;}
-    @keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+.fee-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;padding:7px 26px;border-radius:40px;font-weight:800;font-size:22px;margin:4px 0;
+  box-shadow:0 8px 20px rgba(142,36,170,.28); transition: all .3s ease;}
+.fee-badge .material-symbols-rounded{font-size:19px;}
+.fee-badge.bump{animation:bump .35s var(--ease-pop);}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
 
-    .qr-container{background:rgba(255,255,255,0.75);border-radius:22px;padding:18px;margin:12px 0;text-align:center;
-      border:1px solid rgba(142,36,170,0.12);animation:slideUp .35s ease;}
-    body.dark .qr-container{background:rgba(50,32,58,0.55);}
-    .qr-container .detail{font-size:13.5px;color:var(--ink);margin:4px 0;font-weight:500;}
-    body.dark .qr-container .detail{color:#e2d3ea;}
-    .qr-container .qr-image{max-width:190px;width:100%;height:auto;border-radius:16px;margin:8px 0;
-      border:2px solid rgba(142,36,170,0.12);background:#fff;}
-    .qr-actions{display:flex;gap:9px;justify-content:center;margin-top:9px;flex-wrap:wrap;}
-    .qr-actions .btn-sm{padding:8px 16px;border:none;border-radius:40px;font-size:12.5px;font-weight:600;
-      cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:5px;}
-    .btn-download{background:#43a047;color:#fff;}
-    .btn-download:active{transform:scale(.95);}
-    .btn-print{background:#1E88E5;color:#fff;}
-    .btn-print:active{transform:scale(.95);}
+.qr-container{background:rgba(255,255,255,0.75);border-radius:22px;padding:18px;margin:12px 0;text-align:center;
+  border:1px solid rgba(142,36,170,0.12);animation:slideUp .35s ease;}
+body.dark .qr-container{background:rgba(50,32,58,0.55);}
+.qr-container .detail{font-size:13.5px;color:var(--ink);margin:4px 0;font-weight:500;}
+body.dark .qr-container .detail{color:#e2d3ea;}
+.qr-container .qr-image{max-width:190px;width:100%;height:auto;border-radius:16px;margin:8px 0;
+  border:2px solid rgba(142,36,170,0.12);background:#fff;}
+.qr-actions{display:flex;gap:9px;justify-content:center;margin-top:9px;flex-wrap:wrap;}
+.qr-actions .btn-sm{padding:8px 16px;border:none;border-radius:40px;font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:5px;}
+.qr-actions .btn-sm .material-symbols-rounded{font-size:15px;}
+.btn-download{background:#43a047;color:#fff;}
+.btn-download:active{transform:scale(.95);}
+.btn-print{background:#1E88E5;color:#fff;}
+.btn-print:active{transform:scale(.95);}
 
-    .loader{border:4px solid rgba(142,36,170,0.12);border-top:4px solid var(--primary);border-radius:50%;
-      width:50px;height:50px;animation:spin .8s linear infinite;margin:30px auto;}
-    @keyframes spin{to{transform:rotate(360deg)}}
+.loader-wrap{text-align:center;padding:30px 0;}
+.loader{border:4px solid rgba(142,36,170,0.12);border-top:4px solid var(--primary);border-radius:50%;
+  width:50px;height:50px;animation:spin .8s linear infinite;margin:0 auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    .success-screen{text-align:center;padding:16px 0;}
-    .success-screen .material-symbols-outlined.big-check{font-size:76px;color:var(--primary);animation:popIn .6s ease;}
-    @keyframes popIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
-    .hidden{display:none !important;}
+.success-screen{text-align:center;padding:16px 0;}
+.success-check-wrap{width:88px;height:88px;border-radius:50%;margin:0 auto 6px;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle,rgba(142,36,170,.16),transparent 70%);
+  animation:popIn .6s var(--ease-pop);position:relative;}
+.success-check-wrap::before{content:'';position:absolute;inset:0;border-radius:50%;
+  border:2px solid var(--primary-light);animation:ringPulse 1.8s ease-out infinite;}
+@keyframes ringPulse{0%{transform:scale(.8);opacity:.8}100%{transform:scale(1.5);opacity:0}}
+.success-check-wrap .material-symbols-rounded{font-size:56px;color:var(--primary);position:relative;z-index:1;}
+@keyframes popIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.hidden{display:none !important;}
 
-    .confirm-box{background:rgba(142,36,170,0.045);padding:18px;border-radius:22px;border:1px solid rgba(142,36,170,0.12);}
-    .confirm-box .row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;
-      border-bottom:1px solid rgba(142,36,170,0.06);}
-    .confirm-box .row:last-child{border-bottom:none;}
-    .confirm-box .label{font-weight:500;color:var(--muted);}
-    body.dark .confirm-box .label{color:#c9b6d4;}
-    .confirm-box .value{font-weight:600;color:var(--ink);text-align:right;}
-    body.dark .confirm-box .value{color:#f2e9f6;}
+.confirm-box{background:rgba(142,36,170,0.045);padding:18px;border-radius:22px;border:1px solid rgba(142,36,170,0.12);}
+.confirm-box .box-title{font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px;color:var(--ink);}
+body.dark .confirm-box .box-title{color:#f2e9f6;}
+.confirm-box .box-title .material-symbols-rounded{color:var(--primary);font-size:19px;}
+.confirm-box .row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;
+  border-bottom:1px solid rgba(142,36,170,0.06);}
+.confirm-box .row:last-child{border-bottom:none;}
+.confirm-box .label{font-weight:500;color:var(--muted);}
+body.dark .confirm-box .label{color:#c9b6d4;}
+.confirm-box .value{font-weight:600;color:var(--ink);text-align:right;}
+body.dark .confirm-box .value{color:#f2e9f6;}
 
-    /* Membership cards */
-    .membership-container{display:flex;flex-direction:column;gap:12px;margin:12px 0;}
-    .membership-card{background:rgba(255,255,255,0.32);border:2px solid rgba(142,36,170,0.14);border-radius:22px;
-      padding:16px 18px;cursor:pointer;transition:.3s;position:relative;overflow:hidden;animation:cardIn .35s ease;}
-    @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    body.dark .membership-card{background:rgba(50,32,58,0.42);}
-    .membership-card:active{transform:scale(.98);}
-    .membership-card.selected{border-color:var(--primary);background:rgba(142,36,170,0.09);
-      box-shadow:0 0 0 3px rgba(142,36,170,0.14);}
-    body.dark .membership-card.selected{background:rgba(142,36,170,0.2);}
-    .membership-card .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;}
-    .membership-card .card-name{font-weight:700;font-size:17px;color:var(--ink);}
-    body.dark .membership-card .card-name{color:#f2e9f6;}
-    .membership-card .card-price{font-weight:800;font-size:20px;color:var(--primary-dark);white-space:nowrap;}
-    body.dark .membership-card .card-price{color:var(--primary-light);}
-    .membership-card .card-features{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.7;}
-    body.dark .membership-card .card-features{color:#c9b6d4;}
-    .membership-card .card-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#3a2b00;
-      font-size:9.5px;font-weight:800;padding:3px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;}
-    .membership-card .card-check{display:none;position:absolute;bottom:10px;right:12px;color:#43a047;font-size:22px;}
-    .membership-card.selected .card-check{display:block;}
-    .membership-note{font-size:11.5px;color:var(--muted);text-align:center;margin:6px 0;font-style:italic;}
-    body.dark .membership-note{color:#b8a3c3;}
-    .plan-switch-fade{animation:planFade .35s ease;}
-    @keyframes planFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* ============ MEMBERSHIP — Premium glass cards ============ */
+.membership-container{display:flex;flex-direction:column;gap:14px;margin:12px 0;}
+.membership-card{
+  --plan-glow: 142,36,170;
+  position:relative;border-radius:26px;padding:2px;cursor:pointer;
+  background:linear-gradient(135deg, rgba(var(--plan-glow),.35), rgba(var(--plan-glow),.05));
+  transition:transform .3s var(--ease-pop), box-shadow .3s ease;
+  animation:cardIn .4s var(--ease-pop) backwards;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.membership-card:active{transform:scale(.98);}
+.membership-card::before{
+  content:'';position:absolute;inset:-1px;border-radius:26px;z-index:0;opacity:0;
+  background:conic-gradient(from 0deg, rgba(var(--plan-glow),0), rgba(var(--plan-glow),.9), rgba(var(--plan-glow),0) 60%);
+  transition:opacity .3s ease;
+}
+.membership-card.selected::before{opacity:1;animation:rotateGlow 3.5s linear infinite;}
+@keyframes rotateGlow{to{transform:rotate(360deg)}}
+.membership-card .card-inner{
+  position:relative;z-index:1;border-radius:24px;padding:18px 18px 16px;
+  background:rgba(255,255,255,0.55);backdrop-filter:blur(6px);
+  box-shadow:0 10px 26px rgba(var(--plan-glow),.14);
+  transition:box-shadow .3s ease, background .3s ease;
+}
+body.dark .membership-card .card-inner{background:rgba(38,24,46,0.72);}
+.membership-card.selected .card-inner{box-shadow:0 14px 34px rgba(var(--plan-glow),.32);}
+.membership-card[data-plan="VIP"]{--plan-glow: 212,175,55;}
+.membership-card[data-plan="Gold"]{--plan-glow: 200,160,30;}
+.membership-card[data-plan="Premium"]{--plan-glow: 142,36,170;}
+.membership-card[data-plan="Basic"]{--plan-glow: 100,80,180;}
+.membership-card[data-plan="Starter"]{--plan-glow: 120,110,130;}
+.membership-card[data-plan="VIP"] .card-inner{background:linear-gradient(160deg, rgba(255,250,235,.7), rgba(255,255,255,.5));}
+body.dark .membership-card[data-plan="VIP"] .card-inner{background:linear-gradient(160deg, rgba(60,48,20,.55), rgba(38,24,46,.7));}
 
-    /* Alert dialog */
-    .alert-dialog{position:fixed;inset:0;background:rgba(20,8,28,0.65);backdrop-filter:blur(10px);display:none;
-      justify-content:center;align-items:center;z-index:10000;padding:20px;}
-    .alert-dialog.show{display:flex;}
-    .alert-content{background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.94));
-      border-radius:36px;padding:30px 26px;max-width:420px;width:100%;text-align:center;animation:slideUp .4s ease;
-      box-shadow:0 40px 80px rgba(0,0,0,0.35);}
-    body.dark .alert-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
-    .alert-content .alert-icon{font-size:50px;margin-bottom:10px;display:block;}
-    .alert-content h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--ink);margin-bottom:8px;}
-    body.dark .alert-content h3{color:#f2e9f6;}
-    .alert-content p{color:var(--muted);font-size:13.5px;line-height:1.65;}
-    body.dark .alert-content p{color:#c9b6d4;}
-    .alert-content .btn{margin-top:16px;}
+.membership-card .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;}
+.membership-card .card-name{font-weight:700;font-size:16.5px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+body.dark .membership-card .card-name{color:#f2e9f6;}
+.membership-card .plan-icon{width:32px;height:32px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:rgba(var(--plan-glow),.14);flex-shrink:0;}
+.membership-card .plan-icon .material-symbols-rounded{font-size:18px;color:rgb(var(--plan-glow));}
+.membership-card[data-plan="VIP"] .plan-icon,.membership-card[data-plan="Gold"] .plan-icon{color:var(--gold-dark);}
+.membership-card .card-price{font-weight:800;font-size:19px;color:var(--primary-dark);white-space:nowrap;}
+body.dark .membership-card .card-price{color:var(--primary-light);}
+.membership-card[data-plan="VIP"] .card-price,.membership-card[data-plan="Gold"] .card-price{color:var(--gold-dark);}
+body.dark .membership-card[data-plan="VIP"] .card-price,body.dark .membership-card[data-plan="Gold"] .card-price{color:var(--gold);}
+.membership-card .card-features{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.85;}
+body.dark .membership-card .card-features{color:#c9b6d4;}
+.membership-card .card-badge{position:absolute;top:-9px;right:16px;z-index:2;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#3a2b00;
+  font-size:9.5px;font-weight:800;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:0 6px 14px rgba(212,175,55,.4);display:flex;align-items:center;gap:3px;}
+.membership-card .card-badge .material-symbols-rounded{font-size:11px;}
+.membership-card .card-check{
+  position:absolute;bottom:14px;right:16px;width:26px;height:26px;border-radius:50%;
+  background:#43a047;color:#fff;display:none;align-items:center;justify-content:center;
+  animation:checkPop .35s var(--ease-pop);z-index:2;
+}
+.membership-card .card-check .material-symbols-rounded{font-size:16px;}
+@keyframes checkPop{from{transform:scale(0)}to{transform:scale(1)}}
+.membership-card.selected .card-check{display:flex;}
+.membership-note{font-size:11.5px;color:var(--muted);text-align:center;margin:6px 0;display:flex;align-items:center;justify-content:center;gap:5px;}
+body.dark .membership-note{color:#b8a3c3;}
+.membership-note .material-symbols-rounded{font-size:14px;color:var(--gold);}
 
-    /* AI chat modal */
-    .ai-chat-modal{position:fixed;inset:0;background:rgba(20,8,28,0.72);backdrop-filter:blur(12px);display:none;
-      justify-content:center;align-items:center;z-index:9998;padding:16px;}
-    .ai-chat-modal.show{display:flex;}
-    .ai-chat-content{background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.94));
-      border-radius:36px;padding:28px 24px;max-width:480px;width:100%;max-height:82vh;overflow-y:auto;
-      animation:slideUp .4s ease;box-shadow:0 40px 80px rgba(0,0,0,0.35);}
-    body.dark .ai-chat-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
-    .chat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;
-      border-bottom:2px solid rgba(142,36,170,0.1);}
-    .chat-header h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--primary);}
-    .chat-header .close-btn{background:none;border:none;font-size:26px;cursor:pointer;color:var(--muted);}
-    .chat-body{padding:10px 0;max-height:320px;overflow-y:auto;}
-    .chat-message{padding:11px 15px;border-radius:20px;margin-bottom:9px;max-width:85%;font-size:13.5px;line-height:1.6;}
-    .chat-message.ai{background:rgba(142,36,170,0.08);color:var(--ink);margin-right:auto;border-bottom-left-radius:4px;}
-    body.dark .chat-message.ai{background:rgba(206,147,216,0.15);color:#f2e9f6;}
-    .chat-message.user{background:var(--primary);color:#fff;margin-left:auto;border-bottom-right-radius:4px;}
-    .chat-input-area{display:flex;gap:9px;margin-top:14px;padding-top:10px;border-top:1px solid rgba(142,36,170,0.1);}
-    .chat-input-area input{flex:1;padding:11px 15px;border:2px solid rgba(142,36,170,0.18);border-radius:30px;
-      background:rgba(255,255,255,0.5);font-size:13.5px;outline:none;}
-    body.dark .chat-input-area input{background:rgba(50,32,58,0.55);color:#f2e9f6;}
-    .btn-send{padding:11px 22px;border:none;border-radius:30px;background:var(--primary);color:#fff;font-weight:600;
-      cursor:pointer;transition:.25s;}
-    .btn-send:active{transform:scale(.95);}
+/* Ripple */
+.ripple{position:absolute;border-radius:50%;background:rgba(var(--plan-glow,142,36,170),.4);
+  transform:scale(0);animation:rippleAnim .6s ease-out;pointer-events:none;z-index:3;}
+@keyframes rippleAnim{to{transform:scale(3.2);opacity:0}}
 
-    @media (max-width:480px){
-      .welcome-content{padding:30px 18px 24px;border-radius:36px;}
-      .welcome-title{font-size:34px;}
-      .welcome-tagline{font-size:19px;}
-      .glass-card{padding:16px 12px 22px;border-radius:28px;}
-      .logo{font-size:21px;}
-      .step-title{font-size:17px;}
-      .btn{font-size:14px;padding:13px 18px;}
-      .payment-option{min-width:58px;font-size:11.5px;padding:10px 5px;}
-      .fee-badge{font-size:18px;padding:5px 18px;}
-      .membership-card .card-price{font-size:17px;}
-      .membership-card .card-name{font-size:15px;}
-    }
+/* ============ Notice / Alert dialogs ============ */
+.alert-dialog{position:fixed;inset:0;background:rgba(20,8,28,0.65);backdrop-filter:blur(10px);display:none;
+  justify-content:center;align-items:center;z-index:10000;padding:20px;}
+.alert-dialog.show{display:flex;animation:fadeIn .3s ease;}
+.alert-content{background:linear-gradient(160deg, rgba(255,255,255,0.97), rgba(250,235,255,0.95));
+  border-radius:36px;padding:30px 26px;max-width:420px;width:100%;text-align:center;animation:popScale .4s var(--ease-pop);
+  box-shadow:0 40px 80px rgba(0,0,0,0.35);max-height:86vh;overflow-y:auto;}
+body.dark .alert-content{background:linear-gradient(160deg, rgba(35,22,42,0.97), rgba(28,16,36,0.95));}
+.alert-content .alert-icon-wrap{width:64px;height:64px;border-radius:22px;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),#c62828);
+  box-shadow:0 12px 26px rgba(229,57,53,.32);}
+.alert-content .alert-icon-wrap .material-symbols-rounded{font-size:32px;color:#fff;}
+.alert-content h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--ink);margin-bottom:10px;}
+body.dark .alert-content h3{color:#f2e9f6;}
+.alert-content p{color:var(--muted);font-size:13.5px;line-height:1.65;}
+body.dark .alert-content p{color:#c9b6d4;}
+.alert-content .btn{margin-top:16px;}
+.alert-content strong{color:var(--ink);}
+body.dark .alert-content strong{color:#f2e9f6;}
 
-    /* Respect safe areas on notch phones */
-    @supports (padding: max(0px)) {
-      body{padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right));}
-    }
-  </style>
+/* Membership notice dialog (step 3 auto open) */
+.plans-notice-list{text-align:left;margin:14px 0;display:flex;flex-direction:column;gap:10px;}
+.plan-notice-item{background:rgba(142,36,170,0.05);border:1px solid rgba(142,36,170,0.1);border-radius:18px;padding:11px 14px;}
+.plan-notice-item .pn-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13.5px;color:var(--ink);margin-bottom:3px;}
+body.dark .plan-notice-item .pn-head{color:#f2e9f6;}
+.plan-notice-item .pn-head .pn-name{display:flex;align-items:center;gap:6px;}
+.plan-notice-item .pn-head .material-symbols-rounded{font-size:16px;color:var(--primary);}
+.plan-notice-item .pn-price{color:var(--primary-dark);font-weight:800;}
+body.dark .plan-notice-item .pn-price{color:var(--primary-light);}
+.plan-notice-item .pn-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+body.dark .plan-notice-item .pn-desc{color:#c9b6d4;}
+.notice-highlight{background:rgba(67,160,71,0.08);border:1px solid rgba(67,160,71,0.22);border-radius:18px;
+  padding:12px 14px;margin-top:14px;display:flex;gap:10px;align-items:flex-start;text-align:left;}
+.notice-highlight .material-symbols-rounded{color:#43a047;font-size:22px;flex-shrink:0;margin-top:1px;}
+.notice-highlight p{color:#2e7d32;font-size:12.5px;font-weight:600;line-height:1.55;}
+body.dark .notice-highlight p{color:#81c784;}
+
+/* ============ AI chat modal ============ */
+.ai-chat-modal{position:fixed;inset:0;background:rgba(20,8,28,0.72);backdrop-filter:blur(12px);display:none;
+  justify-content:center;align-items:center;z-index:9998;padding:16px;}
+.ai-chat-modal.show{display:flex;animation:fadeIn .3s ease;}
+.ai-chat-content{background:linear-gradient(160deg, rgba(255,255,255,0.96), rgba(250,235,255,0.94));
+  border-radius:36px;padding:28px 24px;max-width:480px;width:100%;max-height:82vh;overflow-y:auto;
+  animation:slideUp .4s ease;box-shadow:0 40px 80px rgba(0,0,0,0.35);}
+body.dark .ai-chat-content{background:linear-gradient(160deg, rgba(35,22,42,0.96), rgba(28,16,36,0.94));}
+.chat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;
+  border-bottom:2px solid rgba(142,36,170,0.1);}
+.chat-header h3{font-family:'Baloo 2',cursive;font-size:20px;color:var(--primary);display:flex;align-items:center;gap:8px;}
+.chat-header h3 .material-symbols-rounded{font-size:22px;}
+.chat-header .close-btn{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);display:flex;}
+.chat-body{padding:10px 0;max-height:320px;overflow-y:auto;}
+.chat-message{padding:11px 15px;border-radius:20px;margin-bottom:9px;max-width:85%;font-size:13.5px;line-height:1.6;}
+.chat-message.ai{background:rgba(142,36,170,0.08);color:var(--ink);margin-right:auto;border-bottom-left-radius:4px;}
+body.dark .chat-message.ai{background:rgba(206,147,216,0.15);color:#f2e9f6;}
+.chat-message.user{background:var(--primary);color:#fff;margin-left:auto;border-bottom-right-radius:4px;}
+.chat-input-area{display:flex;gap:9px;margin-top:14px;padding-top:10px;border-top:1px solid rgba(142,36,170,0.1);}
+.chat-input-area input{flex:1;padding:11px 15px;border:2px solid rgba(142,36,170,0.18);border-radius:30px;
+  background:rgba(255,255,255,0.5);font-size:13.5px;outline:none;}
+body.dark .chat-input-area input{background:rgba(50,32,58,0.55);color:#f2e9f6;}
+.btn-send{padding:11px 18px;border:none;border-radius:30px;background:var(--primary);color:#fff;font-weight:600;
+  cursor:pointer;transition:.25s;display:flex;align-items:center;}
+.btn-send:active{transform:scale(.95);}
+
+/* Confetti */
+.confetti-piece{position:fixed;top:-10px;width:8px;height:14px;z-index:10001;pointer-events:none;
+  animation:confettiFall linear forwards;}
+@keyframes confettiFall{
+  to{transform:translateY(105vh) rotate(540deg);opacity:.2;}
+}
+
+@media (max-width:480px){
+  .welcome-content{padding:30px 18px 24px;border-radius:36px;}
+  .welcome-title{font-size:34px;}
+  .welcome-tagline{font-size:19px;}
+  .glass-card{padding:16px 12px 22px;border-radius:28px;}
+  .logo{font-size:21px;}
+  .step-title{font-size:17px;}
+  .btn{font-size:14px;padding:13px 18px;}
+  .payment-option{min-width:58px;font-size:11.5px;padding:10px 5px;}
+  .fee-badge{font-size:18px;padding:5px 18px;}
+  .membership-card .card-price{font-size:16px;}
+  .membership-card .card-name{font-size:14.5px;}
+  .step-dot .dot-label{display:none;}
+}
+
+@supports (padding: max(0px)) {
+  body{padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right));}
+}
+</style>
 </head>
 <body>
 
 <div class="alert-dialog" id="alertDialog">
   <div class="alert-content">
-    <span class="alert-icon">⚠️</span>
+    <div class="alert-icon-wrap"><span class="material-symbols-rounded icon-fill">priority_high</span></div>
     <h3 class="np">महत्वपूर्ण सूचना</h3>
     <p class="np">
       <strong>भुक्तानी पछि प्राप्त Transaction Code</strong><br>
       तलको फारममा सही रूपमा भर्नुहोस्।<br><br>
       हामीले तपाईंको भुक्तानी प्रमाणित गर्न यो कोड प्रयोग गर्छौं।<br>
-      धन्यवाद! 🙏
+      धन्यवाद!
     </p>
     <button class="btn btn-primary" onclick="closeAlert()">
-      <span class="material-symbols-outlined">check</span> <span class="np">बुझें</span> / I Understand
+      <span class="material-symbols-rounded">check</span> <span class="np">बुझें</span> / I Understand
+    </button>
+  </div>
+</div>
+
+<div class="alert-dialog" id="membershipNoticeDialog">
+  <div class="alert-content">
+    <div class="alert-icon-wrap"><span class="material-symbols-rounded icon-fill">priority_high</span></div>
+    <h3 class="np">महत्वपूर्ण सूचना</h3>
+    <p class="np" style="margin-bottom:4px;">सदस्यता योजनाबारे जानकारी</p>
+    <div class="plans-notice-list np" id="plansNoticeList"></div>
+    <div class="notice-highlight">
+      <span class="material-symbols-rounded icon-fill">verified</span>
+      <p class="np">महत्वपूर्ण: सदस्यता शुल्क एकपटक मात्र तिर्नुपर्छ। कुनै मासिक वा वार्षिक शुल्क लाग्दैन।</p>
+    </div>
+    <button class="btn btn-primary np" onclick="closeMembershipNotice()">
+      <span class="material-symbols-rounded">task_alt</span> मैले बुझेँ
     </button>
   </div>
 </div>
@@ -316,65 +465,61 @@
 <div class="ai-chat-modal" id="aiChatModal">
   <div class="ai-chat-content">
     <div class="chat-header">
-      <h3>🤖 SetMandu AI <span class="np">सहायक</span></h3>
-      <button class="close-btn" onclick="closeAIChat()">✕</button>
+      <h3><span class="material-symbols-rounded icon-fill">support_agent</span><span class="np">SetMandu सहायक</span></h3>
+      <button class="close-btn" onclick="closeAIChat()"><span class="material-symbols-rounded">close</span></button>
     </div>
     <div class="chat-body np" id="chatBody">
       <div class="chat-message ai">
-        👋 नमस्ते! म SetMandu AI सहायक हुँ।<br>
+        नमस्ते! म SetMandu सहायक हुँ।<br>
         तपाईं पहिले नै दर्ता भइसक्नुभएको छ।<br>
-        के सहयोग चाहियो? म यहाँ छु! 😊
+        के सहयोग चाहियो? म यहाँ छु!
       </div>
     </div>
     <div class="chat-input-area">
       <input type="text" id="chatInput" class="np" placeholder="तपाईंको प्रश्न लेख्नुहोस्..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-      <button class="btn-send np" onclick="sendChatMessage()">पठाउनुहोस्</button>
+      <button class="btn-send np" onclick="sendChatMessage()"><span class="material-symbols-rounded">send</span></button>
     </div>
   </div>
 </div>
 
 <div class="welcome-modal" id="welcomeModal">
   <div class="welcome-content">
-    <span class="welcome-icon">❤️</span>
+    <div class="welcome-icon-wrap"><span class="material-symbols-rounded icon-fill">favorite</span></div>
     <h1 class="welcome-title">Set<span>Mandu</span></h1>
-    <div class="welcome-tagline np">✨ जोडिन्छ मन, बन्छ जीवन ✨</div>
-    <div class="welcome-sub np">💝 प्रिमियम मिलन सम्बन्ध</div>
+    <div class="welcome-tagline np"><span class="material-symbols-rounded icon-fill">auto_awesome</span> जोडिन्छ मन, बन्छ जीवन <span class="material-symbols-rounded icon-fill">auto_awesome</span></div>
+    <div class="welcome-sub np"><span class="material-symbols-rounded icon-fill">workspace_premium</span> प्रिमियम मिलन सम्बन्ध</div>
     <div class="welcome-divider"></div>
 
     <div class="welcome-features">
-      <div class="feature-item np"><span class="material-symbols-outlined">verified</span><span>प्रमाणित</span></div>
-      <div class="feature-item np"><span class="material-symbols-outlined">security</span><span>सुरक्षित</span></div>
-      <div class="feature-item np"><span class="material-symbols-outlined">favorite</span><span>भरपर्दो</span></div>
+      <div class="feature-item np"><span class="material-symbols-rounded">verified_user</span><span>प्रमाणित</span></div>
+      <div class="feature-item np"><span class="material-symbols-rounded">shield</span><span>सुरक्षित</span></div>
+      <div class="feature-item np"><span class="material-symbols-rounded">favorite</span><span>भरपर्दो</span></div>
     </div>
 
     <div class="lang-select">
-      <button class="lang-btn active" data-lang="ne" onclick="selectLanguage('ne')">🇳🇵 नेपाली</button>
-      <button class="lang-btn" data-lang="en" onclick="selectLanguage('en')">🇬🇧 English</button>
+      <button class="lang-btn active" data-lang="ne" onclick="selectLanguage('ne')"><span class="flag-dot"></span> नेपाली</button>
+      <button class="lang-btn" data-lang="en" onclick="selectLanguage('en')"><span class="flag-dot"></span> English</button>
     </div>
 
     <button class="btn btn-primary" onclick="startRegistration()" id="startBtn">
-      <span class="material-symbols-outlined">arrow_forward</span>
+      <span class="material-symbols-rounded">arrow_forward</span>
       <span id="startText" class="np">सुरु गर्नुहोस्</span>
     </button>
 
-    <p class="welcome-footer np">"काठमाडौंले स्वागत गर्दा, SetManduले जीवन जोड्दछ" 💖</p>
+    <p class="welcome-footer np"><span class="material-symbols-rounded icon-fill">stars</span>"काठमाडौंले स्वागत गर्दा, SetManduले जीवन जोड्दछ"</p>
   </div>
 </div>
 
 <div class="glass-card" id="app">
   <div class="header">
-    <span class="logo">✦ SetMandu</span>
+    <span class="logo"><span class="material-symbols-rounded icon-fill">favorite</span>SetMandu</span>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-      <span class="material-symbols-outlined">dark_mode</span>
+      <span class="material-symbols-rounded">dark_mode</span>
     </button>
   </div>
 
   <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
-
-  <div class="step-indicator np">
-    <span>चरण <span id="stepNum">1</span>/4</span>
-    <span id="stepLabel">व्यक्तिगत विवरण</span>
-  </div>
+  <div class="step-dots np" id="stepDots"></div>
 
   <div id="stepsContainer"></div>
   <div id="successArea" class="hidden"></div>
@@ -401,6 +546,15 @@ const ALL_PLANS = {
   'VIP': 5000
 };
 
+// Plan meta: icon + text keys + description keys (single source of truth)
+const PLAN_META = {
+  'Starter': { icon:'chat_bubble', nameKey:'starterPlan', featKey:'starterFeatures' },
+  'Basic':   { icon:'eco',         nameKey:'basicPlan',   featKey:'basicFeatures' },
+  'Premium': { icon:'auto_awesome',nameKey:'premiumPlan', featKey:'premiumFeatures' },
+  'Gold':    { icon:'military_tech',nameKey:'goldPlan',   featKey:'goldFeatures' },
+  'VIP':     { icon:'workspace_premium', nameKey:'vipPlan', featKey:'vipFeatures' }
+};
+
 // ============================================================
 // STATE
 // ============================================================
@@ -412,15 +566,16 @@ let selectedMembershipPrice = 0;
 let formData = {};
 let isSubmitting = false;
 let requestId = null;
+let saveDebounceTimer = null;
 const STEPS = 4;
 
 const stepsContainer = document.getElementById('stepsContainer');
 const progressFill = document.getElementById('progressFill');
-const stepNum = document.getElementById('stepNum');
-const stepLabel = document.getElementById('stepLabel');
+const stepDotsEl = document.getElementById('stepDots');
 const successArea = document.getElementById('successArea');
 const welcomeModal = document.getElementById('welcomeModal');
 const alertDialog = document.getElementById('alertDialog');
+const membershipNoticeDialog = document.getElementById('membershipNoticeDialog');
 const aiChatModal = document.getElementById('aiChatModal');
 
 // Safe localStorage wrapper
@@ -466,15 +621,16 @@ const countries = [
 const t = {
   ne: {
     stepTitles: ['व्यक्तिगत विवरण','साथीको विवरण','सदस्यता योजना','भुक्तानी प्रमाण'],
-    stepLabels: ['व्यक्तिगत','साथीको रुचि','सदस्यता','भुक्तानी प्रमाण'],
+    stepLabels: ['व्यक्तिगत','साथीको रुचि','सदस्यता','भुक्तानी'],
+    stepIcons: ['person','favorite','workspace_premium','payments'],
     fullName:'पूरा नाम *', currentCountry:'हालको देश *', gender:'लिङ्ग *', age:'उमेर *',
     caste:'जाति / जनजाति *', education:'शिक्षा *', occupation:'पेशा *',
     preferredAge:'रुचाइएको उमेर', preferredCaste:'रुचाइएको जाति (वैकल्पिक)', preferredCountry:'रुचाइएको देश',
     selectPayment:'भुक्तानी विधि *',
     esewa:'इ-सेवा', khalti:'खल्ती', bank:'बैंक',
     submit:'दर्ता गर्नुहोस्', back:'पछाडि', next:'अर्को',
-    registrationFee:'दर्ता शुल्क', success:'🎉 दर्ता सफल भयो!', welcome:'SetMandu मा स्वागत छ,',
-    paymentReceived:'✓ रु. को भुक्तानी प्राप्त भयो', pendingVerification:'तपाईंको खाता प्रमाणीकरणको लागि पेन्डिङ छ।',
+    registrationFee:'दर्ता शुल्क', success:'दर्ता सफल भयो!', welcome:'SetMandu मा स्वागत छ,',
+    paymentReceived:'भुक्तानी प्राप्त भयो रु.', pendingVerification:'तपाईंको खाता प्रमाणीकरणको लागि पेन्डिङ छ।',
     startOver:'पुनः सुरु गर्नुहोस्', processing:'तपाईंको दर्ता प्रक्रिया भइरहेको छ...',
     required:'कृपया यो फिल्ड भर्नुहोस्',
     paymentRequired:'कृपया भुक्तानी विधि चयन गर्नुहोस्',
@@ -485,29 +641,37 @@ const t = {
     downloadQR:'QR डाउनलोड गर्नुहोस्', printQR:'QR प्रिन्ट गर्नुहोस्',
     selectPaymentMethod:'कृपया पहिले भुक्तानी विधि चयन गर्नुहोस्', membershipPlan:'सदस्यता योजना *',
     selectMembership:'कृपया सदस्यता योजना चयन गर्नुहोस्',
-    nepalNote:'✨ तपाईंको लागि उपलब्ध सदस्यता योजनाहरू',
+    nepalNote:'तपाईंको लागि उपलब्ध सदस्यता योजनाहरू',
     ageInvalid:'उमेर १८ देखि ८० को बीचमा हुनुपर्छ', networkError:'नेटवर्क त्रुटि, फेरि प्रयास गर्नुहोस्',
     duplicateSubmit:'पहिले नै पेश गरिएको छ',
     starterPlan:'Starter', basicPlan:'Basic', premiumPlan:'Premium', goldPlan:'Gold', vipPlan:'VIP',
-    starterFeatures:'✅ १ जनासँग मात्र कुराकानी\n✅ आधारभूत प्रोफाइल हेराइ\n✅ सामान्य प्रमाणीकरण',
-    basicFeatures:'✅ २-३ जनासँग कुराकानी\n✅ आधारभूत मिलान\n✅ सामान्य प्रमाणीकरण',
-    premiumFeatures:'✅ बढी प्रोफाइल दृश्यता\n✅ बढी च्याट पहुँच\n✅ छिटो प्रमाणीकरण\n✅ राम्रो मिलान',
-    goldFeatures:'✅ असीमित च्याट अनुरोध\n✅ प्राथमिकता सहयोग\n✅ उच्च दृश्यता\n✅ छिटो प्रमाणीकरण',
-    vipFeatures:'✅ सबै असीमित\n✅ VIP प्राथमिकता सहयोग\n✅ उच्चतम दृश्यता\n✅ व्यक्तिगत सहायता\n✅ विवाह नभएसम्म सेवा',
+    starterFeatures:'१ जनासँग मात्र कुराकानी<br>आधारभूत प्रोफाइल हेराइ<br>सामान्य प्रमाणीकरण',
+    basicFeatures:'२-३ जनासँग कुराकानी<br>आधारभूत मिलान<br>सामान्य प्रमाणीकरण',
+    premiumFeatures:'बढी प्रोफाइल दृश्यता<br>बढी च्याट पहुँच<br>छिटो प्रमाणीकरण<br>राम्रो मिलान',
+    goldFeatures:'असीमित च्याट अनुरोध<br>प्राथमिकता सहयोग<br>उच्च दृश्यता<br>छिटो प्रमाणीकरण',
+    vipFeatures:'सबै असीमित<br>VIP प्राथमिकता सहयोग<br>उच्चतम दृश्यता<br>व्यक्तिगत सहायता<br>विवाह नभएसम्म सेवा',
+    planNoticeShort: {
+      Starter:'१ जनासँग मात्र कुराकानी, आधारभूत प्रोफाइल हेर्ने तथा सामान्य प्रमाणीकरण सुविधा।',
+      Basic:'२–३ जनासँग कुराकानी, आधारभूत मिलान, सामान्य प्रमाणीकरण तथा थप प्रोफाइल पहुँच।',
+      Premium:'बढी च्याट सुविधा, छिटो प्रमाणीकरण, उच्च प्रोफाइल दृश्यता तथा राम्रो मिलान।',
+      Gold:'असीमित च्याट अनुरोध, उच्च दृश्यता, प्राथमिकता सहयोग तथा छिटो प्रमाणीकरण।',
+      VIP:'सबै सुविधा असीमित, VIP प्राथमिकता सहयोग, व्यक्तिगत सहायता, उच्चतम दृश्यता तथा विवाह नभएसम्म सेवा।'
+    },
     transactionCode:'Transaction Code * (भुक्तानी पछि प्राप्त कोड)',
     transactionPlaceholder:'जस्तै: TXN123456789'
   },
   en: {
     stepTitles: ['Personal Details','Partner Details','Membership Plan','Payment Proof'],
-    stepLabels: ['Personal','Partner','Membership','Payment Proof'],
+    stepLabels: ['Personal','Partner','Membership','Payment'],
+    stepIcons: ['person','favorite','workspace_premium','payments'],
     fullName:'Full Name *', currentCountry:'Current Country *', gender:'Gender *', age:'Age *',
     caste:'Caste / Ethnicity *', education:'Education *', occupation:'Occupation *',
     preferredAge:'Preferred Age', preferredCaste:'Preferred Caste (Optional)', preferredCountry:'Preferred Country',
     selectPayment:'Payment Method *',
     esewa:'eSewa', khalti:'Khalti', bank:'Bank',
     submit:'Register', back:'Back', next:'Next',
-    registrationFee:'Registration Fee', success:'🎉 Registration Successful!', welcome:'Welcome to SetMandu,',
-    paymentReceived:'✓ Payment of Rs. received', pendingVerification:'Your account is pending verification.',
+    registrationFee:'Registration Fee', success:'Registration Successful!', welcome:'Welcome to SetMandu,',
+    paymentReceived:'Payment of Rs. received', pendingVerification:'Your account is pending verification.',
     startOver:'Start Over', processing:'Processing your registration...',
     required:'Please fill this field',
     paymentRequired:'Please select payment method',
@@ -518,15 +682,22 @@ const t = {
     downloadQR:'Download QR', printQR:'Print QR',
     selectPaymentMethod:'Please select payment method first', membershipPlan:'Membership Plan *',
     selectMembership:'Please select a membership plan',
-    nepalNote:'✨ Membership plans available for you',
+    nepalNote:'Membership plans available for you',
     ageInvalid:'Age must be between 18 and 80', networkError:'Network error, please try again',
     duplicateSubmit:'Already submitted',
     starterPlan:'Starter', basicPlan:'Basic', premiumPlan:'Premium', goldPlan:'Gold', vipPlan:'VIP',
-    starterFeatures:'✅ Chat with only 1 person\n✅ Basic profile viewing\n✅ Normal verification',
-    basicFeatures:'✅ Chat with 2-3 people\n✅ Basic matching\n✅ Normal verification',
-    premiumFeatures:'✅ More profile visibility\n✅ More chat access\n✅ Faster verification\n✅ Better matching',
-    goldFeatures:'✅ Unlimited chat requests\n✅ Priority support\n✅ Higher visibility\n✅ Fast verification',
-    vipFeatures:'✅ Unlimited everything\n✅ VIP priority support\n✅ Highest visibility\n✅ Personal assistance\n✅ Until marriage support',
+    starterFeatures:'Chat with only 1 person<br>Basic profile viewing<br>Normal verification',
+    basicFeatures:'Chat with 2-3 people<br>Basic matching<br>Normal verification',
+    premiumFeatures:'More profile visibility<br>More chat access<br>Faster verification<br>Better matching',
+    goldFeatures:'Unlimited chat requests<br>Priority support<br>Higher visibility<br>Fast verification',
+    vipFeatures:'Unlimited everything<br>VIP priority support<br>Highest visibility<br>Personal assistance<br>Until marriage support',
+    planNoticeShort: {
+      Starter:'Chat with only 1 person, basic profile viewing, and normal verification.',
+      Basic:'Chat with 2-3 people, basic matching, normal verification and extra profile access.',
+      Premium:'More chat access, faster verification, higher profile visibility and better matching.',
+      Gold:'Unlimited chat requests, higher visibility, priority support and fast verification.',
+      VIP:'Everything unlimited, VIP priority support, personal assistance, highest visibility, support until marriage.'
+    },
     transactionCode:'Transaction Code * (Code received after payment)',
     transactionPlaceholder:'e.g. TXN123456789'
   }
@@ -565,9 +736,9 @@ function showAIChat() {
   aiChatModal.classList.add('show');
   document.getElementById('chatBody').innerHTML = `
     <div class="chat-message ai">
-      👋 नमस्ते! म SetMandu AI सहायक हुँ।<br>
+      नमस्ते! म SetMandu सहायक हुँ।<br>
       तपाईं पहिले नै दर्ता भइसक्नुभएको छ।<br>
-      के सहयोग चाहियो? म यहाँ छु! 😊
+      के सहयोग चाहियो? म यहाँ छु!
     </div>`;
 }
 function closeAIChat() { aiChatModal.classList.remove('show'); }
@@ -581,30 +752,55 @@ function sendChatMessage() {
   input.value = '';
   setTimeout(() => {
     const responses = [
-      'धन्यवाद! म तपाईंको प्रश्न बुझ्दै छु। 😊',
+      'धन्यवाद! म तपाईंको प्रश्न बुझ्दै छु।',
       'SetMandu मा तपाईंको दर्ता सफल भएको छ। कृपया प्रमाणीकरणको लागि पर्खनुहोस्।',
       'तपाईंको युजर आइडी प्रयोग गरी लगइन गर्न सक्नुहुन्छ।',
       'थप जानकारीको लागि WhatsApp मा सम्पर्क गर्नुहोस्।',
-      'हामी तपाईंको लागि उत्तम जीवनसाथी खोज्दै छौं। 💖'
+      'हामी तपाईंको लागि उत्तम जीवनसाथी खोज्दै छौं।'
     ];
     const aiResponse = responses[Math.floor(Math.random() * responses.length)];
-    chatBody.innerHTML += `<div class="chat-message ai">🤖 ${aiResponse}</div>`;
+    chatBody.innerHTML += `<div class="chat-message ai">${aiResponse}</div>`;
     chatBody.scrollTop = chatBody.scrollHeight;
   }, 500);
 }
 
 // ============================================================
-// ALERT DIALOG
+// ALERT DIALOGS
 // ============================================================
 function showAlert() { alertDialog.classList.add('show'); }
 function closeAlert() { alertDialog.classList.remove('show'); }
+
+function buildPlansNoticeHTML() {
+  const notes = t[selectedLang].planNoticeShort;
+  return Object.keys(ALL_PLANS).map(plan => {
+    const meta = PLAN_META[plan];
+    const price = ALL_PLANS[plan];
+    const label = getText(meta.nameKey);
+    return `<div class="plan-notice-item">
+      <div class="pn-head">
+        <span class="pn-name"><span class="material-symbols-rounded icon-fill">${meta.icon}</span>${label}</span>
+        <span class="pn-price">रु.${price}</span>
+      </div>
+      <div class="pn-desc np">${notes[plan]}</div>
+    </div>`;
+  }).join('');
+}
+
+let membershipNoticeShown = false;
+function showMembershipNoticeIfNeeded() {
+  if (membershipNoticeShown) return;
+  document.getElementById('plansNoticeList').innerHTML = buildPlansNoticeHTML();
+  membershipNoticeDialog.classList.add('show');
+  membershipNoticeShown = true;
+}
+function closeMembershipNotice() { membershipNoticeDialog.classList.remove('show'); }
 
 // ============================================================
 // STEP DEFINITIONS — NO FILE UPLOADS
 // ============================================================
 function getStepFields() {
   return [
-    { title: getText('stepTitles')[0], fields: [
+    { title: getText('stepTitles')[0], icon: getText('stepIcons')[0], fields: [
         { id:'fullName', label:getText('fullName'), type:'text', required:true },
         { id:'currentCountry', label:getText('currentCountry'), type:'select', options:countries, required:true },
         { id:'gender', label:getText('gender'), type:'select', options:['Male','Female','Other'], required:true },
@@ -613,15 +809,15 @@ function getStepFields() {
         { id:'education', label:getText('education'), type:'text', required:true },
         { id:'occupation', label:getText('occupation'), type:'text', required:true }
     ]},
-    { title: getText('stepTitles')[1], fields: [
+    { title: getText('stepTitles')[1], icon: getText('stepIcons')[1], fields: [
         { id:'preferredAge', label:getText('preferredAge'), type:'text', required:false },
         { id:'preferredCaste', label:getText('preferredCaste'), type:'text', required:false },
         { id:'preferredCountry', label:getText('preferredCountry'), type:'text', required:false }
     ]},
-    { title: getText('stepTitles')[2], fields: [
+    { title: getText('stepTitles')[2], icon: getText('stepIcons')[2], fields: [
         { id:'membership', label:getText('membershipPlan'), type:'membership', required:true }
     ]},
-    { title: getText('stepTitles')[3], fields: [
+    { title: getText('stepTitles')[3], icon: getText('stepIcons')[3], fields: [
         { id:'paymentMethod', label:getText('selectPayment'), type:'payment', required:true },
         { id:'transactionCode', label:getText('transactionCode'), type:'text', required:true }
     ]}
@@ -634,55 +830,57 @@ function getStepFields() {
 function renderStep(step) {
   const stepDefs = getStepFields();
   const data = stepDefs[step - 1];
-  let html = `<div class="step active"><div class="step-title np"><span class="material-symbols-outlined">check_circle</span> ${data.title}</div>`;
+  let html = `<div class="step active"><div class="step-title np">
+    <span class="icon-badge"><span class="material-symbols-rounded">${data.icon}</span></span> ${data.title}</div>`;
 
-  data.fields.forEach(f => {
+  data.fields.forEach((f, idx) => {
+    const delay = (idx * 0.05).toFixed(2);
     if (f.type === 'select') {
       const opts = f.options.map(o => `<option value="${o}">${o}</option>`).join('');
-      html += `<div class="form-group">
+      html += `<div class="form-group" style="animation-delay:${delay}s">
         <label class="np">${f.label}</label>
         <select id="${f.id}" ${f.required ? 'required' : ''} onchange="validateField('${f.id}')">
           <option value="">${selectedLang === 'ne' ? 'छनौट गर्नुहोस्' : 'Select'}</option>${opts}
         </select>
-        <div class="error-msg np" id="${f.id}_error">${getText('required')}</div>
+        <div class="error-msg np" id="${f.id}_error"><span class="material-symbols-rounded">error</span>${getText('required')}</div>
       </div>`;
     } else if (f.type === 'membership') {
-      html += `<div class="form-group">
+      html += `<div class="form-group" style="animation-delay:${delay}s">
         <label class="np">${f.label}</label>
         <div class="membership-container" id="membershipContainer">${getMembershipHTML()}</div>
-        <div class="error-msg np" id="membership_error">${getText('selectMembership')}</div>
+        <div class="error-msg np" id="membership_error"><span class="material-symbols-rounded">error</span>${getText('selectMembership')}</div>
       </div>`;
     } else if (f.type === 'payment') {
-      html += `<div class="form-group">
+      html += `<div class="form-group" style="animation-delay:${delay}s">
         <label class="np">${f.label}</label>
         <div class="payment-options" id="paymentOptions">
-          <div class="payment-option" data-method="eSewa" onclick="selectPayment('eSewa')">${getText('esewa')}</div>
-          <div class="payment-option" data-method="Khalti" onclick="selectPayment('Khalti')">${getText('khalti')}</div>
-          <div class="payment-option" data-method="Bank" onclick="selectPayment('Bank')">${getText('bank')}</div>
+          <div class="payment-option" data-method="eSewa" onclick="selectPayment('eSewa')"><span class="material-symbols-rounded">account_balance_wallet</span>${getText('esewa')}</div>
+          <div class="payment-option" data-method="Khalti" onclick="selectPayment('Khalti')"><span class="material-symbols-rounded">payments</span>${getText('khalti')}</div>
+          <div class="payment-option" data-method="Bank" onclick="selectPayment('Bank')"><span class="material-symbols-rounded">account_balance</span>${getText('bank')}</div>
         </div>
         <div id="qrDisplay"></div>
-        <div class="error-msg np" id="payment_error">${getText('paymentRequired')}</div>
+        <div class="error-msg np" id="payment_error"><span class="material-symbols-rounded">error</span>${getText('paymentRequired')}</div>
         <div style="text-align:center;margin-top:10px;">
-          <span class="fee-badge" id="feeDisplay">रु. ${selectedMembershipPrice || 0}</span>
+          <span class="fee-badge" id="feeDisplay"><span class="material-symbols-rounded icon-fill">payments</span>रु. ${selectedMembershipPrice || 0}</span>
           <div style="font-size:12.5px;color:var(--muted);margin-top:4px;" class="np">${getText('registrationFee')}</div>
         </div>
       </div>`;
     } else {
       const attrs = f.min ? `min="${f.min}" max="${f.max}"` : '';
       const placeholder = f.id === 'transactionCode' ? getText('transactionPlaceholder') : '';
-      html += `<div class="form-group">
+      html += `<div class="form-group" style="animation-delay:${delay}s">
         <label class="np">${f.label}</label>
         <input type="${f.type}" id="${f.id}" ${f.required ? 'required' : ''} ${attrs}
           placeholder="${placeholder}"
           onchange="validateField('${f.id}')" oninput="validateField('${f.id}')" inputmode="${f.type === 'number' ? 'numeric' : 'text'}">
-        <div class="error-msg np" id="${f.id}_error">${getText('required')}</div>
+        <div class="error-msg np" id="${f.id}_error"><span class="material-symbols-rounded">error</span>${getText('required')}</div>
       </div>`;
     }
   });
 
   if (step === 4) {
     html += `<div class="confirm-box np" style="margin-top:16px;">
-      <div style="font-weight:600;margin-bottom:12px;">📋 ${getText('confirm')}</div>
+      <div class="box-title"><span class="material-symbols-rounded">fact_check</span>${getText('confirm')}</div>
       <div class="row"><span class="label">${getText('fullName')}</span><span class="value" id="confirmName">-</span></div>
       <div class="row"><span class="label">${getText('currentCountry')}</span><span class="value" id="confirmCountry">-</span></div>
       <div class="row"><span class="label">${getText('gender')}</span><span class="value" id="confirmGender">-</span></div>
@@ -708,10 +906,10 @@ function renderStep(step) {
   const nextAction = step === STEPS ? 'submitForm()' : `goToStep(${step + 1})`;
   html += `<div class="btn-group">
     <button class="btn btn-secondary np" onclick="goToStep(${step - 1})" ${prevDisabled}>
-      <span class="material-symbols-outlined">arrow_back</span> ${getText('back')}
+      <span class="material-symbols-rounded">arrow_back</span> ${getText('back')}
     </button>
     <button class="btn btn-primary np" onclick="${nextAction}" id="nextBtn">
-      <span class="material-symbols-outlined">${step === STEPS ? 'check' : 'arrow_forward'}</span> ${nextLabel}
+      <span class="material-symbols-rounded">${step === STEPS ? 'check' : 'arrow_forward'}</span> ${nextLabel}
     </button>
   </div></div>`;
 
@@ -743,59 +941,63 @@ function renderStep(step) {
     document.getElementById('confirmPrefAge').textContent = formData.preferredAge || '-';
     document.getElementById('confirmPrefCaste').textContent = formData.preferredCaste || '-';
     document.getElementById('confirmPrefCountry').textContent = formData.preferredCountry || '-';
-    document.getElementById('confirmMembership').textContent = selectedMembership || '-';
+    document.getElementById('confirmMembership').textContent = selectedMembership ? getText(PLAN_META[selectedMembership].nameKey) : '-';
     document.getElementById('confirmPayment').textContent = selectedPayment || '-';
     document.getElementById('confirmTransactionCode').textContent = formData.transactionCode || '-';
     document.getElementById('confirmFee').textContent = `रु. ${selectedMembershipPrice || 0}`;
   }
 
   const feeDisplay = document.getElementById('feeDisplay');
-  if (feeDisplay) feeDisplay.textContent = `रु. ${selectedMembershipPrice || 0}`;
+  if (feeDisplay) feeDisplay.innerHTML = `<span class="material-symbols-rounded icon-fill">payments</span>रु. ${selectedMembershipPrice || 0}`;
 
   updateProgress(step);
-  stepNum.textContent = step;
-  stepLabel.textContent = getText('stepLabels')[step - 1];
+  renderStepDots(step);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
+  if (step === 3) setTimeout(showMembershipNoticeIfNeeded, 400);
   if (step === 4) setTimeout(showAlert, 500);
+}
+
+function renderStepDots(step) {
+  const labels = getText('stepLabels');
+  const icons = getText('stepIcons');
+  let html = '';
+  for (let i = 1; i <= STEPS; i++) {
+    const state = i < step ? 'done' : (i === step ? 'current' : '');
+    const inner = i < step ? '<span class="material-symbols-rounded">check</span>' : `<span class="material-symbols-rounded">${icons[i-1]}</span>`;
+    html += `<div class="step-dot ${state}"><div class="dot">${inner}</div><div class="dot-label">${labels[i-1]}</div></div>`;
+  }
+  stepDotsEl.innerHTML = html;
 }
 
 // ============================================================
 // MEMBERSHIP
 // ============================================================
-function planKeyToTextKeys(planName) {
-  const map = {
-    'Starter': { name:'starterPlan', feat:'starterFeatures', icon:'💬' },
-    'Basic':   { name:'basicPlan',   feat:'basicFeatures',   icon:'🌱' },
-    'Premium': { name:'premiumPlan', feat:'premiumFeatures', icon:'⭐' },
-    'Gold':    { name:'goldPlan',    feat:'goldFeatures',    icon:'🏆' },
-    'VIP':     { name:'vipPlan',     feat:'vipFeatures',     icon:'👑' }
-  };
-  return map[planName] || { name:null, feat:null, icon:'✨' };
-}
-
 function buildMembershipCardsHTML(plans) {
   const planNames = Object.keys(plans);
   let html = '';
-  planNames.forEach(planName => {
+  planNames.forEach((planName, i) => {
     const price = plans[planName];
-    const meta = planKeyToTextKeys(planName);
-    const label = meta.name ? getText(meta.name) : planName;
-    const features = meta.feat ? getText(meta.feat) : '';
+    const meta = PLAN_META[planName] || { icon:'auto_awesome', nameKey:null, featKey:null };
+    const label = meta.nameKey ? getText(meta.nameKey) : planName;
+    const features = meta.featKey ? getText(meta.featKey) : '';
     const isSelected = selectedMembership === planName;
     const isBest = planName === 'VIP';
     html += `
-      <div class="membership-card plan-switch-fade ${isSelected ? 'selected' : ''}" data-plan="${planName}" data-price="${price}" onclick="selectMembership('${planName}', ${price})">
-        <div class="card-header">
-          <span class="card-name">${meta.icon} ${label}</span>
-          <span class="card-price">रु. ${price.toLocaleString()}</span>
+      <div class="membership-card ${isSelected ? 'selected' : ''}" data-plan="${planName}" data-price="${price}"
+        style="animation-delay:${(i*0.06).toFixed(2)}s" onclick="selectMembership(event,'${planName}', ${price})">
+        <div class="card-inner">
+          <div class="card-header">
+            <span class="card-name"><span class="plan-icon"><span class="material-symbols-rounded icon-fill">${meta.icon}</span></span>${label}</span>
+            <span class="card-price">रु. ${price.toLocaleString()}</span>
+          </div>
+          <div class="card-features np">${features}</div>
+          ${isBest ? '<span class="card-badge"><span class="material-symbols-rounded icon-fill">stars</span>BEST</span>' : ''}
+          <span class="card-check"><span class="material-symbols-rounded">check</span></span>
         </div>
-        <div class="card-features np">${features}</div>
-        ${isBest ? '<span class="card-badge">BEST</span>' : ''}
-        <span class="card-check">✅</span>
       </div>`;
   });
-  html += `<div class="membership-note np">${getText('nepalNote')}</div>`;
+  html += `<div class="membership-note np"><span class="material-symbols-rounded icon-fill">auto_awesome</span>${getText('nepalNote')}</div>`;
   return html;
 }
 
@@ -803,7 +1005,7 @@ function getMembershipHTML() {
   return buildMembershipCardsHTML(ALL_PLANS);
 }
 
-function selectMembership(plan, price) {
+function selectMembership(evt, plan, price) {
   selectedMembership = plan;
   selectedMembershipPrice = price;
   formData.membership = plan;
@@ -812,6 +1014,20 @@ function selectMembership(plan, price) {
   document.querySelectorAll('.membership-card').forEach(el => {
     el.classList.toggle('selected', el.dataset.plan === plan);
   });
+
+  // ripple effect
+  if (evt) {
+    const card = evt.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    ripple.className = 'ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (evt.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (evt.clientY - rect.top - size / 2) + 'px';
+    card.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 650);
+  }
 
   const errorEl = document.getElementById('membership_error');
   if (errorEl) errorEl.classList.remove('show');
@@ -823,7 +1039,7 @@ function selectMembership(plan, price) {
 function syncFeeEverywhere() {
   const feeDisplay = document.getElementById('feeDisplay');
   if (feeDisplay) {
-    feeDisplay.textContent = `रु. ${selectedMembershipPrice || 0}`;
+    feeDisplay.innerHTML = `<span class="material-symbols-rounded icon-fill">payments</span>रु. ${selectedMembershipPrice || 0}`;
     feeDisplay.classList.remove('bump');
     void feeDisplay.offsetWidth;
     feeDisplay.classList.add('bump');
@@ -831,7 +1047,7 @@ function syncFeeEverywhere() {
   const confirmFee = document.getElementById('confirmFee');
   if (confirmFee) confirmFee.textContent = `रु. ${selectedMembershipPrice || 0}`;
   const confirmMembership = document.getElementById('confirmMembership');
-  if (confirmMembership) confirmMembership.textContent = selectedMembership || '-';
+  if (confirmMembership) confirmMembership.textContent = selectedMembership ? getText(PLAN_META[selectedMembership].nameKey) : '-';
 
   if (selectedPayment) showQR(selectedPayment);
 }
@@ -847,8 +1063,9 @@ function validateField(id) {
   if (id === 'age') {
     const val = parseInt(el.value, 10);
     if (isNaN(val) || val < 18 || val > 80) {
-      el.classList.add('error');
-      errorEl.textContent = getText('ageInvalid');
+      el.classList.add('error'); el.classList.remove('valid');
+      errorEl.querySelector('span:last-child')?.remove();
+      errorEl.innerHTML = `<span class="material-symbols-rounded">error</span>${getText('ageInvalid')}`;
       errorEl.classList.add('show');
       return false;
     }
@@ -857,8 +1074,8 @@ function validateField(id) {
   if (id === 'transactionCode') {
     const val = el.value.trim();
     if (val.length < 3) {
-      el.classList.add('error');
-      errorEl.textContent = selectedLang === 'ne' ? 'कृपया मान्य Transaction Code भर्नुहोस्' : 'Please enter a valid transaction code';
+      el.classList.add('error'); el.classList.remove('valid');
+      errorEl.innerHTML = `<span class="material-symbols-rounded">error</span>${selectedLang === 'ne' ? 'कृपया मान्य Transaction Code भर्नुहोस्' : 'Please enter a valid transaction code'}`;
       errorEl.classList.add('show');
       return false;
     }
@@ -866,12 +1083,13 @@ function validateField(id) {
 
   if (el.hasAttribute('required') || el.required) {
     if (!el.value || el.value.trim() === '') {
-      el.classList.add('error');
+      el.classList.add('error'); el.classList.remove('valid');
       errorEl.classList.add('show');
       return false;
     }
   }
   el.classList.remove('error');
+  if (el.value && el.value.trim() !== '') el.classList.add('valid');
   errorEl.classList.remove('show');
   return true;
 }
@@ -945,13 +1163,13 @@ function showQR(method) {
   let qrImage = '', methodName = '', accountInfo = '';
   if (method === 'eSewa') {
     qrImage = QR_ESEWA; methodName = 'eSewa';
-    accountInfo = '📱 नम्बर: 9861513184<br>👤 खाता धनी: BISHAL GHIMIRE';
+    accountInfo = 'नम्बर: 9861513184<br>खाता धनी: BISHAL GHIMIRE';
   } else if (method === 'Khalti') {
     qrImage = QR_KHALTI; methodName = 'Khalti';
-    accountInfo = '📱 नम्बर: 9861513184<br>👤 खाता धनी: BISHAL GHIMIRE';
+    accountInfo = 'नम्बर: 9861513184<br>खाता धनी: BISHAL GHIMIRE';
   } else if (method === 'Bank') {
     qrImage = QR_BANK; methodName = 'कृषि विकास बैंक (ADBL)';
-    accountInfo = '🏦 खाता नम्बर: 0228202511791016<br>👤 खाता धनी: BISHAL GHIMIRE';
+    accountInfo = 'खाता नम्बर: 0228202511791016<br>खाता धनी: BISHAL GHIMIRE';
   }
 
   qrDisplay.innerHTML = `<div class="qr-container">
@@ -962,10 +1180,10 @@ function showQR(method) {
     <div style="margin-top:8px;font-weight:600;color:var(--primary-dark);" class="np">${getText('fee')} ${selectedMembershipPrice || 0}</div>
     <div class="qr-actions">
       <button class="btn-sm btn-download np" onclick="downloadQR('${qrImage}')">
-        <span class="material-symbols-outlined" style="font-size:15px;">download</span> ${getText('downloadQR')}
+        <span class="material-symbols-rounded">download</span> ${getText('downloadQR')}
       </button>
       <button class="btn-sm btn-print np" onclick="printQR()">
-        <span class="material-symbols-outlined" style="font-size:15px;">print</span> ${getText('printQR')}
+        <span class="material-symbols-rounded">print</span> ${getText('printQR')}
       </button>
     </div>
   </div>`;
@@ -992,14 +1210,18 @@ function printQR() {
 }
 
 // ============================================================
-// LOCAL STORAGE (safe wrapper)
+// LOCAL STORAGE (safe wrapper, debounced auto-save)
 // ============================================================
 function saveToLocal() {
-  const data = {
-    formData, step: currentStep, payment: selectedPayment,
-    membership: selectedMembership, membershipPrice: selectedMembershipPrice, lang: selectedLang
-  };
-  safeStorage.set('setmandu_reg', JSON.stringify(data));
+  clearTimeout(saveDebounceTimer);
+  saveDebounceTimer = setTimeout(() => {
+    const data = {
+      formData, step: currentStep, payment: selectedPayment,
+      membership: selectedMembership, membershipPrice: selectedMembershipPrice, lang: selectedLang,
+      savedAt: Date.now()
+    };
+    safeStorage.set('setmandu_reg', JSON.stringify(data));
+  }, 300);
 }
 
 function loadFromLocal() {
@@ -1015,8 +1237,16 @@ function loadFromLocal() {
       selectedMembershipPrice = saved.membershipPrice || 0;
     }
     if (saved.lang) selectedLang = saved.lang;
-  } catch (e) { /* ignore */ }
+  } catch (e) { /* corrupted data — ignore and start fresh */ }
 }
+
+// live auto-save on any input change within the form
+stepsContainer && stepsContainer.addEventListener && document.addEventListener('input', function(e){
+  if (e.target && e.target.closest && e.target.closest('#stepsContainer')) {
+    collectStepData(currentStep);
+    saveToLocal();
+  }
+});
 
 // ============================================================
 // SUBMIT — client-side only (no PHP backend)
@@ -1054,59 +1284,81 @@ function submitForm() {
 
 function showLoader(show) {
   if (show) {
-    stepsContainer.innerHTML = `<div class="loader"></div>
-      <p style="text-align:center;margin-top:10px;color:var(--primary-dark);font-weight:600;" class="np">${getText('processing')}</p>`;
+    stepsContainer.innerHTML = `<div class="loader-wrap">
+      <div class="loader"></div>
+      <p style="text-align:center;margin-top:14px;color:var(--primary-dark);font-weight:600;" class="np">${getText('processing')}</p>
+    </div>`;
     successArea.classList.add('hidden');
   } else {
     renderStep(currentStep);
   }
 }
 
+function launchConfetti() {
+  const colors = ['#8E24AA','#D4AF37','#E53935','#CE93D8','#4A148C'];
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+    piece.style.opacity = String(0.7 + Math.random() * 0.3);
+    piece.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
 function showSuccess(name, userID, membership, price) {
   stepsContainer.innerHTML = '';
-  const meta = planKeyToTextKeys(membership);
-  const membershipDisplay = meta.name ? getText(meta.name) : membership;
+  const meta = PLAN_META[membership] || { nameKey:null, icon:'auto_awesome' };
+  const membershipDisplay = meta.nameKey ? getText(meta.nameKey) : membership;
   const safeName = (name || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
   successArea.innerHTML = `<div class="success-screen">
-    <span class="material-symbols-outlined big-check">verified</span>
-    <h2 class="np" style="color:var(--ink);margin:8px 0;font-family:'Baloo 2',cursive;font-size:30px;">${getText('success')}</h2>
-    <p class="np" style="color:var(--ink);font-size:17px;font-weight:500;">${getText('welcome')} ${safeName} 💖</p>
+    <div class="success-check-wrap"><span class="material-symbols-rounded icon-fill">verified</span></div>
+    <h2 class="np" style="color:var(--ink);margin:8px 0;font-family:'Baloo 2',cursive;font-size:28px;">${getText('success')}</h2>
+    <p class="np" style="color:var(--ink);font-size:17px;font-weight:500;">${getText('welcome')} ${safeName}</p>
 
     <div style="background:rgba(142,36,170,0.1);padding:16px;border-radius:24px;margin:16px 0;border:2px solid rgba(142,36,170,0.15);">
       <div class="np" style="font-size:12.5px;color:var(--muted);">${getText('yourID')}</div>
       <div style="font-size:30px;font-weight:800;color:var(--primary-dark);font-family:'Baloo 2',cursive;">SM-${String(userID).padStart(4,'0')}</div>
-      <div class="np" style="font-size:13.5px;color:var(--muted);margin-top:4px;">${membershipDisplay} · रु. ${price}</div>
+      <div class="np" style="font-size:13.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:5px;">
+        <span class="material-symbols-rounded icon-fill" style="font-size:15px;color:var(--gold-dark);">${meta.icon}</span>${membershipDisplay} · रु. ${price}
+      </div>
     </div>
 
     <div style="background:rgba(67,160,71,0.08);padding:12px;border-radius:24px;margin:12px 0;border:1px solid rgba(67,160,71,0.2);">
-      <p class="np" style="font-size:15px;color:#43a047;font-weight:600;">${getText('paymentReceived')} ${price}</p>
+      <p class="np" style="font-size:15px;color:#43a047;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">
+        <span class="material-symbols-rounded icon-fill">check_circle</span>${getText('paymentReceived')} ${price}
+      </p>
       <p class="np" style="font-size:13.5px;color:var(--muted);margin-top:4px;">${getText('pendingVerification')}</p>
       <p class="np" style="font-size:13px;color:var(--muted);margin-top:4px;">Transaction Code: ${formData.transactionCode || 'N/A'}</p>
     </div>
 
-    <div class="np" style="font-family:'Baloo 2',cursive;font-size:19px;color:var(--primary-dark);margin:12px 0;">
-      "जोडिन्छ मन, बन्छ जीवन" ✨
+    <div class="np" style="font-family:'Baloo 2',cursive;font-size:19px;color:var(--primary-dark);margin:12px 0;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <span class="material-symbols-rounded icon-fill">auto_awesome</span>"जोडिन्छ मन, बन्छ जीवन"<span class="material-symbols-rounded icon-fill">auto_awesome</span>
     </div>
 
     <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap;justify-content:center;">
       <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('नमस्ते सेटमान्डु मा रजिस्टेड गरिसकेको छु। मेरो SetMandu युजर आइडी SM-' + String(userID).padStart(4,'0') + ' हो। ' + membership + ' सदस्यता लिएको छु। ट्रान्जेक्सन कोड: ' + (formData.transactionCode || 'N/A') + ' अब प्रक्रिया अगाडि बढाइदिनुहोस्।')}"
         target="_blank" rel="noopener" style="flex:1;min-width:140px;padding:12px 18px;background:#25D366;color:#fff;border-radius:40px;
         text-decoration:none;font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px;">
-        <span style="font-size:22px;">💬</span> ${getText('whatsapp')}
+        <span class="material-symbols-rounded">forum</span> ${getText('whatsapp')}
       </a>
       <a href="${TIKTOK_URL}" target="_blank" rel="noopener" style="flex:1;min-width:140px;padding:12px 18px;background:#000;color:#fff;
         border-radius:40px;text-decoration:none;font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px;">
-        <span style="font-size:22px;">🎵</span> ${getText('tiktok')}
+        <span class="material-symbols-rounded">music_note</span> ${getText('tiktok')}
       </a>
     </div>
 
     <button class="btn btn-primary np" style="margin-top:12px;" onclick="location.reload()">
-      <span class="material-symbols-outlined">refresh</span> ${getText('startOver')}
+      <span class="material-symbols-rounded">refresh</span> ${getText('startOver')}
     </button>
   </div>`;
   successArea.classList.remove('hidden');
   safeStorage.set('setmandu_registered', 'true');
+  launchConfetti();
 }
 
 // ============================================================
@@ -1114,7 +1366,7 @@ function showSuccess(name, userID, membership, price) {
 // ============================================================
 document.getElementById('themeToggle').addEventListener('click', function () {
   document.body.classList.toggle('dark');
-  const icon = this.querySelector('.material-symbols-outlined');
+  const icon = this.querySelector('.material-symbols-rounded');
   icon.textContent = document.body.classList.contains('dark') ? 'light_mode' : 'dark_mode';
   safeStorage.set('setmandu_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
 });
@@ -1126,7 +1378,7 @@ loadFromLocal();
 
 if (safeStorage.get('setmandu_theme') === 'dark') {
   document.body.classList.add('dark');
-  document.querySelector('#themeToggle .material-symbols-outlined').textContent = 'light_mode';
+  document.querySelector('#themeToggle .material-symbols-rounded').textContent = 'light_mode';
 }
 
 if (safeStorage.get('setmandu_registered') === 'true') {
