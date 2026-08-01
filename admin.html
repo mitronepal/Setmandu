@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
 <meta name="theme-color" content="#1a0a2e">
-<title>SetMandu · एडमिन प्यानल (Firebase Real Data)</title>
+<title>SetMandu · एडमिन प्यानल</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -295,6 +295,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 
 <div class="admin-wrapper">
 
+  <!-- HEADER -->
   <div class="admin-header">
     <span class="logo"><span class="material-symbols-rounded icon-fill">shield</span>SetMandu · Admin</span>
     <span class="badge">
@@ -306,6 +307,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     </span>
   </div>
 
+  <!-- STATS -->
   <div class="stats-grid" id="statsGrid">
     <div class="stat-card">
       <div class="stat-icon purple"><span class="material-symbols-rounded icon-fill">people</span></div>
@@ -329,6 +331,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     </div>
   </div>
 
+  <!-- MAIN TABLE -->
   <div class="glass-card">
     <div class="toolbar">
       <div class="search-box">
@@ -374,6 +377,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   </div>
 </div>
 
+<!-- DETAIL MODAL -->
 <div class="detail-modal" id="detailModal">
   <div class="detail-content">
     <button class="close-modal" onclick="closeDetail()"><span class="material-symbols-rounded">close</span></button>
@@ -383,18 +387,15 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   </div>
 </div>
 
+<!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
 'use strict';
 
 // ============================================================
-// 🔥 FIREBASE CONFIG - तपाईंको Real Config यहाँ राख्नुहोस्
+// 🔥 FIREBASE CONFIG - SETMANDU
 // ============================================================
-// ============================================================
-// 🔥 SETMANDU FIREBASE CONFIG - COPY PASTE GARNUS
-// ============================================================
-
 const firebaseConfig = {
   apiKey: "AIzaSyAcQlfL5FQsLbgjZl2PSpwANbJDRsAYg-0",
   authDomain: "setmandu-603f9.firebaseapp.com",
@@ -406,43 +407,7 @@ const firebaseConfig = {
 };
 
 // ============================================================
-// 🚀 FIREBASE INITIALIZATION
-// ============================================================
-
-// Web CDN को लागि:
-// <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-// <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-
-// ============================================================
-// 📝 DATABASE REFERENCE
-// ============================================================
-
-// Users Collection Path:
-// https://setmandu-603f9-default-rtdb.firebaseio.com/users
-
-// ============================================================
-// 🛡️ DATABASE RULES (Firebase Console मा Set गर्नुहोस्)
-// ============================================================
-
-/*
-{
-  "rules": {
-    ".read": true,
-    ".write": true,
-    "users": {
-      ".read": true,
-      ".write": true
-    }
-  }
-}
-*/
-
-// ============================================================
-// FIREBASE INIT
+// 🚀 FIREBASE INIT
 // ============================================================
 let database = null;
 let firebaseInitialized = false;
@@ -463,7 +428,6 @@ try {
 let users = [];
 let currentFilter = 'all';
 let searchQuery = '';
-let firebaseKeys = {}; // Store Firebase keys for each user
 
 // ============================================================
 // LOAD USERS FROM FIREBASE
@@ -491,14 +455,12 @@ function loadUsersFromFirebase() {
   usersRef.on('value', (snapshot) => {
     const data = snapshot.val();
     users = [];
-    firebaseKeys = {};
 
     if (data) {
       Object.keys(data).forEach((key) => {
         const user = data[key];
-        user._firebaseKey = key; // Store Firebase key for updates
+        user._firebaseKey = key;
         users.push(user);
-        firebaseKeys[user.id] = key;
       });
     }
 
@@ -515,8 +477,6 @@ function loadUsersFromFirebase() {
     
     if (users.length > 0) {
       showToast(`✅ ${users.length} प्रयोगकर्ता लोड गरियो`, 'success');
-    } else {
-      showToast('📭 कुनै प्रयोगकर्ता छैन। नयाँ Register गर्नुहोस्।', 'error');
     }
   }, (error) => {
     overlay.classList.add('hidden');
@@ -553,7 +513,6 @@ function updateUserInFirebase(userId, updates) {
   });
 
   if (!firebaseKey) {
-    // Try to find by searching in database
     const usersRef = database.ref('users');
     usersRef.orderByChild('id').equalTo(userId).once('value')
       .then((snapshot) => {
@@ -582,7 +541,6 @@ function performUpdate(key, updates) {
     .then(() => {
       overlay.classList.add('hidden');
       showToast('✅ अद्यावधिक गरियो', 'success');
-      // Data will refresh via the real-time listener
     })
     .catch((error) => {
       overlay.classList.add('hidden');
@@ -605,7 +563,6 @@ function deleteUserFromFirebase(userId) {
     return;
   }
 
-  // Find Firebase key
   let firebaseKey = null;
   users.forEach(u => {
     if (u.id === userId && u._firebaseKey) {
