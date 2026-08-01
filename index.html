@@ -58,6 +58,12 @@ body.dark{
 .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24;vertical-align:middle;line-height:1;}
 .icon-fill{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;}
 
+/* ============ CONNECTION BANNER ============ */
+.conn-banner{position:fixed;top:0;left:0;right:0;z-index:10050;text-align:center;padding:9px 12px;
+  font-size:12.5px;font-weight:700;color:#fff;background:linear-gradient(135deg,#c62828,#8e0000);
+  transform:translateY(-100%);transition:transform .35s ease;display:flex;align-items:center;justify-content:center;gap:6px;}
+.conn-banner.show{transform:translateY(0);}
+
 /* ============ PREMIUM WELCOME ============ */
 .welcome-modal{
   position:fixed;inset:0;background:rgba(20,8,28,0.72);
@@ -208,6 +214,20 @@ input.valid,select.valid{border-color:#43a047;}
 .error-msg.show{max-height:30px;display:flex;}
 .error-msg .material-symbols-rounded{font-size:14px;}
 
+.file-drop{border:2px dashed rgba(142,36,170,0.3);border-radius:20px;padding:18px;text-align:center;cursor:pointer;
+  transition:.25s;background:rgba(142,36,170,0.03);position:relative;}
+.file-drop:hover{border-color:var(--primary);background:rgba(142,36,170,0.07);}
+.file-drop.has-file{border-style:solid;border-color:#43a047;background:rgba(67,160,71,0.06);}
+.file-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.file-drop .material-symbols-rounded{font-size:30px;color:var(--primary);}
+.file-drop .file-hint{font-size:12px;color:var(--muted);margin-top:4px;}
+body.dark .file-drop .file-hint{color:#c9b6d4;}
+.file-preview{max-width:120px;max-height:120px;border-radius:14px;margin:8px auto 0;display:block;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);object-fit:cover;}
+.upload-progress-wrap{height:6px;background:rgba(142,36,170,0.1);border-radius:8px;margin-top:8px;overflow:hidden;display:none;}
+.upload-progress-wrap.show{display:block;}
+.upload-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:8px;transition:width .3s ease;}
+
 .btn-group{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
 .btn-group .btn{flex:1;padding:14px 10px;font-size:15px;}
 .btn-group .btn-secondary{flex:.5;}
@@ -246,6 +266,13 @@ body.dark .qr-container .detail{color:#e2d3ea;}
 .loader{border:4px solid rgba(142,36,170,0.12);border-top:4px solid var(--primary);border-radius:50%;
   width:50px;height:50px;animation:spin .8s linear infinite;margin:0 auto;}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Skeleton loading */
+.skeleton{background:linear-gradient(90deg, rgba(142,36,170,0.08) 25%, rgba(142,36,170,0.16) 37%, rgba(142,36,170,0.08) 63%);
+  background-size:400% 100%;animation:skeletonShine 1.4s ease infinite;border-radius:14px;}
+@keyframes skeletonShine{0%{background-position:100% 50%}100%{background-position:0 50%}}
+.skeleton-row{height:16px;margin:10px 0;}
+.skeleton-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;}
 
 .success-screen{text-align:center;padding:16px 0;}
 .success-check-wrap{width:88px;height:88px;border-radius:50%;margin:0 auto 6px;
@@ -400,9 +427,12 @@ body.dark .dashboard-screen .profile-glass .profile-value{color:#f2e9f6;}
   color:#fff;padding:6px 16px;border-radius:40px;font-weight:700;font-size:14px;box-shadow:0 8px 20px rgba(67,160,71,0.3);}
 .dashboard-screen .pending-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f9a825,#f57f17);
   color:#fff;padding:6px 16px;border-radius:40px;font-weight:700;font-size:14px;box-shadow:0 8px 20px rgba(249,168,37,0.3);}
+.dashboard-screen .rejected-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#c62828,#8e0000);
+  color:#fff;padding:6px 16px;border-radius:40px;font-weight:700;font-size:14px;box-shadow:0 8px 20px rgba(198,40,40,0.3);}
 .dashboard-screen .profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
   display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:36px;color:#fff;
-  box-shadow:0 12px 30px rgba(142,36,170,0.3);}
+  box-shadow:0 12px 30px rgba(142,36,170,0.3);overflow:hidden;}
+.dashboard-screen .profile-avatar img{width:100%;height:100%;object-fit:cover;}
 .dashboard-screen .profile-avatar .material-symbols-rounded{font-size:40px;}
 .dashboard-screen .whatsapp-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;
   background:#25D366;color:#fff;border-radius:50px;text-decoration:none;font-weight:600;font-size:15px;
@@ -423,6 +453,9 @@ body.dark .dashboard-screen .profile-glass .profile-value{color:#f2e9f6;}
 .confetti-piece{position:fixed;top:-10px;width:8px;height:14px;z-index:10001;pointer-events:none;
   animation:confettiFall linear forwards;}
 @keyframes confettiFall{to{transform:translateY(105vh) rotate(540deg);opacity:.2;}}
+
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#43a047;margin-right:5px;
+  animation:pulseDot 1.5s ease infinite;}
 
 @media (max-width:480px){
   .welcome-content{padding:30px 18px 24px;border-radius:36px;}
@@ -447,6 +480,8 @@ body.dark .dashboard-screen .profile-glass .profile-value{color:#f2e9f6;}
 </style>
 </head>
 <body>
+
+<div class="conn-banner np" id="connBanner"><span class="material-symbols-rounded" style="font-size:16px;">wifi_off</span> इन्टरनेट जडान छैन / You are offline</div>
 
 <!-- ALERT DIALOG -->
 <div class="alert-dialog" id="alertDialog">
@@ -528,7 +563,13 @@ body.dark .dashboard-screen .profile-glass .profile-value{color:#f2e9f6;}
   <div id="successArea" class="hidden"></div>
 </div>
 
-<script>
+<script type="module">
+import {
+  db, storage, auth, ref, set, get, update, push, onValue, off,
+  signInAnonymously, onAuthStateChanged, esc, generateNextUserId, uploadImage,
+  friendlyFirebaseError, watchConnection
+} from './firebase-config.js';
+
 'use strict';
 
 // ============================================================
@@ -538,7 +579,6 @@ const QR_ESEWA = 'https://i.ibb.co/prhr7Z3Q/esewa-qr.jpg';
 const QR_KHALTI = 'https://i.ibb.co/6cxrmjBq/khalti-qr.jpg';
 const QR_BANK = 'https://i.ibb.co/xKkz8YWq/bank-qr.jpg';
 const WHATSAPP_NUMBER = '9779810700688';
-const TIKTOK_URL = 'https://www.tiktok.com/@setmandu.com';
 
 const ALL_PLANS = { Starter:100, Basic:500, Premium:1500, Gold:2500, VIP:5000 };
 const PLAN_META = {
@@ -558,9 +598,12 @@ let selectedPayment = null;
 let selectedMembership = null;
 let selectedMembershipPrice = 0;
 let formData = {};
+let profilePhotoFile = null;
+let paymentScreenshotFile = null;
 let isSubmitting = false;
 let membershipNoticeShown = false;
-let saveDebounceTimer = null;
+let currentUid = null;
+let liveUserListenerRef = null;
 const STEPS = 4;
 
 const stepsContainer = document.getElementById('stepsContainer');
@@ -571,13 +614,15 @@ const welcomeModal = document.getElementById('welcomeModal');
 const alertDialog = document.getElementById('alertDialog');
 const membershipNoticeDialog = document.getElementById('membershipNoticeDialog');
 const aiChatModal = document.getElementById('aiChatModal');
+const connBanner = document.getElementById('connBanner');
 
-const safeStorage = {
-  _mem:{},
-  set(k,v){ try{localStorage.setItem(k,v);}catch(e){this._mem[k]=v;} },
-  get(k){ try{return localStorage.getItem(k);}catch(e){return this._mem[k]??null;} },
-  remove(k){ try{localStorage.removeItem(k);}catch(e){delete this._mem[k];} }
+// non-personal UI prefs only (theme/lang) — NOT registration data — fine to keep local
+const prefStorage = {
+  set(k,v){ try{localStorage.setItem(k,v);}catch(e){} },
+  get(k){ try{return localStorage.getItem(k);}catch(e){return null;} }
 };
+
+watchConnection((online)=>{ connBanner.classList.toggle('show', !online); });
 
 const countries = [
 "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
@@ -613,7 +658,7 @@ const t = {
     stepLabels:['व्यक्तिगत','साथीको रुचि','सदस्यता','भुक्तानी'],
     stepIcons:['person','favorite','workspace_premium','payments'],
     fullName:'पूरा नाम *', currentCountry:'हालको देश *', gender:'लिङ्ग *', age:'उमेर *',
-    caste:'जाति / जनजाति *', education:'शिक्षा *', occupation:'पेशा *',
+    caste:'जाति / जनजाति *', education:'शिक्षा *', occupation:'पेशा *', profilePhoto:'प्रोफाइल फोटो *',
     preferredAge:'रुचाइएको उमेर', preferredCaste:'रुचाइएको जाति (वैकल्पिक)', preferredCountry:'रुचाइएको देश',
     selectPayment:'भुक्तानी विधि *',
     esewa:'इ-सेवा', khalti:'खल्ती', bank:'बैंक',
@@ -625,7 +670,7 @@ const t = {
     paymentRequired:'कृपया भुक्तानी विधि चयन गर्नुहोस्',
     fee:'दर्ता शुल्क: रु.', confirm:'सबै विवरण जाँच गर्नुहोस्',
     confirmTitle:'पुष्टि गर्नुहोस्', yourID:'तपाईंको SetMandu युजर आइडी',
-    whatsapp:'WhatsApp मा सम्पर्क गर्नुहोस्', tiktok:'TikTok मा फलो गर्नुहोस्',
+    whatsapp:'WhatsApp मा सम्पर्क गर्नुहोस्',
     alreadyRegistered:'तपाईं पहिले नै दर्ता भइसक्नुभएको छ। कृपया लगइन गर्नुहोस्।',
     downloadQR:'QR डाउनलोड गर्नुहोस्', printQR:'QR प्रिन्ट गर्नुहोस्',
     selectPaymentMethod:'कृपया पहिले भुक्तानी विधि चयन गर्नुहोस्', membershipPlan:'सदस्यता योजना *',
@@ -648,26 +693,22 @@ const t = {
     },
     transactionCode:'Transaction Code * (भुक्तानी पछि प्राप्त कोड)',
     transactionPlaceholder:'जस्तै: TXN123456789',
+    paymentScreenshot:'भुक्तानी स्क्रिनसट *',
+    uploadHint:'यहाँ ट्याप गरी तस्बिर छान्नुहोस् (५ MB सम्म)',
     pendingVerificationTitle:'प्रमाणीकरण प्रक्रियामा',
     pendingMessage:'तपाईंको खाता प्रमाणीकरणको लागि पेन्डिङ छ। कृपया केही समय पर्खनुहोस्।',
+    rejectedTitle:'दर्ता अस्वीकृत भयो',
+    rejectedMessage:'माफ गर्नुहोस्, तपाईंको दर्ता अस्वीकृत भएको छ। थप जानकारीको लागि WhatsApp मा सम्पर्क गर्नुहोस्।',
     estimatedTime:'अनुमानित समीक्षा: २४-४८ घण्टा',
     verificationSteps:['दर्ता प्राप्त','भुक्तानी प्रमाणित','प्रोफाइल समीक्षा','प्रमाणीकरण'],
     verifiedTitle:'प्रमाणीकरण सफल!',
     verifiedMessage:'तपाईंको खाता सफलतापूर्वक प्रमाणित भएको छ।',
-    verifiedDate:'प्रमाणीकरण मिति',
-    regDate:'दर्ता मिति',
-    membership:'सदस्यता',
-    status:'स्थिति',
-    profileTitle:'प्रोफाइल विवरण',
-    id:'SetMandu ID',
-    genderLabel:'लिङ्ग',
-    ageLabel:'उमेर',
-    educationLabel:'शिक्षा',
-    occupationLabel:'पेशा',
-    casteLabel:'जाति',
-    prefAge:'रुचाइएको उमेर',
-    prefCaste:'रुचाइएको जाति',
-    prefCountry:'रुचाइएको देश',
+    verifiedDate:'प्रमाणीकरण मिति', regDate:'दर्ता मिति', membership:'सदस्यता', status:'स्थिति',
+    profileTitle:'प्रोफाइल विवरण', id:'SetMandu ID', genderLabel:'लिङ्ग', ageLabel:'उमेर',
+    educationLabel:'शिक्षा', occupationLabel:'पेशा', casteLabel:'जाति',
+    prefAge:'रुचाइएको उमेर', prefCaste:'रुचाइएको जाति', prefCountry:'रुचाइएको देश',
+    liveUpdating:'रियलटाइम अपडेट हुँदैछ',
+    submitting:'पेश गर्दै...', uploadingPhoto:'फोटो अपलोड हुँदैछ...', uploadingScreenshot:'स्क्रिनसट अपलोड हुँदैछ...', savingData:'डाटा सेभ हुँदैछ...',
     whatsappMsg:'नमस्ते SetMandu Team। 🙏\nमेरो प्रोफाइल सफलतापूर्वक Verify भएको छ।\n🆔 User ID: [ID]\n👤 नाम: [NAME]\n⭐ सदस्यता: [MEMBERSHIP]\n\nमेरो प्रोफाइल अनुसार मिल्ने उपयुक्त सदस्य वा जीवनसाथी उपलब्ध भए कृपया परिचय गराइदिनुहोस्।\nधन्यवाद। 💜'
   },
   en:{
@@ -675,7 +716,7 @@ const t = {
     stepLabels:['Personal','Partner','Membership','Payment'],
     stepIcons:['person','favorite','workspace_premium','payments'],
     fullName:'Full Name *', currentCountry:'Current Country *', gender:'Gender *', age:'Age *',
-    caste:'Caste / Ethnicity *', education:'Education *', occupation:'Occupation *',
+    caste:'Caste / Ethnicity *', education:'Education *', occupation:'Occupation *', profilePhoto:'Profile Photo *',
     preferredAge:'Preferred Age', preferredCaste:'Preferred Caste (Optional)', preferredCountry:'Preferred Country',
     selectPayment:'Payment Method *',
     esewa:'eSewa', khalti:'Khalti', bank:'Bank',
@@ -687,7 +728,7 @@ const t = {
     paymentRequired:'Please select payment method',
     fee:'Registration Fee: Rs.', confirm:'Please review all details',
     confirmTitle:'Confirm', yourID:'Your SetMandu User ID',
-    whatsapp:'Contact on WhatsApp', tiktok:'Follow on TikTok',
+    whatsapp:'Contact on WhatsApp',
     alreadyRegistered:'You are already registered. Please login.',
     downloadQR:'Download QR', printQR:'Print QR',
     selectPaymentMethod:'Please select payment method first', membershipPlan:'Membership Plan *',
@@ -710,32 +751,27 @@ const t = {
     },
     transactionCode:'Transaction Code * (Code received after payment)',
     transactionPlaceholder:'e.g. TXN123456789',
+    paymentScreenshot:'Payment Screenshot *',
+    uploadHint:'Tap here to choose an image (up to 5 MB)',
     pendingVerificationTitle:'Verification Pending',
     pendingMessage:'Your account is pending verification. Please wait.',
+    rejectedTitle:'Registration Rejected',
+    rejectedMessage:'Sorry, your registration was rejected. Contact us on WhatsApp for more information.',
     estimatedTime:'Estimated review: 24-48 hours',
     verificationSteps:['Registration Received','Payment Verified','Profile Review','Verification'],
     verifiedTitle:'Verification Successful!',
     verifiedMessage:'Your account has been successfully verified.',
-    verifiedDate:'Verified Date',
-    regDate:'Registration Date',
-    membership:'Membership',
-    status:'Status',
-    profileTitle:'Profile Details',
-    id:'SetMandu ID',
-    genderLabel:'Gender',
-    ageLabel:'Age',
-    educationLabel:'Education',
-    occupationLabel:'Occupation',
-    casteLabel:'Caste',
-    prefAge:'Preferred Age',
-    prefCaste:'Preferred Caste',
-    prefCountry:'Preferred Country',
+    verifiedDate:'Verified Date', regDate:'Registration Date', membership:'Membership', status:'Status',
+    profileTitle:'Profile Details', id:'SetMandu ID', genderLabel:'Gender', ageLabel:'Age',
+    educationLabel:'Education', occupationLabel:'Occupation', casteLabel:'Caste',
+    prefAge:'Preferred Age', prefCaste:'Preferred Caste', prefCountry:'Preferred Country',
+    liveUpdating:'Live updating',
+    submitting:'Submitting...', uploadingPhoto:'Uploading photo...', uploadingScreenshot:'Uploading screenshot...', savingData:'Saving data...',
     whatsappMsg:'Hello SetMandu Team. 🙏\nMy profile has been successfully verified.\n🆔 User ID: [ID]\n👤 Name: [NAME]\n⭐ Membership: [MEMBERSHIP]\n\nPlease introduce me to suitable members or life partners according to my profile.\nThank you. 💜'
   }
 };
 
 function getText(key){ return t[selectedLang][key] || key; }
-function getActivePlans(){ return ALL_PLANS; }
 
 // ============================================================
 // PARTICLES
@@ -763,18 +799,65 @@ createParticles();
 // ============================================================
 function selectLanguage(lang) {
   selectedLang=lang;
+  prefStorage.set('setmandu_lang', lang);
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
   document.getElementById('startText').textContent=lang==='ne'?'सुरु गर्नुहोस्':'Start';
+}
+window.selectLanguage = selectLanguage;
+
+// ============================================================
+// AUTH — anonymous session per-device identifies "this user"
+// ============================================================
+function initAuth(){
+  return new Promise((resolve)=>{
+    onAuthStateChanged(auth, async (user)=>{
+      if(user){
+        currentUid = user.uid;
+        resolve(user.uid);
+      } else {
+        try{
+          const cred = await signInAnonymously(auth);
+          currentUid = cred.user.uid;
+          resolve(currentUid);
+        }catch(e){
+          console.error(e);
+          resolve(null);
+        }
+      }
+    });
+  });
 }
 
 // ============================================================
 // WELCOME / START
 // ============================================================
-function startRegistration() {
-  const registered = safeStorage.get('setmandu_registered');
-  if(registered==='true'){ welcomeModal.style.display='none'; showAIChat(); return; }
+async function startRegistration() {
   welcomeModal.style.display='none';
-  renderStep(1);
+  showAppSkeleton();
+  const uid = currentUid || await initAuth();
+  if(!uid){ stepsContainer.innerHTML = `<p class="np" style="text-align:center;color:var(--accent);">${getText('networkError')}</p>`; return; }
+
+  try{
+    const snap = await get(ref(db, 'users/'+uid));
+    if(snap.exists()){
+      attachLiveListener(uid, snap.val());
+    } else {
+      renderStep(1);
+    }
+  }catch(e){
+    console.error(e);
+    renderStep(1); // fall back to registration form if the read fails (e.g. offline)
+  }
+}
+window.startRegistration = startRegistration;
+
+function showAppSkeleton(){
+  stepsContainer.innerHTML = `<div style="padding:10px 0;">
+    <div class="skeleton skeleton-row" style="width:60%"></div>
+    <div class="skeleton skeleton-row" style="width:90%"></div>
+    <div class="skeleton skeleton-row" style="width:80%"></div>
+    <div class="skeleton skeleton-row" style="width:70%"></div>
+  </div>`;
 }
 
 // ============================================================
@@ -787,7 +870,7 @@ function sendChatMessage(){
   const msg=input.value.trim();
   if(!msg) return;
   const body=document.getElementById('chatBody');
-  body.innerHTML += `<div class="chat-message user">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+  body.innerHTML += `<div class="chat-message user">${esc(msg)}</div>`;
   input.value='';
   setTimeout(()=>{
     const responses=['धन्यवाद! म तपाईंको प्रश्न बुझ्दै छु।','SetMandu मा तपाईंको दर्ता सफल भएको छ। कृपया प्रमाणीकरणको लागि पर्खनुहोस्।','तपाईंको युजर आइडी प्रयोग गरी लगइन गर्न सक्नुहुन्छ।','थप जानकारीको लागि WhatsApp मा सम्पर्क गर्नुहोस्।','हामी तपाईंको लागि उत्तम जीवनसाथी खोज्दै छौं।'];
@@ -795,18 +878,20 @@ function sendChatMessage(){
     body.scrollTop=body.scrollHeight;
   },500);
 }
+window.showAIChat=showAIChat; window.closeAIChat=closeAIChat; window.sendChatMessage=sendChatMessage;
 
 // ============================================================
 // ALERTS
 // ============================================================
 function showAlert(){ alertDialog.classList.add('show'); }
 function closeAlert(){ alertDialog.classList.remove('show'); }
+window.showAlert=showAlert; window.closeAlert=closeAlert;
 
 function buildPlansNoticeHTML(){
   const notes=t[selectedLang].planNoticeShort;
   return Object.keys(ALL_PLANS).map(p=>{
     const meta=PLAN_META[p]; const price=ALL_PLANS[p];
-    return `<div class="plan-notice-item"><div class="pn-head"><span class="pn-name"><span class="material-symbols-rounded icon-fill">${meta.icon}</span>${getText(meta.nameKey)}</span><span class="pn-price">रु.${price}</span></div><div class="pn-desc np">${notes[p]}</div></div>`;
+    return `<div class="plan-notice-item"><div class="pn-head"><span class="pn-name"><span class="material-symbols-rounded icon-fill">${meta.icon}</span>${esc(getText(meta.nameKey))}</span><span class="pn-price">रु.${price}</span></div><div class="pn-desc np">${esc(notes[p])}</div></div>`;
   }).join('');
 }
 function showMembershipNoticeIfNeeded(){
@@ -816,6 +901,7 @@ function showMembershipNoticeIfNeeded(){
   membershipNoticeShown=true;
 }
 function closeMembershipNotice(){ membershipNoticeDialog.classList.remove('show'); }
+window.closeMembershipNotice=closeMembershipNotice;
 
 // ============================================================
 // STEP DEFINITIONS
@@ -823,6 +909,7 @@ function closeMembershipNotice(){ membershipNoticeDialog.classList.remove('show'
 function getStepFields(){
   return [
     { title:getText('stepTitles')[0], icon:getText('stepIcons')[0], fields:[
+      { id:'profilePhoto', label:getText('profilePhoto'), type:'file', required:true },
       { id:'fullName', label:getText('fullName'), type:'text', required:true },
       { id:'currentCountry', label:getText('currentCountry'), type:'select', options:countries, required:true },
       { id:'gender', label:getText('gender'), type:'select', options:['Male','Female','Other'], required:true },
@@ -841,7 +928,8 @@ function getStepFields(){
     ]},
     { title:getText('stepTitles')[3], icon:getText('stepIcons')[3], fields:[
       { id:'paymentMethod', label:getText('selectPayment'), type:'payment', required:true },
-      { id:'transactionCode', label:getText('transactionCode'), type:'text', required:true }
+      { id:'transactionCode', label:getText('transactionCode'), type:'text', required:true },
+      { id:'paymentScreenshot', label:getText('paymentScreenshot'), type:'file', required:true }
     ]}
   ];
 }
@@ -852,22 +940,32 @@ function getStepFields(){
 function renderStep(step){
   const stepDefs=getStepFields();
   const data=stepDefs[step-1];
-  let html=`<div class="step active"><div class="step-title np"><span class="icon-badge"><span class="material-symbols-rounded">${data.icon}</span></span> ${data.title}</div>`;
+  let html=`<div class="step active"><div class="step-title np"><span class="icon-badge"><span class="material-symbols-rounded">${data.icon}</span></span> ${esc(data.title)}</div>`;
 
   data.fields.forEach((f,idx)=>{
     const delay=(idx*0.05).toFixed(2);
     if(f.type==='select'){
-      const opts=f.options.map(o=>`<option value="${o}">${o}</option>`).join('');
-      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${f.label}</label>
+      const opts=f.options.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('');
+      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${esc(f.label)}</label>
         <select id="${f.id}" ${f.required?'required':''} onchange="validateField('${f.id}')">
         <option value="">${selectedLang==='ne'?'छनौट गर्नुहोस्':'Select'}</option>${opts}</select>
         <div class="error-msg np" id="${f.id}_error"><span class="material-symbols-rounded">error</span>${getText('required')}</div></div>`;
+    }else if(f.type==='file'){
+      const isPhoto = f.id==='profilePhoto';
+      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${esc(f.label)}</label>
+        <div class="file-drop" id="${f.id}_drop">
+          <input type="file" id="${f.id}" accept="image/*" onchange="handleFileSelect('${f.id}')">
+          <span class="material-symbols-rounded">${isPhoto?'add_a_photo':'photo_camera'}</span>
+          <div class="file-hint np" id="${f.id}_hint">${getText('uploadHint')}</div>
+          <img class="file-preview hidden" id="${f.id}_preview" alt="preview">
+        </div>
+        <div class="error-msg np" id="${f.id}_error"><span class="material-symbols-rounded">error</span>${getText('required')}</div></div>`;
     }else if(f.type==='membership'){
-      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${f.label}</label>
+      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${esc(f.label)}</label>
         <div class="membership-container" id="membershipContainer">${getMembershipHTML()}</div>
         <div class="error-msg np" id="membership_error"><span class="material-symbols-rounded">error</span>${getText('selectMembership')}</div></div>`;
     }else if(f.type==='payment'){
-      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${f.label}</label>
+      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${esc(f.label)}</label>
         <div class="payment-options" id="paymentOptions">
           <div class="payment-option" data-method="eSewa" onclick="selectPayment('eSewa')"><span class="material-symbols-rounded">account_balance_wallet</span>${getText('esewa')}</div>
           <div class="payment-option" data-method="Khalti" onclick="selectPayment('Khalti')"><span class="material-symbols-rounded">payments</span>${getText('khalti')}</div>
@@ -880,8 +978,8 @@ function renderStep(step){
     }else{
       const attrs=f.min?`min="${f.min}" max="${f.max}"`:'';
       const placeholder=f.id==='transactionCode'?getText('transactionPlaceholder'):'';
-      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${f.label}</label>
-        <input type="${f.type}" id="${f.id}" ${f.required?'required':''} ${attrs} placeholder="${placeholder}"
+      html+=`<div class="form-group" style="animation-delay:${delay}s"><label class="np">${esc(f.label)}</label>
+        <input type="${f.type}" id="${f.id}" ${f.required?'required':''} ${attrs} placeholder="${esc(placeholder)}"
         onchange="validateField('${f.id}')" oninput="validateField('${f.id}')" inputmode="${f.type==='number'?'numeric':'text'}">
         <div class="error-msg np" id="${f.id}_error"><span class="material-symbols-rounded">error</span>${getText('required')}</div></div>`;
     }
@@ -923,10 +1021,12 @@ function renderStep(step){
   // restore values
   data.fields.forEach(f=>{
     const el=document.getElementById(f.id);
-    if(el && formData[f.id]!==undefined && f.type!=='payment' && f.type!=='membership'){
+    if(el && formData[f.id]!==undefined && f.type!=='payment' && f.type!=='membership' && f.type!=='file'){
       el.value=formData[f.id];
     }
   });
+  restoreFilePreview('profilePhoto', profilePhotoFile);
+  restoreFilePreview('paymentScreenshot', paymentScreenshotFile);
 
   if(selectedPayment){
     showQR(selectedPayment);
@@ -962,6 +1062,19 @@ function renderStep(step){
   if(step===3) setTimeout(showMembershipNoticeIfNeeded,400);
   if(step===4) setTimeout(showAlert,500);
 }
+window.renderStep = renderStep;
+
+function restoreFilePreview(id, file){
+  if(!file) return;
+  const drop=document.getElementById(id+'_drop');
+  const preview=document.getElementById(id+'_preview');
+  const hint=document.getElementById(id+'_hint');
+  if(!drop||!preview) return;
+  preview.src=URL.createObjectURL(file);
+  preview.classList.remove('hidden');
+  drop.classList.add('has-file');
+  if(hint) hint.textContent=file.name;
+}
 
 function renderStepDots(step){
   const labels=getText('stepLabels');
@@ -970,10 +1083,32 @@ function renderStepDots(step){
   for(let i=1;i<=STEPS;i++){
     const state=i<step?'done':(i===step?'current':'');
     const inner=i<step?'<span class="material-symbols-rounded">check</span>':`<span class="material-symbols-rounded">${icons[i-1]}</span>`;
-    html+=`<div class="step-dot ${state}"><div class="dot">${inner}</div><div class="dot-label">${labels[i-1]}</div></div>`;
+    html+=`<div class="step-dot ${state}"><div class="dot">${inner}</div><div class="dot-label">${esc(labels[i-1])}</div></div>`;
   }
   stepDotsEl.innerHTML=html;
 }
+
+// ============================================================
+// FILE UPLOAD HANDLING
+// ============================================================
+function handleFileSelect(id){
+  const input=document.getElementById(id);
+  const file=input.files && input.files[0];
+  const err=document.getElementById(id+'_error');
+  if(!file) return;
+  if(!/^image\//.test(file.type)){
+    err.innerHTML=`<span class="material-symbols-rounded">error</span>${selectedLang==='ne'?'कृपया मान्य तस्बिर छान्नुहोस्':'Please choose a valid image'}`;
+    err.classList.add('show'); return;
+  }
+  if(file.size>5*1024*1024){
+    err.innerHTML=`<span class="material-symbols-rounded">error</span>${selectedLang==='ne'?'फाइल साइज ५MB भन्दा कम हुनुपर्छ':'File must be under 5MB'}`;
+    err.classList.add('show'); return;
+  }
+  err.classList.remove('show');
+  if(id==='profilePhoto') profilePhotoFile=file; else if(id==='paymentScreenshot') paymentScreenshotFile=file;
+  restoreFilePreview(id, file);
+}
+window.handleFileSelect = handleFileSelect;
 
 // ============================================================
 // MEMBERSHIP
@@ -989,7 +1124,7 @@ function buildMembershipCardsHTML(plans){
     const isSelected=selectedMembership===planName;
     const isBest=planName==='VIP';
     html+=`<div class="membership-card ${isSelected?'selected':''}" data-plan="${planName}" data-price="${price}" style="animation-delay:${(i*0.06).toFixed(2)}s" onclick="selectMembership(event,'${planName}',${price})">
-      <div class="card-inner"><div class="card-header"><span class="card-name"><span class="plan-icon"><span class="material-symbols-rounded icon-fill">${meta.icon}</span></span>${label}</span><span class="card-price">रु. ${price.toLocaleString()}</span></div>
+      <div class="card-inner"><div class="card-header"><span class="card-name"><span class="plan-icon"><span class="material-symbols-rounded icon-fill">${meta.icon}</span></span>${esc(label)}</span><span class="card-price">रु. ${price.toLocaleString()}</span></div>
       <div class="card-features np">${features}</div>${isBest?'<span class="card-badge"><span class="material-symbols-rounded icon-fill">stars</span>BEST</span>':''}<span class="card-check"><span class="material-symbols-rounded">check</span></span></div></div>`;
   });
   html+=`<div class="membership-note np"><span class="material-symbols-rounded icon-fill">auto_awesome</span>${getText('nepalNote')}</div>`;
@@ -1018,8 +1153,8 @@ function selectMembership(evt,plan,price){
   const err=document.getElementById('membership_error');
   if(err) err.classList.remove('show');
   syncFeeEverywhere();
-  saveToLocal();
 }
+window.selectMembership = selectMembership;
 
 function syncFeeEverywhere(){
   const fee=document.getElementById('feeDisplay');
@@ -1065,6 +1200,7 @@ function validateField(id){
   err.classList.remove('show');
   return true;
 }
+window.validateField = validateField;
 
 function validateAllFields(step){
   const stepDefs=getStepFields();
@@ -1073,6 +1209,10 @@ function validateAllFields(step){
   fields.forEach(f=>{
     if(f.type==='membership'){ if(f.required&&!selectedMembership){ document.getElementById('membership_error')?.classList.add('show'); valid=false; } }
     else if(f.type==='payment'){ if(f.required&&!selectedPayment){ document.getElementById('payment_error')?.classList.add('show'); valid=false; } }
+    else if(f.type==='file'){
+      const has = f.id==='profilePhoto'?profilePhotoFile:paymentScreenshotFile;
+      if(f.required && !has){ document.getElementById(f.id+'_error')?.classList.add('show'); valid=false; }
+    }
     else { if(!validateField(f.id)&&f.required) valid=false; }
   });
   return valid;
@@ -1087,8 +1227,8 @@ function goToStep(step){
   collectStepData(currentStep);
   currentStep=step;
   renderStep(step);
-  saveToLocal();
 }
+window.goToStep = goToStep;
 
 function updateProgress(step){ progressFill.style.width=(((step-1)/(STEPS-1))*100)+'%'; }
 
@@ -1096,7 +1236,7 @@ function collectStepData(step){
   const stepDefs=getStepFields();
   const fields=stepDefs[step-1].fields;
   fields.forEach(f=>{
-    if(f.type==='payment'||f.type==='membership') return;
+    if(f.type==='payment'||f.type==='membership'||f.type==='file') return;
     const el=document.getElementById(f.id);
     if(el) formData[f.id]=el.value;
   });
@@ -1111,8 +1251,8 @@ function selectPayment(method){
   document.querySelectorAll('.payment-option').forEach(el=>el.classList.toggle('selected',el.dataset.method===method));
   document.getElementById('payment_error')?.classList.remove('show');
   showQR(method);
-  saveToLocal();
 }
+window.selectPayment = selectPayment;
 
 function showQR(method){
   const qrDisplay=document.getElementById('qrDisplay');
@@ -1121,7 +1261,7 @@ function showQR(method){
   if(method==='eSewa'){ qrImage=QR_ESEWA; methodName='eSewa'; accountInfo='नम्बर: 9861513184<br>खाता धनी: BISHAL GHIMIRE'; }
   else if(method==='Khalti'){ qrImage=QR_KHALTI; methodName='Khalti'; accountInfo='नम्बर: 9861513184<br>खाता धनी: BISHAL GHIMIRE'; }
   else if(method==='Bank'){ qrImage=QR_BANK; methodName='कृषि विकास बैंक (ADBL)'; accountInfo='खाता नम्बर: 0228202511791016<br>खाता धनी: BISHAL GHIMIRE'; }
-  qrDisplay.innerHTML=`<div class="qr-container"><div style="font-weight:700;font-size:19px;color:var(--primary-dark);">${methodName}</div>
+  qrDisplay.innerHTML=`<div class="qr-container"><div style="font-weight:700;font-size:19px;color:var(--primary-dark);">${esc(methodName)}</div>
     <div class="detail np">${accountInfo}</div>
     <img src="${qrImage}" alt="QR Code" class="qr-image" id="qrImageToDownload" onerror="this.style.display='none'" loading="lazy">
     <div style="font-size:12.5px;color:var(--muted);margin-top:4px;" class="np">QR स्क्यान गरी भुक्तानी गर्नुहोस्</div>
@@ -1141,78 +1281,82 @@ function printQR(){
     w.document.close(); setTimeout(()=>{ w.print(); },500);
   }
 }
+window.downloadQR=downloadQR; window.printQR=printQR;
 
 // ============================================================
-// LOCAL STORAGE
+// SUBMIT — writes to Firebase Realtime Database + Storage
 // ============================================================
-function saveToLocal(){
-  clearTimeout(saveDebounceTimer);
-  saveDebounceTimer=setTimeout(()=>{
-    safeStorage.set('setmandu_reg',JSON.stringify({ formData, step:currentStep, payment:selectedPayment,
-      membership:selectedMembership, membershipPrice:selectedMembershipPrice, lang:selectedLang, savedAt:Date.now() }));
-  },300);
-}
-
-function loadFromLocal(){
-  const raw=safeStorage.get('setmandu_reg');
-  if(!raw) return;
-  try{
-    const saved=JSON.parse(raw);
-    if(saved.formData) Object.assign(formData,saved.formData);
-    if(saved.step&&saved.step<=STEPS) currentStep=saved.step;
-    if(saved.payment) selectedPayment=saved.payment;
-    if(saved.membership){ selectedMembership=saved.membership; selectedMembershipPrice=saved.membershipPrice||0; }
-    if(saved.lang) selectedLang=saved.lang;
-  }catch(e){}
-}
-
-// ============================================================
-// SUBMIT
-// ============================================================
-function submitForm(){
+async function submitForm(){
   if(isSubmitting) return;
   if(!validateAllFields(currentStep)) return;
   collectStepData(currentStep);
   if(!selectedMembership){ document.getElementById('membership_error')?.classList.add('show'); return; }
   if(!selectedPayment){ document.getElementById('payment_error')?.classList.add('show'); return; }
   if(!formData.transactionCode){ document.getElementById('transactionCode_error')?.classList.add('show'); return; }
+  if(!profilePhotoFile){ document.getElementById('profilePhoto_error')?.classList.add('show'); return; }
+  if(!paymentScreenshotFile){ document.getElementById('paymentScreenshot_error')?.classList.add('show'); return; }
+  if(!navigator.onLine){ alert(getText('networkError')); return; }
 
-  isSubmitting=true;
+  isSubmitting = true;
   const nextBtn=document.getElementById('nextBtn');
   if(nextBtn) nextBtn.disabled=true;
-  showLoader(true);
 
-  // Simulate registration - set as pending verification
-  setTimeout(()=>{
-    const userID=Math.floor(Math.random()*9000)+1000;
-    const userData={
-      name:formData.fullName,
-      userID:userID,
-      membership:selectedMembership,
-      price:selectedMembershipPrice,
-      registrationDate:new Date().toISOString(),
-      verified:false,
-      verificationDate:null,
-      ...formData
+  try{
+    const uid = currentUid || await initAuth();
+    if(!uid) throw new Error('auth-failed');
+
+    showLoader(getText('uploadingPhoto'));
+    const profilePhotoURL = await uploadImage(profilePhotoFile, `users/${uid}/profile_${Date.now()}.jpg`);
+
+    showLoader(getText('uploadingScreenshot'));
+    const paymentScreenshotURL = await uploadImage(paymentScreenshotFile, `users/${uid}/payment_${Date.now()}.jpg`);
+
+    showLoader(getText('savingData'));
+    const setId = await generateNextUserId();
+
+    const userData = {
+      fullName: formData.fullName || '',
+      currentCountry: formData.currentCountry || '',
+      gender: formData.gender || '',
+      age: formData.age || '',
+      caste: formData.caste || '',
+      education: formData.education || '',
+      occupation: formData.occupation || '',
+      preferredAge: formData.preferredAge || '',
+      preferredCaste: formData.preferredCaste || '',
+      preferredCountry: formData.preferredCountry || '',
+      membership: selectedMembership,
+      membershipPrice: selectedMembershipPrice,
+      paymentMethod: selectedPayment,
+      transactionCode: formData.transactionCode || '',
+      registrationDate: new Date().toISOString(),
+      verified: false,
+      verificationDate: null,
+      status: 'Pending',
+      userID: setId,
+      profilePhoto: profilePhotoURL,
+      paymentScreenshot: paymentScreenshotURL
     };
-    safeStorage.set('setmandu_user',JSON.stringify(userData));
-    safeStorage.set('setmandu_registered','true');
-    safeStorage.remove('setmandu_reg');
-    isSubmitting=false;
-    if(nextBtn) nextBtn.disabled=false;
-    // Show pending screen instead of success
-    showPendingScreen(userData);
-    launchConfetti();
-  },1500);
-}
 
-function showLoader(show){
-  if(show){
-    stepsContainer.innerHTML=`<div class="loader-wrap"><div class="loader"></div><p style="text-align:center;margin-top:14px;color:var(--primary-dark);font-weight:600;" class="np">${getText('processing')}</p></div>`;
-    successArea.classList.add('hidden');
-  }else{
+    await set(ref(db, 'users/'+uid), userData);
+
+    isSubmitting = false;
+    if(nextBtn) nextBtn.disabled=false;
+    launchConfetti();
+    attachLiveListener(uid, userData);
+  }catch(e){
+    console.error(e);
+    isSubmitting = false;
+    if(nextBtn) nextBtn.disabled=false;
     renderStep(currentStep);
+    alert(friendlyFirebaseError(e, selectedLang));
   }
+}
+window.submitForm = submitForm;
+
+function showLoader(message){
+  stepsContainer.innerHTML=`<div class="loader-wrap"><div class="loader"></div><p style="text-align:center;margin-top:14px;color:var(--primary-dark);font-weight:600;" class="np">${esc(message||getText('processing'))}</p></div>`;
+  successArea.classList.add('hidden');
 }
 
 function launchConfetti(){
@@ -1231,50 +1375,79 @@ function launchConfetti(){
 }
 
 // ============================================================
-// PENDING / VERIFIED SCREENS
+// LIVE LISTENER — dashboard updates instantly when admin verifies
+// ============================================================
+function attachLiveListener(uid, initialData){
+  stepsContainer.innerHTML='';
+  const userRef = ref(db, 'users/'+uid);
+  if(liveUserListenerRef) off(liveUserListenerRef);
+  liveUserListenerRef = userRef;
+  onValue(userRef, (snap)=>{
+    const data = snap.val();
+    if(!data) return;
+    if(data.status === 'Verified' || data.verified === true){
+      showVerifiedDashboard(data);
+    } else if(data.status === 'Rejected'){
+      showRejectedScreen(data);
+    } else {
+      showPendingScreen(data);
+    }
+  }, (err)=>{ console.error(err); });
+}
+
+// ============================================================
+// PENDING / VERIFIED / REJECTED SCREENS
 // ============================================================
 function showPendingScreen(userData){
-  stepsContainer.innerHTML='';
-  const name=(userData.name||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const stepsList=getText('verificationSteps');
   const stepsHtml=stepsList.map((s,i)=>{
     const state=i===0?'done':(i===1?'current':'');
-    return `<div class="step ${state}"><div class="circle"></div><div class="label">${s}</div></div>`;
+    return `<div class="step ${state}"><div class="circle"></div><div class="label">${esc(s)}</div></div>`;
   }).join('');
 
   successArea.innerHTML=`<div class="pending-screen">
     <div class="pending-loader"></div>
+    <div class="np" style="font-size:11px;color:#43a047;font-weight:700;margin-bottom:6px;"><span class="live-dot"></span>${getText('liveUpdating')}</div>
     <h2 class="np" style="color:var(--ink);font-family:'Baloo 2',cursive;font-size:26px;">${getText('pendingVerificationTitle')}</h2>
     <p class="np" style="color:var(--muted);font-size:14px;margin:6px 0;">${getText('pendingMessage')}</p>
     <div class="timeline">${stepsHtml}</div>
     <p class="np" style="color:var(--muted);font-size:12px;margin:10px 0;"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:middle;">schedule</span> ${getText('estimatedTime')}</p>
     <div style="background:rgba(142,36,170,0.08);padding:16px;border-radius:24px;margin:12px 0;border:1px solid rgba(142,36,170,0.12);">
       <div style="font-size:12px;color:var(--muted);">${getText('yourID')}</div>
-      <div style="font-size:28px;font-weight:800;color:var(--primary-dark);font-family:'Baloo 2',cursive;">SM-${String(userData.userID).padStart(4,'0')}</div>
+      <div style="font-size:28px;font-weight:800;color:var(--primary-dark);font-family:'Baloo 2',cursive;">${esc(userData.userID)}</div>
       <div class="np" style="font-size:13px;color:var(--muted);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:5px;">
-        <span class="material-symbols-rounded icon-fill" style="font-size:15px;color:var(--gold-dark);">${PLAN_META[userData.membership]?.icon||'auto_awesome'}</span>${getText(PLAN_META[userData.membership]?.nameKey||userData.membership)} · रु. ${userData.price}
+        <span class="material-symbols-rounded icon-fill" style="font-size:15px;color:var(--gold-dark);">${PLAN_META[userData.membership]?.icon||'auto_awesome'}</span>${getText(PLAN_META[userData.membership]?.nameKey||userData.membership)} · रु. ${userData.membershipPrice}
       </div>
       <div class="np" style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;background:rgba(249,168,37,0.15);padding:4px 14px;border-radius:40px;font-size:12px;font-weight:600;color:#f57f17;">
         <span class="material-symbols-rounded" style="font-size:14px;">pending</span> ${getText('pendingVerification')}
       </div>
     </div>
-    <button class="btn btn-primary np" style="margin-top:12px;" onclick="location.reload()"><span class="material-symbols-rounded">refresh</span> ${getText('startOver')}</button>
   </div>`;
   successArea.classList.remove('hidden');
-  safeStorage.set('setmandu_registered','true');
+}
+
+function showRejectedScreen(userData){
+  successArea.innerHTML=`<div class="pending-screen">
+    <div class="alert-icon-wrap" style="margin:0 auto 12px;"><span class="material-symbols-rounded icon-fill">close</span></div>
+    <h2 class="np" style="color:var(--ink);font-family:'Baloo 2',cursive;font-size:24px;">${getText('rejectedTitle')}</h2>
+    <p class="np" style="color:var(--muted);font-size:14px;margin:6px 0 16px;">${getText('rejectedMessage')}</p>
+    <button class="whatsapp-btn" onclick="sendWhatsAppMessage()"><span class="material-symbols-rounded">forum</span> ${getText('whatsapp')}</button>
+  </div>`;
+  successArea.classList.remove('hidden');
 }
 
 function showVerifiedDashboard(userData){
-  stepsContainer.innerHTML='';
-  const name=(userData.name||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const name=esc(userData.fullName||'');
   const membershipName=getText(PLAN_META[userData.membership]?.nameKey||userData.membership);
   const membershipIcon=PLAN_META[userData.membership]?.icon||'auto_awesome';
   const regDate=userData.registrationDate?new Date(userData.registrationDate).toLocaleDateString():'-';
   const verDate=userData.verificationDate?new Date(userData.verificationDate).toLocaleDateString():'-';
+  const avatarImg = userData.profilePhoto ? `<img src="${userData.profilePhoto}" alt="">` : `<span class="material-symbols-rounded">person</span>`;
 
   successArea.innerHTML=`<div class="dashboard-screen">
+    <div class="np" style="font-size:11px;color:#43a047;font-weight:700;margin-bottom:8px;"><span class="live-dot"></span>${getText('liveUpdating')}</div>
     <div style="text-align:center;margin-bottom:12px;">
-      <div class="profile-avatar"><span class="material-symbols-rounded">person</span></div>
+      <div class="profile-avatar">${avatarImg}</div>
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">
         <span style="font-size:20px;font-weight:700;color:var(--ink);">${name}</span>
         <span class="verified-badge"><span class="material-symbols-rounded" style="font-size:18px;">verified</span> ${getText('verifiedTitle')}</span>
@@ -1283,19 +1456,19 @@ function showVerifiedDashboard(userData){
     <div class="profile-glass">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid rgba(142,36,170,0.1);flex-wrap:wrap;gap:6px;">
         <span style="font-weight:700;font-size:16px;font-family:'Baloo 2',cursive;color:var(--primary-dark);">${getText('profileTitle')}</span>
-        <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:14px;">badge</span> ${getText('id')}: SM-${String(userData.userID).padStart(4,'0')}</span>
+        <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:14px;">badge</span> ${getText('id')}: ${esc(userData.userID)}</span>
       </div>
       <div class="profile-row"><span class="profile-label">${getText('fullName')}</span><span class="profile-value">${name}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('currentCountry')}</span><span class="profile-value">${userData.currentCountry||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('genderLabel')}</span><span class="profile-value">${userData.gender||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('ageLabel')}</span><span class="profile-value">${userData.age||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('casteLabel')}</span><span class="profile-value">${userData.caste||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('educationLabel')}</span><span class="profile-value">${userData.education||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('occupationLabel')}</span><span class="profile-value">${userData.occupation||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('prefAge')}</span><span class="profile-value">${userData.preferredAge||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('prefCaste')}</span><span class="profile-value">${userData.preferredCaste||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('prefCountry')}</span><span class="profile-value">${userData.preferredCountry||'-'}</span></div>
-      <div class="profile-row"><span class="profile-label">${getText('membership')}</span><span class="profile-value" style="display:flex;align-items:center;gap:5px;justify-content:flex-end;"><span class="material-symbols-rounded" style="font-size:16px;color:var(--gold-dark);">${membershipIcon}</span>${membershipName} (रु. ${userData.price})</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('currentCountry')}</span><span class="profile-value">${esc(userData.currentCountry)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('genderLabel')}</span><span class="profile-value">${esc(userData.gender)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('ageLabel')}</span><span class="profile-value">${esc(userData.age)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('casteLabel')}</span><span class="profile-value">${esc(userData.caste)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('educationLabel')}</span><span class="profile-value">${esc(userData.education)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('occupationLabel')}</span><span class="profile-value">${esc(userData.occupation)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('prefAge')}</span><span class="profile-value">${esc(userData.preferredAge)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('prefCaste')}</span><span class="profile-value">${esc(userData.preferredCaste)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('prefCountry')}</span><span class="profile-value">${esc(userData.preferredCountry)||'-'}</span></div>
+      <div class="profile-row"><span class="profile-label">${getText('membership')}</span><span class="profile-value" style="display:flex;align-items:center;gap:5px;justify-content:flex-end;"><span class="material-symbols-rounded" style="font-size:16px;color:var(--gold-dark);">${membershipIcon}</span>${membershipName} (रु. ${userData.membershipPrice})</span></div>
       <div class="profile-row"><span class="profile-label">${getText('status')}</span><span class="profile-value"><span class="verified-badge" style="font-size:12px;padding:4px 12px;">${getText('verifiedTitle')}</span></span></div>
       <div class="profile-row"><span class="profile-label">${getText('regDate')}</span><span class="profile-value">${regDate}</span></div>
       <div class="profile-row"><span class="profile-label">${getText('verifiedDate')}</span><span class="profile-value">${verDate}</span></div>
@@ -1304,61 +1477,24 @@ function showVerifiedDashboard(userData){
     <button class="whatsapp-btn" onclick="sendWhatsAppMessage()" style="margin:10px auto;display:flex;">
       <span class="material-symbols-rounded">forum</span> ${getText('whatsapp')}
     </button>
-    <button class="btn btn-primary np" style="margin-top:10px;" onclick="location.reload()"><span class="material-symbols-rounded">refresh</span> ${getText('startOver')}</button>
   </div>`;
   successArea.classList.remove('hidden');
-  launchConfetti();
 }
 
-// ============================================================
-// WHATSAPP INTEGRATION
-// ============================================================
+window.currentUserDataCache = null;
 function sendWhatsAppMessage(){
-  const userData=JSON.parse(safeStorage.get('setmandu_user')||'{}');
-  if(!userData.userID){ alert('User data not found'); return; }
-  let msg=getText('whatsappMsg')
-    .replace('[ID]', 'SM-'+String(userData.userID).padStart(4,'0'))
-    .replace('[NAME]', userData.name||'')
-    .replace('[MEMBERSHIP]', getText(PLAN_META[userData.membership]?.nameKey||userData.membership)+' (रु. '+userData.price+')');
-  const url='https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(msg);
-  window.open(url,'_blank');
+  onValue(ref(db, 'users/'+currentUid), (snap)=>{
+    const userData = snap.val();
+    if(!userData){ alert('User data not found'); return; }
+    let msg=getText('whatsappMsg')
+      .replace('[ID]', userData.userID||'')
+      .replace('[NAME]', userData.fullName||'')
+      .replace('[MEMBERSHIP]', getText(PLAN_META[userData.membership]?.nameKey||userData.membership)+' (रु. '+userData.membershipPrice+')');
+    const url='https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(msg);
+    window.open(url,'_blank');
+  }, { onlyOnce:true });
 }
-
-// ============================================================
-// CHECK USER STATE
-// ============================================================
-function checkUserState(){
-  const registered=safeStorage.get('setmandu_registered');
-  if(registered!=='true') return;
-  const userData=JSON.parse(safeStorage.get('setmandu_user')||'{}');
-  if(!userData.userID) return;
-  welcomeModal.style.display='none';
-
-  // For demo: toggle verification by clicking on the logo (admin action simulation)
-  // In real scenario, admin would set verified=true via backend
-  // We'll check if userData.verified is true; if not, show pending
-  if(userData.verified===true){
-    showVerifiedDashboard(userData);
-  }else{
-    // Check if we should auto-verify for demo purposes (click on logo 5 times to simulate admin verification)
-    let clickCount=0;
-    const logo=document.querySelector('.logo');
-    if(logo){
-      logo.addEventListener('dblclick',function(){
-        clickCount++;
-        if(clickCount>=2){
-          const data=JSON.parse(safeStorage.get('setmandu_user')||'{}');
-          data.verified=true;
-          data.verificationDate=new Date().toISOString();
-          safeStorage.set('setmandu_user',JSON.stringify(data));
-          showVerifiedDashboard(data);
-          clickCount=0;
-        }
-      });
-    }
-    showPendingScreen(userData);
-  }
-}
+window.sendWhatsAppMessage = sendWhatsAppMessage;
 
 // ============================================================
 // THEME TOGGLE
@@ -1367,44 +1503,36 @@ document.getElementById('themeToggle').addEventListener('click',function(){
   document.body.classList.toggle('dark');
   const icon=this.querySelector('.material-symbols-rounded');
   icon.textContent=document.body.classList.contains('dark')?'light_mode':'dark_mode';
-  safeStorage.set('setmandu_theme',document.body.classList.contains('dark')?'dark':'light');
+  prefStorage.set('setmandu_theme',document.body.classList.contains('dark')?'dark':'light');
 });
 
 // ============================================================
 // INIT
 // ============================================================
-loadFromLocal();
-
-if(safeStorage.get('setmandu_theme')==='dark'){
-  document.body.classList.add('dark');
-  document.querySelector('#themeToggle .material-symbols-rounded').textContent='light_mode';
-}
-
-if(safeStorage.get('setmandu_registered')==='true'){
-  welcomeModal.style.display='none';
-  checkUserState();
-}else{
+(async function init(){
+  if(prefStorage.get('setmandu_theme')==='dark'){
+    document.body.classList.add('dark');
+    document.querySelector('#themeToggle .material-symbols-rounded').textContent='light_mode';
+  }
+  const savedLang = prefStorage.get('setmandu_lang');
+  if(savedLang) selectedLang = savedLang;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===selectedLang));
-  welcomeModal.style.display='flex';
-}
+  document.getElementById('startText').textContent = selectedLang==='ne'?'सुरु गर्नुहोस्':'Start';
 
-// Expose functions to global scope for inline onclick
-window.selectLanguage=selectLanguage;
-window.startRegistration=startRegistration;
-window.goToStep=goToStep;
-window.submitForm=submitForm;
-window.selectPayment=selectPayment;
-window.selectMembership=selectMembership;
-window.validateField=validateField;
-window.showAlert=showAlert;
-window.closeAlert=closeAlert;
-window.closeMembershipNotice=closeMembershipNotice;
-window.showAIChat=showAIChat;
-window.closeAIChat=closeAIChat;
-window.sendChatMessage=sendChatMessage;
-window.downloadQR=downloadQR;
-window.printQR=printQR;
-window.sendWhatsAppMessage=sendWhatsAppMessage;
+  await initAuth();
+
+  // If this device/browser already has a registration, skip the welcome screen
+  try{
+    const snap = await get(ref(db, 'users/'+currentUid));
+    if(snap.exists()){
+      welcomeModal.style.display='none';
+      attachLiveListener(currentUid, snap.val());
+    }
+  }catch(e){
+    // offline or read error — leave welcome screen showing, user can retry
+    console.error(e);
+  }
+})();
 </script>
 </body>
 </html>

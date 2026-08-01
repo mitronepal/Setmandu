@@ -1,871 +1,760 @@
 <!DOCTYPE html>
-<html lang="ne">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-<meta name="theme-color" content="#1a0a2e">
-<title>SetMandu · एडमिन प्यानल</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SetMandu Admin · Control Panel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
-  --primary:#8E24AA;
-  --primary-dark:#4A148C;
-  --primary-light:#CE93D8;
-  --accent:#E53935;
-  --gold:#D4AF37;
-  --gold-dark:#9C7A17;
-  --success:#43a047;
-  --success-light:#66bb6a;
-  --warning:#f9a825;
-  --danger:#e53935;
-  --ink:#1a0a2e;
-  --muted:#7a6a8a;
-  --surface:rgba(255,255,255,0.08);
-  --surface-strong:rgba(255,255,255,0.12);
-  --radius-lg:28px;
-  --radius-md:18px;
-  --radius-sm:12px;
-  --shadow-soft:0 20px 60px rgba(0,0,0,0.3);
-  --shadow-pop:0 10px 30px rgba(142,36,170,0.25);
+  --primary:#8E24AA; --primary-dark:#4A148C; --primary-light:#CE93D8;
+  --accent:#E53935; --gold:#D4AF37; --gold-dark:#9C7A17;
+  --ink:#241B2F; --muted:#6b5f76;
+  --ok:#43a047; --warn:#f9a825; --bad:#c62828;
+  --radius-lg:28px; --radius-md:18px; --radius-sm:12px;
+  --shadow-soft:0 20px 50px rgba(74,20,140,0.14);
   --ease-pop:cubic-bezier(.2,.9,.3,1.3);
-  --glass-bg:rgba(255,255,255,0.04);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{-webkit-text-size-adjust:100%;}
 body{
-  min-height:100vh;min-height:100dvh;
-  background:
-    radial-gradient(ellipse at 10% 20%, rgba(142,36,170,0.15), transparent 50%),
-    radial-gradient(ellipse at 90% 80%, rgba(212,175,55,0.08), transparent 40%),
-    linear-gradient(160deg,#0d0618 0%, #1a0a2e 40%, #12081f 100%);
-  display:flex;justify-content:center;align-items:flex-start;
-  padding:20px 14px 40px;
-  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
-  color:#f0e8f6;
-  overflow-x:hidden;
+  min-height:100vh;font-family:'Poppins',sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 15% 0%, rgba(206,147,216,0.3), transparent 45%),
+    radial-gradient(circle at 90% 90%, rgba(212,175,55,0.14), transparent 40%),
+    linear-gradient(160deg,#faeeff 0%, #fff5ec 55%, #ffeef2 100%);
+  transition:background .3s;
 }
-.np{font-family:'Noto Sans Devanagari','Poppins',sans-serif;}
+body.dark{
+  color:#f2e9f6;
+  background:radial-gradient(circle at 15% 0%, rgba(142,36,170,0.22), transparent 45%),
+    linear-gradient(160deg,#150b1d 0%,#1a0f22 55%,#160a14 100%);
+}
 .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24;vertical-align:middle;line-height:1;}
 .icon-fill{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;}
+.hidden{display:none !important;}
+button{font-family:inherit;cursor:pointer;}
+input,select{font-family:inherit;}
 
-.admin-wrapper{
-  width:100%;max-width:1200px;
-}
-.admin-header{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;
-}
-.admin-header .logo{
-  font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;
-  background:linear-gradient(135deg,var(--primary-light),var(--gold));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  display:flex;align-items:center;gap:8px;
-}
-.admin-header .logo .material-symbols-rounded{font-size:28px;-webkit-text-fill-color:var(--gold);}
-.admin-header .badge{
-  background:rgba(255,255,255,0.06);padding:8px 18px;border-radius:40px;
-  font-size:13px;font-weight:500;color:var(--muted);
-  border:1px solid rgba(255,255,255,0.06);
-  display:flex;align-items:center;gap:8px;
-}
-.admin-header .badge .material-symbols-rounded{font-size:16px;color:var(--gold);}
-.admin-header .badge .count{color:#fff;font-weight:700;}
+/* ---------- LOGIN ---------- */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-card{width:100%;max-width:380px;background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);
+  border-radius:32px;padding:36px 28px;box-shadow:var(--shadow-soft);border:1px solid rgba(255,255,255,0.4);text-align:center;
+  animation:popIn .5s var(--ease-pop);}
+body.dark .login-card{background:rgba(30,18,38,0.7);border-color:rgba(206,147,216,0.15);}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.login-icon{width:70px;height:70px;border-radius:24px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));box-shadow:0 12px 28px rgba(142,36,170,.35);}
+.login-icon .material-symbols-rounded{font-size:34px;color:#fff;}
+.login-card h1{font-family:'Baloo 2',cursive;font-size:26px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.login-card p{color:var(--muted);font-size:13px;margin-bottom:20px;}
+.login-card input{width:100%;padding:13px 16px;border:2px solid rgba(142,36,170,0.16);border-radius:16px;
+  margin-bottom:12px;font-size:14.5px;outline:none;background:rgba(255,255,255,0.6);color:var(--ink);transition:.2s;}
+body.dark .login-card input{background:rgba(50,32,58,0.5);color:#f2e9f6;border-color:rgba(206,147,216,0.2);}
+.login-card input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(142,36,170,0.12);}
+.login-err{color:var(--bad);font-size:12.5px;margin-bottom:10px;min-height:16px;font-weight:600;}
+.btn{border:none;border-radius:40px;font-weight:700;padding:13px 22px;font-size:14.5px;display:inline-flex;
+  align-items:center;justify-content:center;gap:7px;transition:.2s;width:100%;}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;box-shadow:0 10px 24px rgba(142,36,170,.3);}
+.btn-secondary{background:rgba(142,36,170,0.08);color:var(--primary-dark);}
+body.dark .btn-secondary{background:rgba(206,147,216,0.15);color:var(--primary-light);}
+.btn-danger{background:linear-gradient(135deg,#e53935,#b71c1c);color:#fff;}
+.btn-ok{background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;}
+.btn-sm{width:auto;padding:8px 14px;font-size:12.5px;border-radius:30px;}
 
-.glass-card{
-  background:var(--glass-bg);
-  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
-  border-radius:var(--radius-lg);
-  border:1px solid rgba(255,255,255,0.06);
-  box-shadow:var(--shadow-soft), 0 1px 0 rgba(255,255,255,0.04) inset;
-  padding:24px 22px 28px;
-  margin-bottom:20px;
-  transition:all .3s ease;
-}
-.glass-card:hover{
-  border-color:rgba(255,255,255,0.1);
-  box-shadow:var(--shadow-soft), 0 0 40px rgba(142,36,170,0.05);
-}
+/* ---------- SHELL ---------- */
+.admin-shell{display:none;min-height:100vh;padding:16px;max-width:1400px;margin:0 auto;}
+.admin-shell.show{display:block;}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+.topbar .brand{display:flex;align-items:center;gap:9px;font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.topbar .brand .material-symbols-rounded{font-size:24px;color:var(--primary);-webkit-text-fill-color:var(--primary);}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.icon-btn{background:rgba(142,36,170,0.08);border:none;border-radius:14px;padding:9px;color:var(--primary-dark);display:flex;}
+body.dark .icon-btn{background:rgba(206,147,216,0.15);color:var(--primary-light);}
+.conn-pill{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:20px;}
+.conn-pill.online{background:rgba(67,160,71,0.12);color:var(--ok);}
+.conn-pill.offline{background:rgba(198,40,40,0.12);color:var(--bad);}
+.conn-pill .dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulseDot 1.4s ease infinite;}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
 
-.stats-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:20px;
-}
-.stat-card{
-  background:rgba(255,255,255,0.03);border-radius:var(--radius-md);
-  padding:18px 20px;border:1px solid rgba(255,255,255,0.05);
-  transition:all .3s ease;cursor:default;
-}
-.stat-card:hover{
-  background:rgba(255,255,255,0.06);transform:translateY(-2px);
-  border-color:rgba(142,36,170,0.2);
-}
-.stat-card .stat-icon{
-  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  margin-bottom:8px;font-size:20px;
-}
-.stat-card .stat-icon.purple{background:rgba(142,36,170,0.2);color:var(--primary-light);}
-.stat-card .stat-icon.gold{background:rgba(212,175,55,0.15);color:var(--gold);}
-.stat-card .stat-icon.green{background:rgba(67,160,71,0.15);color:var(--success-light);}
-.stat-card .stat-icon.orange{background:rgba(249,168,37,0.15);color:var(--warning);}
-.stat-card .stat-number{font-size:28px;font-weight:800;color:#fff;font-family:'Baloo 2',cursive;}
-.stat-card .stat-label{font-size:12.5px;color:var(--muted);font-weight:500;}
+/* ---------- STATS ---------- */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;}
+.stat-card{background:rgba(255,255,255,0.6);backdrop-filter:blur(14px);border-radius:22px;padding:16px;
+  border:1px solid rgba(255,255,255,0.4);box-shadow:0 10px 28px rgba(74,20,140,.08);position:relative;overflow:hidden;
+  animation:fieldIn .4s ease backwards;}
+body.dark .stat-card{background:rgba(30,18,38,0.6);border-color:rgba(206,147,216,0.12);}
+@keyframes fieldIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.stat-card .stat-icon{width:38px;height:38px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.stat-card .stat-icon .material-symbols-rounded{font-size:20px;color:#fff;}
+.stat-card .stat-value{font-size:26px;font-weight:800;font-family:'Baloo 2',cursive;}
+.stat-card .stat-label{font-size:12px;color:var(--muted);font-weight:600;}
+.stat-card.total .stat-icon{background:linear-gradient(135deg,var(--primary),var(--primary-dark));}
+.stat-card.pending .stat-icon{background:linear-gradient(135deg,#f9a825,#f57f17);}
+.stat-card.verified .stat-icon{background:linear-gradient(135deg,#43a047,#2e7d32);}
+.stat-card.rejected .stat-icon{background:linear-gradient(135deg,#e53935,#b71c1c);}
+.stat-card.revenue .stat-icon{background:linear-gradient(135deg,var(--gold),var(--gold-dark));}
 
-.toolbar{
-  display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;align-items:center;
-}
-.toolbar .search-box{
-  flex:1;min-width:200px;display:flex;align-items:center;
-  background:rgba(255,255,255,0.04);border-radius:40px;padding:0 16px;
-  border:1px solid rgba(255,255,255,0.06);transition:.3s;
-}
-.toolbar .search-box:focus-within{
-  border-color:var(--primary);background:rgba(255,255,255,0.06);
-  box-shadow:0 0 0 3px rgba(142,36,170,0.1);
-}
-.toolbar .search-box .material-symbols-rounded{color:var(--muted);font-size:20px;}
-.toolbar .search-box input{
-  background:transparent;border:none;padding:12px 12px;color:#fff;font-size:14px;
-  width:100%;outline:none;font-family:inherit;
-}
-.toolbar .search-box input::placeholder{color:var(--muted);}
-.toolbar .filter-group{display:flex;gap:8px;flex-wrap:wrap;}
-.toolbar .filter-btn{
-  padding:8px 18px;border-radius:40px;border:1px solid rgba(255,255,255,0.06);
-  background:rgba(255,255,255,0.03);color:var(--muted);font-size:12.5px;font-weight:500;
-  cursor:pointer;transition:.3s;font-family:inherit;
-}
-.toolbar .filter-btn:hover{background:rgba(255,255,255,0.06);color:#fff;}
-.toolbar .filter-btn.active{background:rgba(142,36,170,0.2);border-color:var(--primary);color:var(--primary-light);}
-.toolbar .filter-btn .count{background:rgba(255,255,255,0.08);padding:1px 8px;border-radius:20px;font-size:10px;margin-left:4px;}
+/* ---------- PANELS ---------- */
+.panel{background:rgba(255,255,255,0.55);backdrop-filter:blur(16px);border-radius:26px;padding:18px;
+  border:1px solid rgba(255,255,255,0.4);box-shadow:0 10px 30px rgba(74,20,140,.08);margin-bottom:18px;}
+body.dark .panel{background:rgba(30,18,38,0.6);border-color:rgba(206,147,216,0.12);}
+.panel-title{font-family:'Baloo 2',cursive;font-weight:700;font-size:17px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.chart-box{background:rgba(255,255,255,0.4);border-radius:18px;padding:14px;height:260px;}
+body.dark .chart-box{background:rgba(255,255,255,0.03);}
 
-.table-wrap{overflow-x:auto;border-radius:var(--radius-md);}
-table{width:100%;border-collapse:collapse;font-size:13.5px;}
-thead tr{background:rgba(255,255,255,0.03);border-bottom:2px solid rgba(255,255,255,0.05);}
-th{text-align:left;padding:14px 14px;font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;}
-td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;}
-tr:hover td{background:rgba(255,255,255,0.02);}
-.user-info{display:flex;align-items:center;gap:10px;}
-.user-avatar{
-  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  font-weight:600;font-size:14px;color:#fff;flex-shrink:0;
-}
-.user-name{font-weight:600;color:#fff;}
-.user-id{font-size:11px;color:var(--muted);}
-.badge-status{
-  display:inline-flex;align-items:center;gap:4px;padding:3px 12px;border-radius:30px;
-  font-size:11px;font-weight:600;
-}
-.badge-status.verified{background:rgba(67,160,71,0.15);color:var(--success-light);}
-.badge-status.pending{background:rgba(249,168,37,0.15);color:var(--warning);}
-.badge-status .material-symbols-rounded{font-size:14px;}
-.plan-badge{
-  display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:30px;
-  font-size:11px;font-weight:600;background:rgba(212,175,55,0.12);color:var(--gold);
-}
-.plan-badge .material-symbols-rounded{font-size:14px;}
-.action-btns{display:flex;gap:6px;flex-wrap:wrap;}
-.action-btn{
-  padding:5px 12px;border:none;border-radius:30px;font-size:11px;font-weight:600;
-  cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:4px;
-  font-family:inherit;
-}
-.action-btn:active{transform:scale(.95);}
-.action-btn.verify{background:rgba(67,160,71,0.15);color:var(--success-light);}
-.action-btn.verify:hover{background:rgba(67,160,71,0.25);}
-.action-btn.delete{background:rgba(229,57,53,0.12);color:var(--danger);}
-.action-btn.delete:hover{background:rgba(229,57,53,0.22);}
-.action-btn.view{background:rgba(142,36,170,0.12);color:var(--primary-light);}
-.action-btn.view:hover{background:rgba(142,36,170,0.22);}
-.action-btn .material-symbols-rounded{font-size:14px;}
+/* ---------- TOOLBAR ---------- */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.toolbar input[type=text], .toolbar select{
+  padding:10px 14px;border:2px solid rgba(142,36,170,0.15);border-radius:14px;font-size:13.5px;background:rgba(255,255,255,0.6);
+  color:var(--ink);outline:none;}
+body.dark .toolbar input[type=text], body.dark .toolbar select{background:rgba(50,32,58,0.5);color:#f2e9f6;border-color:rgba(206,147,216,0.2);}
+.toolbar input[type=text]{flex:1;min-width:180px;}
+.filter-chip{padding:8px 14px;border-radius:30px;border:2px solid rgba(142,36,170,0.15);background:transparent;
+  font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:.2s;}
+body.dark .filter-chip{color:#f2e9f6;}
+.filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 
-.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
-.empty-state .material-symbols-rounded{font-size:56px;color:rgba(255,255,255,0.04);margin-bottom:12px;}
-.empty-state h3{color:#fff;font-family:'Baloo 2',cursive;font-size:22px;margin-bottom:6px;}
-.empty-state p{font-size:14px;}
+/* ---------- TABLE ---------- */
+.table-wrap{overflow-x:auto;border-radius:16px;}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:920px;}
+thead th{text-align:left;padding:10px 12px;color:var(--muted);font-weight:700;font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.4px;border-bottom:2px solid rgba(142,36,170,0.1);white-space:nowrap;}
+tbody td{padding:10px 12px;border-bottom:1px solid rgba(142,36,170,0.06);vertical-align:middle;white-space:nowrap;}
+tbody tr{transition:background .15s;}
+tbody tr:hover{background:rgba(142,36,170,0.05);}
+.avatar-thumb{width:34px;height:34px;border-radius:50%;object-fit:cover;background:rgba(142,36,170,0.1);}
+.status-pill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px;}
+.status-pill.Pending{background:rgba(249,168,37,0.15);color:#f57f17;}
+.status-pill.Verified{background:rgba(67,160,71,0.15);color:var(--ok);}
+.status-pill.Rejected{background:rgba(198,40,40,0.15);color:var(--bad);}
+.row-actions{display:flex;gap:6px;}
+.row-actions button{background:rgba(142,36,170,0.08);border:none;border-radius:10px;padding:6px;color:var(--primary-dark);display:flex;}
+body.dark .row-actions button{background:rgba(206,147,216,0.15);color:var(--primary-light);}
+.row-actions button.ok{background:rgba(67,160,71,0.12);color:var(--ok);}
+.row-actions button.bad{background:rgba(198,40,40,0.12);color:var(--bad);}
+.row-actions .material-symbols-rounded{font-size:17px;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-state .material-symbols-rounded{font-size:40px;opacity:.4;margin-bottom:8px;}
 
-.detail-modal{
-  position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);
-  display:none;justify-content:center;align-items:center;z-index:10000;padding:20px;
-}
-.detail-modal.show{display:flex;animation:fadeIn .3s ease;}
+/* skeleton rows */
+.sk-row td{padding:14px 12px;}
+.sk{background:linear-gradient(90deg, rgba(142,36,170,0.07) 25%, rgba(142,36,170,0.15) 37%, rgba(142,36,170,0.07) 63%);
+  background-size:400% 100%;animation:skShine 1.4s ease infinite;border-radius:8px;height:14px;}
+@keyframes skShine{0%{background-position:100% 50%}100%{background-position:0 50%}}
+
+/* ---------- MODAL ---------- */
+.modal-overlay{position:fixed;inset:0;background:rgba(20,8,28,0.6);backdrop-filter:blur(8px);display:none;
+  align-items:center;justify-content:center;z-index:9000;padding:16px;}
+.modal-overlay.show{display:flex;animation:fadeIn .25s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.detail-content{
-  background:linear-gradient(160deg, rgba(20,10,35,0.97), rgba(30,15,45,0.95));
-  border-radius:var(--radius-lg);padding:28px 26px;max-width:500px;width:100%;
-  max-height:85vh;overflow-y:auto;border:1px solid rgba(255,255,255,0.06);
-  box-shadow:0 40px 80px rgba(0,0,0,0.5);animation:slideUp .4s var(--ease-pop);
-}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.detail-content .close-modal{
-  float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;
-}
-.detail-content .close-modal:hover{color:#fff;}
-.detail-content .detail-title{
-  font-family:'Baloo 2',cursive;font-size:22px;color:#fff;margin-bottom:16px;
-  display:flex;align-items:center;gap:10px;
-}
-.detail-content .detail-title .material-symbols-rounded{font-size:26px;color:var(--gold);}
-.detail-content .detail-row{
-  display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);
-  font-size:13.5px;gap:12px;
-}
-.detail-content .detail-row .label{color:var(--muted);font-weight:500;}
-.detail-content .detail-row .value{color:#fff;font-weight:500;text-align:right;word-break:break-word;}
-.detail-content .detail-actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
-.detail-content .detail-actions .btn{
-  flex:1;padding:12px;border:none;border-radius:40px;font-weight:600;font-size:14px;
-  cursor:pointer;transition:.25s;display:inline-flex;align-items:center;justify-content:center;
-  gap:6px;font-family:inherit;
-}
-.detail-content .detail-actions .btn:active{transform:scale(.97);}
-.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;}
-.btn-success{background:linear-gradient(135deg,var(--success),#2e7d32);color:#fff;}
-.btn-danger{background:linear-gradient(135deg,var(--danger),#b71c1c);color:#fff;}
+.modal-box{background:rgba(255,255,255,0.97);border-radius:28px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;
+  padding:24px;box-shadow:0 40px 90px rgba(0,0,0,.35);animation:popIn .3s var(--ease-pop);}
+body.dark .modal-box{background:rgba(28,17,36,0.98);color:#f2e9f6;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-header h3{font-family:'Baloo 2',cursive;font-size:19px;}
+.modal-close{background:rgba(142,36,170,0.08);border:none;border-radius:12px;padding:6px;display:flex;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.detail-item{background:rgba(142,36,170,0.045);border-radius:14px;padding:10px 12px;}
+.detail-item .dl{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.detail-item .dv{font-size:13.5px;font-weight:600;margin-top:2px;word-break:break-word;}
+.img-pair{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap;}
+.img-pair .img-card{flex:1;min-width:140px;text-align:center;}
+.img-pair img{width:100%;max-height:160px;object-fit:cover;border-radius:14px;border:2px solid rgba(142,36,170,0.12);cursor:zoom-in;}
+.img-pair .lbl{font-size:11px;color:var(--muted);font-weight:700;margin-top:5px;}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.modal-actions .btn{flex:1;min-width:120px;}
+.form-row{margin-bottom:10px;}
+.form-row label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;}
+.form-row input, .form-row select{width:100%;padding:10px 12px;border-radius:12px;border:2px solid rgba(142,36,170,0.15);
+  background:rgba(255,255,255,0.6);color:var(--ink);font-size:13.5px;outline:none;}
+body.dark .form-row input, body.dark .form-row select{background:rgba(50,32,58,0.5);color:#f2e9f6;border-color:rgba(206,147,216,0.2);}
 
-.toast-container{
-  position:fixed;bottom:30px;right:30px;z-index:99999;display:flex;flex-direction:column;gap:10px;max-width:380px;width:100%;
-}
-.toast{
-  background:rgba(20,10,35,0.95);backdrop-filter:blur(12px);border-radius:var(--radius-md);
-  padding:14px 20px;border:1px solid rgba(255,255,255,0.06);
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;
-  animation:slideInRight .4s var(--ease-pop);
-}
-@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-.toast .toast-icon{font-size:22px;}
-.toast .toast-msg{font-size:13px;font-weight:500;color:#fff;flex:1;}
-.toast .toast-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;}
-.toast.success .toast-icon{color:var(--success-light);}
-.toast.error .toast-icon{color:var(--danger);}
+.img-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;
+  z-index:9500;padding:20px;}
+.img-lightbox.show{display:flex;}
+.img-lightbox img{max-width:100%;max-height:90vh;border-radius:12px;}
 
-.loading-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);
-  display:flex;justify-content:center;align-items:center;z-index:99998;
-  flex-direction:column;gap:20px;
-}
-.loading-overlay.hidden{display:none;}
-.loading-overlay .spinner{
-  width:50px;height:50px;border-radius:50%;border:3px solid rgba(142,36,170,0.2);
-  border-top:3px solid var(--primary-light);animation:spin 1s linear infinite;
-}
-.loading-overlay .loading-text{
-  color:var(--muted);font-size:14px;font-weight:500;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
+.toast-wrap{position:fixed;bottom:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:320px;}
+.toast{background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;
+  box-shadow:0 10px 26px rgba(0,0,0,.3);display:flex;align-items:center;gap:8px;animation:toastIn .3s var(--ease-pop);}
+.toast.ok{background:linear-gradient(135deg,#43a047,#2e7d32);}
+.toast.bad{background:linear-gradient(135deg,#e53935,#b71c1c);}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 
-@media (max-width:768px){
-  .admin-header .logo{font-size:24px;}
+.pagination{display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap;}
+.pagination button{width:34px;height:34px;border-radius:10px;border:none;background:rgba(142,36,170,0.08);color:var(--ink);font-weight:600;}
+body.dark .pagination button{color:#f2e9f6;background:rgba(206,147,216,0.12);}
+.pagination button.active{background:var(--primary);color:#fff;}
+
+@media (max-width:600px){
+  .detail-grid{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
-  .glass-card{padding:16px 14px 20px;border-radius:var(--radius-md);}
-  .toolbar .search-box{min-width:140px;}
-  .toolbar .filter-btn{font-size:11px;padding:6px 14px;}
-  td,th{padding:10px 10px;font-size:12px;}
-  .user-avatar{width:28px;height:28px;font-size:12px;}
-  .action-btn{font-size:10px;padding:4px 10px;}
-  .detail-content{padding:20px 16px;}
-  .toast-container{bottom:16px;right:16px;left:16px;max-width:100%;}
-}
-@media (max-width:480px){
-  body{padding:12px 8px 30px;}
-  .stats-grid{grid-template-columns:1fr 1fr;gap:10px;}
-  .stat-card{padding:14px 12px;}
-  .stat-card .stat-number{font-size:22px;}
-  .admin-header .badge{font-size:11px;padding:6px 12px;}
-  .table-wrap{font-size:11px;}
-  td,th{padding:8px 6px;}
-  .user-info{gap:6px;}
-  .user-name{font-size:12px;}
 }
 </style>
 </head>
 <body>
 
-<!-- LOADING OVERLAY -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="spinner"></div>
-  <div class="loading-text">🔥 Firebase बाट डाटा लोड हुँदै...</div>
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-icon"><span class="material-symbols-rounded icon-fill">admin_panel_settings</span></div>
+    <h1>SetMandu Admin</h1>
+    <p>Control Panel Login</p>
+    <input type="text" id="loginUser" placeholder="Username" autocomplete="username">
+    <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" onkeypress="if(event.key==='Enter') doLogin()">
+    <div class="login-err" id="loginErr"></div>
+    <button class="btn btn-primary" onclick="doLogin()"><span class="material-symbols-rounded">login</span> Login</button>
+  </div>
 </div>
 
-<div class="admin-wrapper">
-
-  <!-- HEADER -->
-  <div class="admin-header">
-    <span class="logo"><span class="material-symbols-rounded icon-fill">shield</span>SetMandu · Admin</span>
-    <span class="badge">
-      <span class="material-symbols-rounded">people</span>
-      कुल प्रयोगकर्ता: <span class="count" id="totalUsers">0</span>
-      <span style="margin:0 4px;">·</span>
-      <span class="material-symbols-rounded" style="color:var(--success-light);">verified</span>
-      <span class="count" id="verifiedUsers">0</span>
-    </span>
+<!-- ADMIN SHELL -->
+<div class="admin-shell" id="adminShell">
+  <div class="topbar">
+    <div class="brand"><span class="material-symbols-rounded icon-fill">favorite</span>SetMandu Admin</div>
+    <div class="topbar-actions">
+      <span class="conn-pill online" id="connPill"><span class="dot"></span><span id="connText">Online</span></span>
+      <button class="icon-btn" id="themeToggleBtn" title="Toggle theme"><span class="material-symbols-rounded">dark_mode</span></button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV()"><span class="material-symbols-rounded">download</span> CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="doLogout()"><span class="material-symbols-rounded">logout</span> Logout</button>
+    </div>
   </div>
 
   <!-- STATS -->
   <div class="stats-grid" id="statsGrid">
-    <div class="stat-card">
-      <div class="stat-icon purple"><span class="material-symbols-rounded icon-fill">people</span></div>
-      <div class="stat-number" id="statTotal">0</div>
-      <div class="stat-label">कुल प्रयोगकर्ता</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon green"><span class="material-symbols-rounded icon-fill">verified</span></div>
-      <div class="stat-number" id="statVerified">0</div>
-      <div class="stat-label">प्रमाणित</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon orange"><span class="material-symbols-rounded icon-fill">pending</span></div>
-      <div class="stat-number" id="statPending">0</div>
-      <div class="stat-label">पेन्डिङ</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon gold"><span class="material-symbols-rounded icon-fill">workspace_premium</span></div>
-      <div class="stat-number" id="statVIP">0</div>
-      <div class="stat-label">VIP सदस्य</div>
+    <div class="stat-card total"><div class="stat-icon"><span class="material-symbols-rounded">group</span></div><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Users</div></div>
+    <div class="stat-card pending"><div class="stat-icon"><span class="material-symbols-rounded">pending</span></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+    <div class="stat-card verified"><div class="stat-icon"><span class="material-symbols-rounded">verified</span></div><div class="stat-value" id="statVerified">0</div><div class="stat-label">Verified</div></div>
+    <div class="stat-card rejected"><div class="stat-icon"><span class="material-symbols-rounded">block</span></div><div class="stat-value" id="statRejected">0</div><div class="stat-label">Rejected</div></div>
+    <div class="stat-card revenue"><div class="stat-icon"><span class="material-symbols-rounded">payments</span></div><div class="stat-value" id="statRevenue">रु.0</div><div class="stat-label">Total Collected</div></div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="panel">
+    <div class="panel-title"><span class="material-symbols-rounded">bar_chart</span>Statistics</div>
+    <div class="charts-grid">
+      <div class="chart-box"><canvas id="membershipChart"></canvas></div>
+      <div class="chart-box"><canvas id="countryChart"></canvas></div>
+      <div class="chart-box"><canvas id="statusChart"></canvas></div>
     </div>
   </div>
 
-  <!-- MAIN TABLE -->
-  <div class="glass-card">
+  <!-- USERS -->
+  <div class="panel">
+    <div class="panel-title"><span class="material-symbols-rounded">manage_accounts</span>All Users</div>
     <div class="toolbar">
-      <div class="search-box">
-        <span class="material-symbols-rounded">search</span>
-        <input type="text" id="searchInput" placeholder="नाम, आइडी, देश खोज्नुहोस्..." oninput="filterTable()">
-      </div>
-      <div class="filter-group" id="filterGroup">
-        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">सबै <span class="count" id="fAll">0</span></button>
-        <button class="filter-btn" data-filter="verified" onclick="setFilter('verified')">प्रमाणित <span class="count" id="fVerified">0</span></button>
-        <button class="filter-btn" data-filter="pending" onclick="setFilter('pending')">पेन्डिङ <span class="count" id="fPending">0</span></button>
-      </div>
+      <input type="text" id="searchInput" placeholder="Search by name, ID, phone, transaction code..." oninput="applyFilters()">
+      <select id="membershipFilter" onchange="applyFilters()">
+        <option value="">All Memberships</option>
+        <option value="Starter">Starter</option><option value="Basic">Basic</option><option value="Premium">Premium</option>
+        <option value="Gold">Gold</option><option value="VIP">VIP</option>
+      </select>
+      <select id="countryFilter" onchange="applyFilters()"><option value="">All Countries</option></select>
     </div>
-
+    <div class="toolbar">
+      <button class="filter-chip active" data-status="" onclick="setStatusFilter('')">All</button>
+      <button class="filter-chip" data-status="Pending" onclick="setStatusFilter('Pending')">Pending</button>
+      <button class="filter-chip" data-status="Verified" onclick="setStatusFilter('Verified')">Verified</button>
+      <button class="filter-chip" data-status="Rejected" onclick="setStatusFilter('Rejected')">Rejected</button>
+    </div>
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>प्रयोगकर्ता</th>
-            <th>आइडी</th>
-            <th>देश</th>
-            <th>सदस्यता</th>
-            <th>स्थिति</th>
-            <th style="text-align:right;">कार्य</th>
-          </tr>
-        </thead>
-        <tbody id="userTableBody">
-          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">
-            <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">cloud_sync</span>
-            Firebase बाट डाटा आउँदै...
-          </td></tr>
-        </tbody>
+        <thead><tr>
+          <th>Photo</th><th>ID</th><th>Name</th><th>Country</th><th>Age</th><th>Membership</th>
+          <th>Status</th><th>Reg. Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="usersTableBody"></tbody>
       </table>
     </div>
-    <div id="emptyState" class="empty-state" style="display:none;">
-      <span class="material-symbols-rounded">inbox</span>
-      <h3>कुनै प्रयोगकर्ता फेला परेन</h3>
-      <p>Firebase Database मा कुनै प्रयोगकर्ता छैन।</p>
+    <div id="emptyState" class="empty-state hidden">
+      <span class="material-symbols-rounded">person_search</span>
+      <div>No users match your filters</div>
     </div>
-  </div>
-
-  <div style="text-align:center;font-size:12px;color:var(--muted);padding:12px 0;border-top:1px solid rgba(255,255,255,0.04);">
-    SetMandu Admin Panel v4.0 · 🔥 Firebase Realtime Database
+    <div class="pagination" id="pagination"></div>
   </div>
 </div>
 
-<!-- DETAIL MODAL -->
-<div class="detail-modal" id="detailModal">
-  <div class="detail-content">
-    <button class="close-modal" onclick="closeDetail()"><span class="material-symbols-rounded">close</span></button>
-    <div class="detail-title"><span class="material-symbols-rounded icon-fill">person</span> प्रयोगकर्ता विवरण</div>
-    <div id="detailBody"></div>
-    <div class="detail-actions" id="detailActions"></div>
-  </div>
+<!-- USER DETAIL / EDIT MODAL -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal-box" id="userModalBox"></div>
 </div>
 
-<!-- TOAST CONTAINER -->
-<div class="toast-container" id="toastContainer"></div>
+<!-- IMAGE LIGHTBOX -->
+<div class="img-lightbox" id="imgLightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="">
+</div>
 
-<script>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script type="module">
+import {
+  db, ref, get, update, remove, onValue, esc, watchConnection
+} from './firebase-config.js';
+
 'use strict';
 
 // ============================================================
-// 🔥 FIREBASE CONFIG - SETMANDU
+// ADMIN CREDENTIALS — change these two values to update login
 // ============================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyAcQlfL5FQsLbgjZl2PSpwANbJDRsAYg-0",
-  authDomain: "setmandu-603f9.firebaseapp.com",
-  databaseURL: "https://setmandu-603f9-default-rtdb.firebaseio.com",
-  projectId: "setmandu-603f9",
-  storageBucket: "setmandu-603f9.firebasestorage.app",
-  messagingSenderId: "991608006279",
-  appId: "1:991608006279:android:15e91e65aff59c2fff3a22"
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "12345678";
+const SESSION_KEY = "setmandu_admin_session"; // sessionStorage flag only, no personal data
+
+const PLAN_ICONS = { Starter:'chat_bubble', Basic:'eco', Premium:'auto_awesome', Gold:'military_tech', VIP:'workspace_premium' };
+
+let allUsers = {};          // uid -> userData (live from Firebase)
+let filteredUids = [];
+let statusFilter = '';
+let currentPage = 1;
+const PAGE_SIZE = 12;
+let membershipChart, countryChart, statusChart;
+let activeModalUid = null;
+
+// ---------------- LOGIN ----------------
+window.doLogin = function(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginErr');
+  if(u === ADMIN_USERNAME && p === ADMIN_PASSWORD){
+    err.textContent = '';
+    try{ sessionStorage.setItem(SESSION_KEY, '1'); }catch(e){}
+    showAdmin();
+  } else {
+    err.textContent = 'Invalid username or password.';
+  }
+};
+window.doLogout = function(){
+  try{ sessionStorage.removeItem(SESSION_KEY); }catch(e){}
+  document.getElementById('adminShell').classList.remove('show');
+  document.getElementById('loginWrap').style.display = 'flex';
 };
 
-// ============================================================
-// 🚀 FIREBASE INIT
-// ============================================================
-let database = null;
-let firebaseInitialized = false;
-
-try {
-  firebase.initializeApp(firebaseConfig);
-  database = firebase.database();
-  firebaseInitialized = true;
-  console.log('✅ Firebase initialized successfully');
-} catch (e) {
-  console.error('❌ Firebase init error:', e);
-  showToast('❌ Firebase Config मा समस्या छ। कृपया Config चेक गर्नुहोस्।', 'error');
+function showAdmin(){
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('adminShell').classList.add('show');
+  initCharts();
+  attachUsersListener();
 }
 
-// ============================================================
-// STATE
-// ============================================================
-let users = [];
-let currentFilter = 'all';
-let searchQuery = '';
+(function checkSession(){
+  let has = false;
+  try{ has = sessionStorage.getItem(SESSION_KEY) === '1'; }catch(e){}
+  if(has) showAdmin();
+})();
 
-// ============================================================
-// LOAD USERS FROM FIREBASE
-// ============================================================
-function loadUsersFromFirebase() {
-  const overlay = document.getElementById('loadingOverlay');
-  overlay.classList.remove('hidden');
+// ---------------- CONNECTION ----------------
+watchConnection((online)=>{
+  const pill = document.getElementById('connPill');
+  const text = document.getElementById('connText');
+  pill.classList.toggle('online', online);
+  pill.classList.toggle('offline', !online);
+  text.textContent = online ? 'Online' : 'Offline';
+});
 
-  if (!database || !firebaseInitialized) {
-    overlay.classList.add('hidden');
-    showToast('❌ Firebase जडान भएन। Config चेक गर्नुहोस्।', 'error');
-    document.getElementById('userTableBody').innerHTML = `
-      <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--danger);">
-        <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">error</span>
-        Firebase Connection Failed<br>
-        <span style="font-size:12px;color:var(--muted);">कृपया firebaseConfig मा सही डाटा राख्नुहोस्</span>
-      </td></tr>
-    `;
-    return;
+// ---------------- THEME ----------------
+document.getElementById('themeToggleBtn').addEventListener('click', function(){
+  document.body.classList.toggle('dark');
+  this.querySelector('.material-symbols-rounded').textContent = document.body.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+  try{ localStorage.setItem('setmandu_admin_theme', document.body.classList.contains('dark') ? 'dark' : 'light'); }catch(e){}
+});
+try{
+  if(localStorage.getItem('setmandu_admin_theme') === 'dark'){
+    document.body.classList.add('dark');
+    document.querySelector('#themeToggleBtn .material-symbols-rounded').textContent = 'light_mode';
   }
+}catch(e){}
 
-  const usersRef = database.ref('users');
-  
-  // Real-time listener
-  usersRef.on('value', (snapshot) => {
-    const data = snapshot.val();
-    users = [];
+// ---------------- TOAST ----------------
+function toast(msg, type){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type||'');
+  el.innerHTML = `<span class="material-symbols-rounded">${type==='ok'?'check_circle':(type==='bad'?'error':'info')}</span><span>${esc(msg)}</span>`;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300); }, 3200);
+}
 
-    if (data) {
-      Object.keys(data).forEach((key) => {
-        const user = data[key];
-        user._firebaseKey = key;
-        users.push(user);
-      });
-    }
-
-    // Sort by registration date (newest first)
-    users.sort((a, b) => {
-      const dateA = a.registrationDate ? new Date(a.registrationDate) : new Date(0);
-      const dateB = b.registrationDate ? new Date(b.registrationDate) : new Date(0);
-      return dateB - dateA;
-    });
-
-    overlay.classList.add('hidden');
-    renderStats();
-    renderTable();
-    
-    if (users.length > 0) {
-      showToast(`✅ ${users.length} प्रयोगकर्ता लोड गरियो`, 'success');
-    }
-  }, (error) => {
-    overlay.classList.add('hidden');
-    console.error('Firebase read error:', error);
-    showToast('❌ डाटा पढ्न असफल: ' + error.message, 'error');
-    document.getElementById('userTableBody').innerHTML = `
-      <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--danger);">
-        <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">error</span>
-        ${error.message}
-      </td></tr>
-    `;
+// ---------------- REALTIME USERS LISTENER ----------------
+function attachUsersListener(){
+  renderSkeletonRows();
+  const usersRef = ref(db, 'users');
+  onValue(usersRef, (snap)=>{
+    allUsers = snap.val() || {};
+    populateCountryFilter();
+    applyFilters();
+    updateStats();
+    updateCharts();
+  }, (err)=>{
+    console.error(err);
+    toast('Failed to load users: ' + err.message, 'bad');
   });
 }
 
-// ============================================================
-// UPDATE USER IN FIREBASE
-// ============================================================
-function updateUserInFirebase(userId, updates) {
-  const overlay = document.getElementById('loadingOverlay');
-  overlay.classList.remove('hidden');
-
-  if (!database || !firebaseInitialized) {
-    overlay.classList.add('hidden');
-    showToast('❌ Firebase जडान छैन', 'error');
-    return;
+function renderSkeletonRows(){
+  const tbody = document.getElementById('usersTableBody');
+  let html = '';
+  for(let i=0;i<6;i++){
+    html += `<tr class="sk-row">${Array(9).fill('<td><div class="sk"></div></td>').join('')}</tr>`;
   }
-
-  // Find the Firebase key for this user
-  let firebaseKey = null;
-  users.forEach(u => {
-    if (u.id === userId && u._firebaseKey) {
-      firebaseKey = u._firebaseKey;
-    }
-  });
-
-  if (!firebaseKey) {
-    const usersRef = database.ref('users');
-    usersRef.orderByChild('id').equalTo(userId).once('value')
-      .then((snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const key = Object.keys(data)[0];
-          performUpdate(key, updates);
-        } else {
-          overlay.classList.add('hidden');
-          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
-        }
-      })
-      .catch((err) => {
-        overlay.classList.add('hidden');
-        showToast('❌ खोजी गर्न असफल: ' + err.message, 'error');
-      });
-    return;
-  }
-
-  performUpdate(firebaseKey, updates);
+  tbody.innerHTML = html;
 }
 
-function performUpdate(key, updates) {
-  const overlay = document.getElementById('loadingOverlay');
-  database.ref('users/' + key).update(updates)
-    .then(() => {
-      overlay.classList.add('hidden');
-      showToast('✅ अद्यावधिक गरियो', 'success');
-    })
-    .catch((error) => {
-      overlay.classList.add('hidden');
-      showToast('❌ अपडेट गर्न असफल: ' + error.message, 'error');
-    });
+function populateCountryFilter(){
+  const sel = document.getElementById('countryFilter');
+  const current = sel.value;
+  const countries = new Set();
+  Object.values(allUsers).forEach(u => { if(u.currentCountry) countries.add(u.currentCountry); });
+  const sorted = Array.from(countries).sort();
+  sel.innerHTML = '<option value="">All Countries</option>' + sorted.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  sel.value = current;
 }
 
-// ============================================================
-// DELETE USER FROM FIREBASE
-// ============================================================
-function deleteUserFromFirebase(userId) {
-  if (!confirm('के तपाईं यो प्रयोगकर्ता स्थायी रूपमा हटाउन चाहनुहुन्छ?')) return;
-
-  const overlay = document.getElementById('loadingOverlay');
-  overlay.classList.remove('hidden');
-
-  if (!database || !firebaseInitialized) {
-    overlay.classList.add('hidden');
-    showToast('❌ Firebase जडान छैन', 'error');
-    return;
-  }
-
-  let firebaseKey = null;
-  users.forEach(u => {
-    if (u.id === userId && u._firebaseKey) {
-      firebaseKey = u._firebaseKey;
-    }
-  });
-
-  if (!firebaseKey) {
-    const usersRef = database.ref('users');
-    usersRef.orderByChild('id').equalTo(userId).once('value')
-      .then((snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const key = Object.keys(data)[0];
-          performDelete(key);
-        } else {
-          overlay.classList.add('hidden');
-          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
-        }
-      })
-      .catch((err) => {
-        overlay.classList.add('hidden');
-        showToast('❌ खोजी गर्न असफल: ' + err.message, 'error');
-      });
-    return;
-  }
-
-  performDelete(firebaseKey);
-}
-
-function performDelete(key) {
-  const overlay = document.getElementById('loadingOverlay');
-  database.ref('users/' + key).remove()
-    .then(() => {
-      overlay.classList.add('hidden');
-      showToast('🗑️ प्रयोगकर्ता हटाइयो', 'success');
-    })
-    .catch((error) => {
-      overlay.classList.add('hidden');
-      showToast('❌ हटाउन असफल: ' + error.message, 'error');
-    });
-}
-
-// ============================================================
-// RENDER FUNCTIONS
-// ============================================================
-function renderStats() {
+// ---------------- STATS ----------------
+function updateStats(){
+  const users = Object.values(allUsers);
   const total = users.length;
-  const verified = users.filter(u => u.verified).length;
-  const pending = total - verified;
-  const vip = users.filter(u => u.membership === 'VIP').length;
-
+  const pending = users.filter(u=>u.status==='Pending' || (!u.status && !u.verified)).length;
+  const verified = users.filter(u=>u.status==='Verified' || u.verified===true).length;
+  const rejected = users.filter(u=>u.status==='Rejected').length;
+  const revenue = users.filter(u=>u.status==='Verified'||u.verified===true).reduce((sum,u)=>sum+(Number(u.membershipPrice)||0),0);
   document.getElementById('statTotal').textContent = total;
-  document.getElementById('statVerified').textContent = verified;
   document.getElementById('statPending').textContent = pending;
-  document.getElementById('statVIP').textContent = vip;
-  document.getElementById('totalUsers').textContent = total;
-  document.getElementById('verifiedUsers').textContent = verified;
-
-  document.getElementById('fAll').textContent = total;
-  document.getElementById('fVerified').textContent = verified;
-  document.getElementById('fPending').textContent = pending;
+  document.getElementById('statVerified').textContent = verified;
+  document.getElementById('statRejected').textContent = rejected;
+  document.getElementById('statRevenue').textContent = 'रु.' + revenue.toLocaleString();
 }
 
-function renderTable() {
-  const tbody = document.getElementById('userTableBody');
-  const empty = document.getElementById('emptyState');
+// ---------------- CHARTS ----------------
+function initCharts(){
+  const baseOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } } } };
+  membershipChart = new Chart(document.getElementById('membershipChart'), {
+    type:'doughnut',
+    data:{ labels:['Starter','Basic','Premium','Gold','VIP'], datasets:[{ data:[0,0,0,0,0],
+      backgroundColor:['#9575CD','#7986CB','#8E24AA','#D4AF37','#4A148C'] }] },
+    options:{ ...baseOpts, plugins:{ ...baseOpts.plugins, title:{ display:true, text:'Membership Distribution', font:{size:12} } } }
+  });
+  countryChart = new Chart(document.getElementById('countryChart'), {
+    type:'bar',
+    data:{ labels:[], datasets:[{ label:'Users', data:[], backgroundColor:'#8E24AA', borderRadius:6 }] },
+    options:{ ...baseOpts, plugins:{ legend:{display:false}, title:{ display:true, text:'Top Countries', font:{size:12} } },
+      scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } }
+  });
+  statusChart = new Chart(document.getElementById('statusChart'), {
+    type:'pie',
+    data:{ labels:['Pending','Verified','Rejected'], datasets:[{ data:[0,0,0], backgroundColor:['#f9a825','#43a047','#c62828'] }] },
+    options:{ ...baseOpts, plugins:{ ...baseOpts.plugins, title:{ display:true, text:'Verification Status', font:{size:12} } } }
+  });
+}
 
-  let filtered = users;
-  if (currentFilter === 'verified') filtered = filtered.filter(u => u.verified);
-  else if (currentFilter === 'pending') filtered = filtered.filter(u => !u.verified);
+function updateCharts(){
+  if(!membershipChart) return;
+  const users = Object.values(allUsers);
+  const membershipCounts = { Starter:0, Basic:0, Premium:0, Gold:0, VIP:0 };
+  users.forEach(u=>{ if(membershipCounts[u.membership]!==undefined) membershipCounts[u.membership]++; });
+  membershipChart.data.datasets[0].data = Object.values(membershipCounts);
+  membershipChart.update();
 
-  if (searchQuery.trim()) {
-    const q = searchQuery.trim().toLowerCase();
-    filtered = filtered.filter(u =>
-      (u.fullName || '').toLowerCase().includes(q) ||
-      String(u.id).includes(q) ||
-      (u.currentCountry || '').toLowerCase().includes(q)
-    );
-  }
+  const countryCounts = {};
+  users.forEach(u=>{ if(u.currentCountry) countryCounts[u.currentCountry] = (countryCounts[u.currentCountry]||0)+1; });
+  const topCountries = Object.entries(countryCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  countryChart.data.labels = topCountries.map(c=>c[0]);
+  countryChart.data.datasets[0].data = topCountries.map(c=>c[1]);
+  countryChart.update();
 
-  if (filtered.length === 0) {
+  const pending = users.filter(u=>u.status==='Pending' || (!u.status && !u.verified)).length;
+  const verified = users.filter(u=>u.status==='Verified' || u.verified===true).length;
+  const rejected = users.filter(u=>u.status==='Rejected').length;
+  statusChart.data.datasets[0].data = [pending, verified, rejected];
+  statusChart.update();
+}
+
+// ---------------- FILTERS / SEARCH ----------------
+window.setStatusFilter = function(status){
+  statusFilter = status;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.toggle('active', c.dataset.status===status));
+  currentPage = 1;
+  applyFilters();
+};
+
+window.applyFilters = function(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const membershipVal = document.getElementById('membershipFilter').value;
+  const countryVal = document.getElementById('countryFilter').value;
+
+  filteredUids = Object.keys(allUsers).filter(uid=>{
+    const u = allUsers[uid];
+    const uStatus = u.status || (u.verified ? 'Verified' : 'Pending');
+    if(statusFilter && uStatus !== statusFilter) return false;
+    if(membershipVal && u.membership !== membershipVal) return false;
+    if(countryVal && u.currentCountry !== countryVal) return false;
+    if(q){
+      const hay = [u.fullName,u.userID,u.transactionCode,u.occupation,u.caste].filter(Boolean).join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  filteredUids.sort((a,b)=>{
+    const da = allUsers[a].registrationDate || '';
+    const db_ = allUsers[b].registrationDate || '';
+    return db_.localeCompare(da);
+  });
+  currentPage = 1;
+  renderTable();
+};
+
+// ---------------- TABLE ----------------
+function renderTable(){
+  const tbody = document.getElementById('usersTableBody');
+  const emptyState = document.getElementById('emptyState');
+  if(filteredUids.length === 0){
     tbody.innerHTML = '';
-    empty.style.display = 'block';
+    emptyState.classList.remove('hidden');
+    document.getElementById('pagination').innerHTML = '';
     return;
   }
-  empty.style.display = 'none';
+  emptyState.classList.add('hidden');
 
-  tbody.innerHTML = filtered.map((u, index) => {
-    const verified = u.verified;
-    const membershipIcons = {
-      'Starter':'chat_bubble', 'Basic':'eco', 'Premium':'auto_awesome',
-      'Gold':'military_tech', 'VIP':'workspace_premium'
-    };
-    const icon = membershipIcons[u.membership] || 'auto_awesome';
-    const initials = (u.fullName || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  const totalPages = Math.ceil(filteredUids.length / PAGE_SIZE);
+  if(currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage-1)*PAGE_SIZE;
+  const pageUids = filteredUids.slice(start, start+PAGE_SIZE);
 
-    return `<tr style="animation:slideUp ${0.2 + index * 0.04}s ease forwards;opacity:0;">
-      <td>
-        <div class="user-info">
-          <div class="user-avatar">${initials}</div>
-          <div>
-            <div class="user-name">${escapeHtml(u.fullName || 'Unknown')}</div>
-            <div class="user-id">${escapeHtml(u.currentCountry || 'N/A')}</div>
-          </div>
-        </div>
-      </td>
-      <td><span style="font-weight:600;color:var(--muted);">SM-${String(u.id).padStart(4,'0')}</span></td>
-      <td>${escapeHtml(u.currentCountry || 'N/A')}</td>
-      <td><span class="plan-badge"><span class="material-symbols-rounded">${icon}</span>${u.membership || 'Starter'}</span></td>
-      <td><span class="badge-status ${verified ? 'verified' : 'pending'}">
-        <span class="material-symbols-rounded">${verified ? 'verified' : 'pending'}</span>
-        ${verified ? 'प्रमाणित' : 'पेन्डिङ'}
-      </span></td>
-      <td style="text-align:right;">
-        <div class="action-btns" style="justify-content:flex-end;">
-          <button class="action-btn view" onclick="viewUser(${u.id})"><span class="material-symbols-rounded">visibility</span></button>
-          ${!verified ? `<button class="action-btn verify" onclick="verifyUser(${u.id})"><span class="material-symbols-rounded">check_circle</span></button>` : ''}
-          <button class="action-btn delete" onclick="deleteUser(${u.id})"><span class="material-symbols-rounded">delete</span></button>
-        </div>
-      </td>
+  let html = '';
+  pageUids.forEach(uid=>{
+    const u = allUsers[uid];
+    const status = u.status || (u.verified ? 'Verified' : 'Pending');
+    const regDate = u.registrationDate ? new Date(u.registrationDate).toLocaleDateString() : '-';
+    const photo = u.profilePhoto ? esc(u.profilePhoto) : '';
+    html += `<tr>
+      <td>${photo ? `<img class="avatar-thumb" src="${photo}" alt="">` : `<div class="avatar-thumb"></div>`}</td>
+      <td><strong>${esc(u.userID||'-')}</strong></td>
+      <td>${esc(u.fullName||'-')}</td>
+      <td>${esc(u.currentCountry||'-')}</td>
+      <td>${esc(u.age||'-')}</td>
+      <td>${esc(u.membership||'-')} <span style="color:var(--muted);font-size:11px;">(रु.${esc(u.membershipPrice||0)})</span></td>
+      <td><span class="status-pill ${status}">${status}</span></td>
+      <td>${regDate}</td>
+      <td><div class="row-actions">
+        <button title="View" onclick="openUserModal('${uid}')"><span class="material-symbols-rounded">visibility</span></button>
+        <button title="Approve" class="ok" onclick="quickAction('${uid}','Verified')"><span class="material-symbols-rounded">check_circle</span></button>
+        <button title="Reject" class="bad" onclick="quickAction('${uid}','Rejected')"><span class="material-symbols-rounded">cancel</span></button>
+        <button title="Delete" class="bad" onclick="confirmDeleteUser('${uid}')"><span class="material-symbols-rounded">delete</span></button>
+      </div></td>
     </tr>`;
-  }).join('');
-}
-
-function escapeHtml(str) {
-  if (!str) return '';
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// ============================================================
-// FILTERS
-// ============================================================
-function setFilter(filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.filter === filter);
   });
-  renderTable();
+  tbody.innerHTML = html;
+  renderPagination(totalPages);
 }
 
-function filterTable() {
-  searchQuery = document.getElementById('searchInput').value;
-  renderTable();
-}
-
-// ============================================================
-// ACTIONS
-// ============================================================
-function verifyUser(id) {
-  const user = users.find(u => u.id === id);
-  if (!user) {
-    showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
-    return;
+function renderPagination(totalPages){
+  const el = document.getElementById('pagination');
+  if(totalPages <= 1){ el.innerHTML = ''; return; }
+  let html = '';
+  for(let i=1;i<=totalPages;i++){
+    html += `<button class="${i===currentPage?'active':''}" onclick="goToPage(${i})">${i}</button>`;
   }
-  if (user.verified) {
-    showToast('यो प्रयोगकर्ता पहिले नै प्रमाणित छ', 'error');
-    return;
+  el.innerHTML = html;
+}
+window.goToPage = function(p){ currentPage = p; renderTable(); };
+
+// ---------------- QUICK ACTIONS ----------------
+window.quickAction = async function(uid, newStatus){
+  try{
+    const patch = { status:newStatus };
+    if(newStatus === 'Verified'){ patch.verified = true; patch.verificationDate = new Date().toISOString(); }
+    else { patch.verified = false; }
+    await update(ref(db, 'users/'+uid), patch);
+    toast(`User marked as ${newStatus}`, 'ok');
+  }catch(e){
+    console.error(e);
+    toast('Action failed: ' + e.message, 'bad');
   }
-  
-  updateUserInFirebase(id, {
-    verified: true,
-    verificationDate: new Date().toISOString()
-  });
-  closeDetail();
-}
+};
 
-function deleteUser(id) {
-  deleteUserFromFirebase(id);
-  closeDetail();
-}
+window.confirmDeleteUser = function(uid){
+  const u = allUsers[uid];
+  if(!confirm(`Delete user ${u?.fullName||uid} (${u?.userID||''})? This cannot be undone.`)) return;
+  remove(ref(db, 'users/'+uid))
+    .then(()=>toast('User deleted', 'ok'))
+    .catch(e=>{ console.error(e); toast('Delete failed: '+e.message, 'bad'); });
+};
 
-function viewUser(id) {
-  const user = users.find(u => u.id === id);
-  if (!user) {
-    showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
-    return;
-  }
-  openDetail(user);
-}
+// ---------------- USER MODAL (view / edit) ----------------
+window.openUserModal = function(uid){
+  activeModalUid = uid;
+  renderUserModal(uid, false);
+  document.getElementById('userModal').classList.add('show');
+};
+window.closeUserModal = function(){
+  document.getElementById('userModal').classList.remove('show');
+  activeModalUid = null;
+};
 
-// ============================================================
-// DETAIL MODAL
-// ============================================================
-function openDetail(user) {
-  const modal = document.getElementById('detailModal');
-  const body = document.getElementById('detailBody');
-  const actions = document.getElementById('detailActions');
+function renderUserModal(uid, editMode){
+  const u = allUsers[uid];
+  if(!u){ closeUserModal(); return; }
+  const status = u.status || (u.verified ? 'Verified' : 'Pending');
+  const box = document.getElementById('userModalBox');
 
-  const membershipIcons = {
-    'Starter':'chat_bubble', 'Basic':'eco', 'Premium':'auto_awesome',
-    'Gold':'military_tech', 'VIP':'workspace_premium'
-  };
-  const icon = membershipIcons[user.membership] || 'auto_awesome';
-
-  const fullName = user.fullName || 'Unknown';
-  const initials = fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-
-  body.innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06);">
-      <div class="user-avatar" style="width:48px;height:48px;font-size:20px;">${initials}</div>
-      <div>
-        <div style="font-size:18px;font-weight:700;color:#fff;">${escapeHtml(fullName)}</div>
-        <div style="font-size:12px;color:var(--muted);">SM-${String(user.id).padStart(4,'0')}</div>
+  if(!editMode){
+    box.innerHTML = `
+      <div class="modal-header"><h3>${esc(u.fullName||'-')} <span style="font-size:12px;color:var(--muted);font-weight:500;">(${esc(u.userID||'-')})</span></h3>
+        <button class="modal-close" onclick="closeUserModal()"><span class="material-symbols-rounded">close</span></button></div>
+      <div class="img-pair">
+        <div class="img-card"><img src="${esc(u.profilePhoto||'')}" onclick="openLightbox('${esc(u.profilePhoto||'')}')" onerror="this.style.opacity=.2"><div class="lbl">Profile Photo</div></div>
+        <div class="img-card"><img src="${esc(u.paymentScreenshot||'')}" onclick="openLightbox('${esc(u.paymentScreenshot||'')}')" onerror="this.style.opacity=.2"><div class="lbl">Payment Screenshot</div></div>
       </div>
-      <span class="badge-status ${user.verified ? 'verified' : 'pending'}" style="margin-left:auto;">
-        <span class="material-symbols-rounded">${user.verified ? 'verified' : 'pending'}</span>
-        ${user.verified ? 'प्रमाणित' : 'पेन्डिङ'}
-      </span>
-    </div>
-    <div class="detail-row"><span class="label">पूरा नाम</span><span class="value">${escapeHtml(fullName)}</span></div>
-    <div class="detail-row"><span class="label">देश</span><span class="value">${escapeHtml(user.currentCountry || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">लिङ्ग</span><span class="value">${escapeHtml(user.gender || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">उमेर</span><span class="value">${escapeHtml(user.age || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">जाति</span><span class="value">${escapeHtml(user.caste || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">शिक्षा</span><span class="value">${escapeHtml(user.education || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">पेशा</span><span class="value">${escapeHtml(user.occupation || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">रुचाइएको उमेर</span><span class="value">${escapeHtml(user.preferredAge || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">रुचाइएको जाति</span><span class="value">${escapeHtml(user.preferredCaste || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">रुचाइएको देश</span><span class="value">${escapeHtml(user.preferredCountry || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">सदस्यता</span><span class="value"><span class="material-symbols-rounded" style="font-size:16px;vertical-align:middle;">${icon}</span> ${user.membership || 'Starter'} (रु. ${user.price || 0})</span></div>
-    <div class="detail-row"><span class="label">ट्रान्जेक्सन कोड</span><span class="value" style="font-size:12px;font-family:monospace;">${escapeHtml(user.transactionCode || 'N/A')}</span></div>
-    <div class="detail-row"><span class="label">दर्ता मिति</span><span class="value">${user.registrationDate ? new Date(user.registrationDate).toLocaleDateString() : 'N/A'}</span></div>
-    ${user.verificationDate ? `<div class="detail-row"><span class="label">प्रमाणीकरण मिति</span><span class="value">${new Date(user.verificationDate).toLocaleDateString()}</span></div>` : ''}
-  `;
-
-  actions.innerHTML = `
-    ${!user.verified ? `<button class="btn btn-success" onclick="verifyUser(${user.id});closeDetail();"><span class="material-symbols-rounded">verified</span> प्रमाणित गर्नुहोस्</button>` : ''}
-    <button class="btn btn-danger" onclick="deleteUser(${user.id});closeDetail();"><span class="material-symbols-rounded">delete</span> हटाउनुहोस्</button>
-    <button class="btn btn-primary" onclick="closeDetail();"><span class="material-symbols-rounded">close</span> बन्द गर्नुहोस्</button>
-  `;
-
-  modal.classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeDetail() {
-  document.getElementById('detailModal').classList.remove('show');
-  document.body.style.overflow = '';
-}
-
-document.getElementById('detailModal').addEventListener('click', function(e) {
-  if (e.target === this) closeDetail();
-});
-
-// ============================================================
-// TOAST
-// ============================================================
-function showToast(message, type = 'success') {
-  const container = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  const icon = type === 'success' ? 'check_circle' : 'error';
-  toast.innerHTML = `
-    <span class="toast-icon material-symbols-rounded icon-fill">${icon}</span>
-    <span class="toast-msg">${message}</span>
-    <button class="toast-close" onclick="this.parentElement.remove()"><span class="material-symbols-rounded">close</span></button>
-  `;
-  container.appendChild(toast);
-  setTimeout(() => {
-    if (toast.parentElement) toast.remove();
-  }, 4500);
-}
-
-// ============================================================
-// KEYBOARD SHORTCUTS
-// ============================================================
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeDetail();
-  if (e.ctrlKey && e.key === 'f') {
-    e.preventDefault();
-    document.getElementById('searchInput').focus();
+      <div class="detail-grid">
+        <div class="detail-item"><div class="dl">Country</div><div class="dv">${esc(u.currentCountry||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Gender</div><div class="dv">${esc(u.gender||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Age</div><div class="dv">${esc(u.age||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Caste</div><div class="dv">${esc(u.caste||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Education</div><div class="dv">${esc(u.education||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Occupation</div><div class="dv">${esc(u.occupation||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Preferred Age</div><div class="dv">${esc(u.preferredAge||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Preferred Caste</div><div class="dv">${esc(u.preferredCaste||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Preferred Country</div><div class="dv">${esc(u.preferredCountry||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Membership</div><div class="dv">${esc(u.membership||'-')} (रु.${esc(u.membershipPrice||0)})</div></div>
+        <div class="detail-item"><div class="dl">Payment Method</div><div class="dv">${esc(u.paymentMethod||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Transaction Code</div><div class="dv">${esc(u.transactionCode||'-')}</div></div>
+        <div class="detail-item"><div class="dl">Status</div><div class="dv"><span class="status-pill ${status}">${status}</span></div></div>
+        <div class="detail-item"><div class="dl">Registered</div><div class="dv">${u.registrationDate?new Date(u.registrationDate).toLocaleString():'-'}</div></div>
+        <div class="detail-item"><div class="dl">Verified Date</div><div class="dv">${u.verificationDate?new Date(u.verificationDate).toLocaleString():'-'}</div></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ok" onclick="quickAction('${uid}','Verified')"><span class="material-symbols-rounded">check_circle</span> Approve</button>
+        <button class="btn btn-danger" onclick="quickAction('${uid}','Rejected')"><span class="material-symbols-rounded">cancel</span> Reject</button>
+        <button class="btn btn-secondary" onclick="renderUserModal('${uid}', true)"><span class="material-symbols-rounded">edit</span> Edit</button>
+        <button class="btn btn-secondary" onclick="downloadUserPDF('${uid}')"><span class="material-symbols-rounded">picture_as_pdf</span> PDF</button>
+      </div>`;
+  } else {
+    box.innerHTML = `
+      <div class="modal-header"><h3>Edit User</h3>
+        <button class="modal-close" onclick="closeUserModal()"><span class="material-symbols-rounded">close</span></button></div>
+      <div class="form-row"><label>Full Name</label><input id="edit_fullName" value="${esc(u.fullName||'')}"></div>
+      <div class="form-row"><label>Country</label><input id="edit_currentCountry" value="${esc(u.currentCountry||'')}"></div>
+      <div class="form-row"><label>Age</label><input id="edit_age" type="number" value="${esc(u.age||'')}"></div>
+      <div class="form-row"><label>Caste</label><input id="edit_caste" value="${esc(u.caste||'')}"></div>
+      <div class="form-row"><label>Education</label><input id="edit_education" value="${esc(u.education||'')}"></div>
+      <div class="form-row"><label>Occupation</label><input id="edit_occupation" value="${esc(u.occupation||'')}"></div>
+      <div class="form-row"><label>Membership</label>
+        <select id="edit_membership">
+          ${['Starter','Basic','Premium','Gold','VIP'].map(p=>`<option value="${p}" ${u.membership===p?'selected':''}>${p}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-row"><label>Verification Date</label><input id="edit_verificationDate" type="datetime-local" value="${u.verificationDate ? new Date(u.verificationDate).toISOString().slice(0,16) : ''}"></div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="saveUserEdit('${uid}')"><span class="material-symbols-rounded">save</span> Save Changes</button>
+        <button class="btn btn-secondary" onclick="renderUserModal('${uid}', false)"><span class="material-symbols-rounded">arrow_back</span> Cancel</button>
+      </div>`;
   }
-});
+}
+window.renderUserModal = renderUserModal;
 
-// ============================================================
-// INIT - Load from Firebase
-// ============================================================
-loadUsersFromFirebase();
-
-// Add animation keyframe
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideUp {
-    from { opacity:0; transform:translateY(10px); }
-    to { opacity:1; transform:translateY(0); }
+window.saveUserEdit = async function(uid){
+  const membershipVal = document.getElementById('edit_membership').value;
+  const prices = { Starter:100, Basic:500, Premium:1500, Gold:2500, VIP:5000 };
+  const verDateVal = document.getElementById('edit_verificationDate').value;
+  const patch = {
+    fullName: document.getElementById('edit_fullName').value.trim(),
+    currentCountry: document.getElementById('edit_currentCountry').value.trim(),
+    age: document.getElementById('edit_age').value.trim(),
+    caste: document.getElementById('edit_caste').value.trim(),
+    education: document.getElementById('edit_education').value.trim(),
+    occupation: document.getElementById('edit_occupation').value.trim(),
+    membership: membershipVal,
+    membershipPrice: prices[membershipVal] ?? allUsers[uid].membershipPrice,
+    verificationDate: verDateVal ? new Date(verDateVal).toISOString() : null
+  };
+  try{
+    await update(ref(db, 'users/'+uid), patch);
+    toast('User updated', 'ok');
+    renderUserModal(uid, false);
+  }catch(e){
+    console.error(e);
+    toast('Update failed: ' + e.message, 'bad');
   }
-`;
-document.head.appendChild(style);
+};
 
-// ============================================================
-// EXPOSE TO GLOBAL
-// ============================================================
-window.setFilter = setFilter;
-window.filterTable = filterTable;
-window.verifyUser = verifyUser;
-window.deleteUser = deleteUser;
-window.viewUser = viewUser;
-window.openDetail = openDetail;
-window.closeDetail = closeDetail;
-window.showToast = showToast;
+// ---------------- LIGHTBOX ----------------
+window.openLightbox = function(src){
+  if(!src) return;
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('imgLightbox').classList.add('show');
+};
+window.closeLightbox = function(){ document.getElementById('imgLightbox').classList.remove('show'); };
+
+// ---------------- CSV EXPORT ----------------
+window.exportCSV = function(){
+  const rows = Object.entries(allUsers);
+  if(rows.length === 0){ toast('No users to export', 'bad'); return; }
+  const headers = ['userID','fullName','currentCountry','gender','age','caste','education','occupation',
+    'preferredAge','preferredCaste','preferredCountry','membership','membershipPrice','paymentMethod',
+    'transactionCode','status','registrationDate','verificationDate'];
+  const csvLines = [headers.join(',')];
+  rows.forEach(([uid,u])=>{
+    const line = headers.map(h=>{
+      let v = u[h] !== undefined && u[h] !== null ? String(u[h]) : '';
+      v = v.replace(/"/g,'""');
+      return `"${v}"`;
+    }).join(',');
+    csvLines.push(line);
+  });
+  const blob = new Blob([csvLines.join('\n')], { type:'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `setmandu_users_${Date.now()}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  toast('CSV exported', 'ok');
+};
+
+// ---------------- PDF EXPORT (single user) ----------------
+window.downloadUserPDF = function(uid){
+  const u = allUsers[uid];
+  if(!u){ toast('User not found', 'bad'); return; }
+  try{
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text('SetMandu — User Profile', 14, 18);
+    doc.setFontSize(10);
+    doc.setTextColor(120);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 25);
+    doc.setTextColor(20);
+    let y = 38;
+    const fields = [
+      ['SetMandu ID', u.userID], ['Full Name', u.fullName], ['Country', u.currentCountry],
+      ['Gender', u.gender], ['Age', u.age], ['Caste', u.caste], ['Education', u.education],
+      ['Occupation', u.occupation], ['Preferred Age', u.preferredAge], ['Preferred Caste', u.preferredCaste],
+      ['Preferred Country', u.preferredCountry], ['Membership', `${u.membership} (Rs. ${u.membershipPrice})`],
+      ['Payment Method', u.paymentMethod], ['Transaction Code', u.transactionCode],
+      ['Status', u.status || (u.verified?'Verified':'Pending')],
+      ['Registration Date', u.registrationDate ? new Date(u.registrationDate).toLocaleString() : '-'],
+      ['Verification Date', u.verificationDate ? new Date(u.verificationDate).toLocaleString() : '-']
+    ];
+    doc.setFontSize(11);
+    fields.forEach(([label, value])=>{
+      doc.setFont(undefined, 'bold');
+      doc.text(String(label)+':', 14, y);
+      doc.setFont(undefined, 'normal');
+      doc.text(String(value ?? '-'), 70, y);
+      y += 8;
+      if(y > 280){ doc.addPage(); y = 20; }
+    });
+    doc.save(`setmandu_${u.userID||uid}.pdf`);
+    toast('PDF generated', 'ok');
+  }catch(e){
+    console.error(e);
+    toast('PDF generation failed: ' + e.message, 'bad');
+  }
+};
 </script>
 </body>
 </html>
