@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
 <meta name="theme-color" content="#1a0a2e">
-<title>SetMandu · एडमिन प्यानल (Real Database)</title>
+<title>SetMandu · एडमिन प्यानल (Firebase Real Data)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -246,13 +246,17 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .toast.error .toast-icon{color:var(--danger);}
 
 .loading-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);
-  display:none;justify-content:center;align-items:center;z-index:99998;
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);
+  display:flex;justify-content:center;align-items:center;z-index:99998;
+  flex-direction:column;gap:20px;
 }
-.loading-overlay.show{display:flex;}
+.loading-overlay.hidden{display:none;}
 .loading-overlay .spinner{
   width:50px;height:50px;border-radius:50%;border:3px solid rgba(142,36,170,0.2);
   border-top:3px solid var(--primary-light);animation:spin 1s linear infinite;
+}
+.loading-overlay .loading-text{
+  color:var(--muted);font-size:14px;font-weight:500;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -283,8 +287,10 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 </head>
 <body>
 
+<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
+  <div class="loading-text">🔥 Firebase बाट डाटा लोड हुँदै...</div>
 </div>
 
 <div class="admin-wrapper">
@@ -350,8 +356,8 @@ tr:hover td{background:rgba(255,255,255,0.02);}
         </thead>
         <tbody id="userTableBody">
           <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">
-            <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">sync</span>
-            डाटा लोड हुँदै...
+            <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">cloud_sync</span>
+            Firebase बाट डाटा आउँदै...
           </td></tr>
         </tbody>
       </table>
@@ -359,12 +365,12 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     <div id="emptyState" class="empty-state" style="display:none;">
       <span class="material-symbols-rounded">inbox</span>
       <h3>कुनै प्रयोगकर्ता फेला परेन</h3>
-      <p>खोजी मापदण्ड मिल्ने कुनै प्रयोगकर्ता छैन।</p>
+      <p>Firebase Database मा कुनै प्रयोगकर्ता छैन।</p>
     </div>
   </div>
 
   <div style="text-align:center;font-size:12px;color:var(--muted);padding:12px 0;border-top:1px solid rgba(255,255,255,0.04);">
-    SetMandu Admin Panel v3.0 · Firebase Realtime Database
+    SetMandu Admin Panel v4.0 · 🔥 Firebase Realtime Database
   </div>
 </div>
 
@@ -383,28 +389,72 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 'use strict';
 
 // ============================================================
-// FIREBASE CONFIG - तपाईंको आफ्नै Config यहाँ राख्नुहोस्
+// 🔥 FIREBASE CONFIG - तपाईंको Real Config यहाँ राख्नुहोस्
 // ============================================================
+// ============================================================
+// 🔥 SETMANDU FIREBASE CONFIG - COPY PASTE GARNUS
+// ============================================================
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDummyKey_Replace_With_Your_Real_Key",
-  authDomain: "your-project.firebaseapp.com",
-  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
+  apiKey: "AIzaSyAcQlfL5FQsLbgjZl2PSpwANbJDRsAYg-0",
+  authDomain: "setmandu-603f9.firebaseapp.com",
+  databaseURL: "https://setmandu-603f9-default-rtdb.firebaseio.com",
+  projectId: "setmandu-603f9",
+  storageBucket: "setmandu-603f9.firebasestorage.app",
+  messagingSenderId: "991608006279",
+  appId: "1:991608006279:android:15e91e65aff59c2fff3a22"
 };
 
+// ============================================================
+// 🚀 FIREBASE INITIALIZATION
+// ============================================================
+
+// Web CDN को लागि:
+// <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+// <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
 // Initialize Firebase
-let database;
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// ============================================================
+// 📝 DATABASE REFERENCE
+// ============================================================
+
+// Users Collection Path:
+// https://setmandu-603f9-default-rtdb.firebaseio.com/users
+
+// ============================================================
+// 🛡️ DATABASE RULES (Firebase Console मा Set गर्नुहोस्)
+// ============================================================
+
+/*
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "users": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
+*/
+
+// ============================================================
+// FIREBASE INIT
+// ============================================================
+let database = null;
+let firebaseInitialized = false;
+
 try {
   firebase.initializeApp(firebaseConfig);
   database = firebase.database();
-  console.log('🔥 Firebase initialized successfully');
+  firebaseInitialized = true;
+  console.log('✅ Firebase initialized successfully');
 } catch (e) {
   console.error('❌ Firebase init error:', e);
-  // Fallback to localStorage if Firebase fails
-  console.warn('⚠️ Using localStorage fallback');
+  showToast('❌ Firebase Config मा समस्या छ। कृपया Config चेक गर्नुहोस्।', 'error');
 }
 
 // ============================================================
@@ -413,284 +463,190 @@ try {
 let users = [];
 let currentFilter = 'all';
 let searchQuery = '';
-let userIdCounter = 1000;
+let firebaseKeys = {}; // Store Firebase keys for each user
 
 // ============================================================
-// DATABASE OPERATIONS
+// LOAD USERS FROM FIREBASE
 // ============================================================
+function loadUsersFromFirebase() {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.remove('hidden');
 
-// Load users from Firebase
-function loadUsersFromDB() {
-  showLoading(true);
-
-  if (database) {
-    // Real database - Firebase
-    const usersRef = database.ref('users');
-    usersRef.on('value', (snapshot) => {
-      const data = snapshot.val();
-      users = [];
-      
-      if (data) {
-        Object.keys(data).forEach((key) => {
-          const user = data[key];
-          user._key = key; // store firebase key for updates
-          users.push(user);
-        });
-      }
-
-      // Sort by registration date (newest first)
-      users.sort((a, b) => {
-        const dateA = a.registrationDate ? new Date(a.registrationDate) : new Date(0);
-        const dateB = b.registrationDate ? new Date(b.registrationDate) : new Date(0);
-        return dateB - dateA;
-      });
-
-      renderStats();
-      renderTable();
-      showLoading(false);
-      showToast(`✅ ${users.length} प्रयोगकर्ता लोड गरियो`, 'success');
-    }, (error) => {
-      console.error('Database error:', error);
-      showLoading(false);
-      // Fallback to localStorage
-      loadFromLocalStorage();
-    });
-  } else {
-    // Fallback to localStorage
-    loadFromLocalStorage();
+  if (!database || !firebaseInitialized) {
+    overlay.classList.add('hidden');
+    showToast('❌ Firebase जडान भएन। Config चेक गर्नुहोस्।', 'error');
+    document.getElementById('userTableBody').innerHTML = `
+      <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--danger);">
+        <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">error</span>
+        Firebase Connection Failed<br>
+        <span style="font-size:12px;color:var(--muted);">कृपया firebaseConfig मा सही डाटा राख्नुहोस्</span>
+      </td></tr>
+    `;
+    return;
   }
-}
 
-// Fallback: Load from localStorage
-function loadFromLocalStorage() {
-  users = [];
+  const usersRef = database.ref('users');
   
-  // Check for individual user
-  const registered = localStorage.getItem('setmandu_registered');
-  if (registered === 'true') {
-    const userData = localStorage.getItem('setmandu_user');
-    if (userData) {
-      try {
-        const data = JSON.parse(userData);
-        const user = {
-          id: data.userID || Math.floor(Math.random() * 9000) + 1000,
-          fullName: data.name || data.fullName || 'Unknown',
-          currentCountry: data.currentCountry || 'Nepal',
-          gender: data.gender || 'Other',
-          age: data.age || 'N/A',
-          caste: data.caste || 'N/A',
-          education: data.education || 'N/A',
-          occupation: data.occupation || 'N/A',
-          preferredAge: data.preferredAge || 'N/A',
-          preferredCaste: data.preferredCaste || 'N/A',
-          preferredCountry: data.preferredCountry || 'N/A',
-          membership: data.membership || 'Starter',
-          price: data.price || 0,
-          verified: data.verified || false,
-          registrationDate: data.registrationDate || new Date().toISOString(),
-          verificationDate: data.verificationDate || null,
-          transactionCode: data.transactionCode || 'N/A'
-        };
+  // Real-time listener
+  usersRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+    users = [];
+    firebaseKeys = {};
+
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        const user = data[key];
+        user._firebaseKey = key; // Store Firebase key for updates
         users.push(user);
-      } catch(e) {}
-    }
-  }
-
-  // Check for multiple users
-  const multiUsers = localStorage.getItem('setmandu_users');
-  if (multiUsers) {
-    try {
-      const parsed = JSON.parse(multiUsers);
-      if (Array.isArray(parsed)) {
-        parsed.forEach(u => {
-          if (!users.some(ex => ex.id === u.id)) {
-            users.push(u);
-          }
-        });
-      }
-    } catch(e) {}
-  }
-
-  // If still no users, create a demo user
-  if (users.length === 0) {
-    const demo = {
-      id: 1001,
-      fullName: 'Demo User',
-      currentCountry: 'Nepal',
-      gender: 'Male',
-      age: '25',
-      caste: 'Brahmin',
-      education: 'Bachelor\'s',
-      occupation: 'Student',
-      preferredAge: '22-28',
-      preferredCaste: 'Any',
-      preferredCountry: 'Nepal',
-      membership: 'Starter',
-      price: 100,
-      verified: false,
-      registrationDate: new Date().toISOString(),
-      verificationDate: null,
-      transactionCode: 'DEMO123',
-      _key: 'demo_user'
-    };
-    users.push(demo);
-    localStorage.setItem('setmandu_users', JSON.stringify(users));
-  }
-
-  renderStats();
-  renderTable();
-  showLoading(false);
-}
-
-// Save user to Firebase
-function saveUserToDB(userData) {
-  if (database) {
-    const usersRef = database.ref('users');
-    const newUserRef = usersRef.push();
-    const userToSave = {
-      ...userData,
-      id: userData.id || Math.floor(Math.random() * 9000) + 1000,
-      registrationDate: userData.registrationDate || new Date().toISOString(),
-      verified: userData.verified || false
-    };
-    
-    newUserRef.set(userToSave)
-      .then(() => {
-        showToast('✅ प्रयोगकर्ता सेभ गरियो', 'success');
-        // Also save to localStorage as backup
-        saveToLocalBackup(userToSave);
-      })
-      .catch((error) => {
-        console.error('Save error:', error);
-        showToast('❌ सेभ गर्न असफल: ' + error.message, 'error');
-        // Fallback to localStorage
-        saveToLocalBackup(userToSave);
+        firebaseKeys[user.id] = key;
       });
-  } else {
-    saveToLocalBackup(userData);
-  }
-}
-
-// Backup to localStorage
-function saveToLocalBackup(userData) {
-  // Update users array
-  const existing = users.findIndex(u => u.id === userData.id);
-  if (existing >= 0) {
-    users[existing] = { ...users[existing], ...userData };
-  } else {
-    users.push(userData);
-  }
-  localStorage.setItem('setmandu_users', JSON.stringify(users));
-  // Also save as individual
-  localStorage.setItem('setmandu_user', JSON.stringify(userData));
-  localStorage.setItem('setmandu_registered', 'true');
-  renderStats();
-  renderTable();
-}
-
-// Update user verification status in Firebase
-function updateVerificationInDB(userId, verified) {
-  showLoading(true);
-  
-  if (database) {
-    // Find user by id
-    const userRef = database.ref('users');
-    userRef.orderByChild('id').equalTo(userId).once('value')
-      .then((snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const key = Object.keys(data)[0];
-          const updates = {
-            verified: verified,
-            verificationDate: verified ? new Date().toISOString() : null
-          };
-          
-          database.ref('users/' + key).update(updates)
-            .then(() => {
-              showLoading(false);
-              showToast('✅ प्रमाणीकरण अद्यावधिक गरियो', 'success');
-              loadUsersFromDB(); // reload
-            })
-            .catch((error) => {
-              showLoading(false);
-              showToast('❌ अपडेट गर्न असफल: ' + error.message, 'error');
-            });
-        } else {
-          showLoading(false);
-          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
-        }
-      })
-      .catch((error) => {
-        showLoading(false);
-        showToast('❌ खोजी गर्न असफल: ' + error.message, 'error');
-      });
-  } else {
-    // localStorage fallback
-    const user = users.find(u => u.id === userId);
-    if (user) {
-      user.verified = verified;
-      user.verificationDate = verified ? new Date().toISOString() : null;
-      localStorage.setItem('setmandu_users', JSON.stringify(users));
-      localStorage.setItem('setmandu_user', JSON.stringify(user));
-      showLoading(false);
-      renderStats();
-      renderTable();
-      showToast(`✅ ${user.fullName} ${verified ? 'प्रमाणित' : 'अप्रमाणित'} गरियो`, 'success');
-    } else {
-      showLoading(false);
-      showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
     }
-  }
-}
 
-// Delete user from Firebase
-function deleteUserFromDB(userId) {
-  if (!confirm('के तपाईं यो प्रयोगकर्ता हटाउन निश्चित हुनुहुन्छ?')) return;
-  
-  showLoading(true);
-  
-  if (database) {
-    const userRef = database.ref('users');
-    userRef.orderByChild('id').equalTo(userId).once('value')
-      .then((snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const key = Object.keys(data)[0];
-          database.ref('users/' + key).remove()
-            .then(() => {
-              showLoading(false);
-              showToast('🗑️ प्रयोगकर्ता हटाइयो', 'success');
-              loadUsersFromDB(); // reload
-            })
-            .catch((error) => {
-              showLoading(false);
-              showToast('❌ हटाउन असफल: ' + error.message, 'error');
-            });
-        } else {
-          showLoading(false);
-          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
-        }
-      })
-      .catch((error) => {
-        showLoading(false);
-        showToast('❌ खोजी गर्न असफल: ' + error.message, 'error');
-      });
-  } else {
-    // localStorage fallback
-    const user = users.find(u => u.id === userId);
-    users = users.filter(u => u.id !== userId);
-    localStorage.setItem('setmandu_users', JSON.stringify(users));
-    if (users.length > 0) {
-      localStorage.setItem('setmandu_user', JSON.stringify(users[0]));
-    } else {
-      localStorage.removeItem('setmandu_user');
-      localStorage.removeItem('setmandu_registered');
-    }
-    showLoading(false);
+    // Sort by registration date (newest first)
+    users.sort((a, b) => {
+      const dateA = a.registrationDate ? new Date(a.registrationDate) : new Date(0);
+      const dateB = b.registrationDate ? new Date(b.registrationDate) : new Date(0);
+      return dateB - dateA;
+    });
+
+    overlay.classList.add('hidden');
     renderStats();
     renderTable();
-    showToast(`🗑️ ${user ? user.fullName : 'प्रयोगकर्ता'} हटाइयो`, 'success');
+    
+    if (users.length > 0) {
+      showToast(`✅ ${users.length} प्रयोगकर्ता लोड गरियो`, 'success');
+    } else {
+      showToast('📭 कुनै प्रयोगकर्ता छैन। नयाँ Register गर्नुहोस्।', 'error');
+    }
+  }, (error) => {
+    overlay.classList.add('hidden');
+    console.error('Firebase read error:', error);
+    showToast('❌ डाटा पढ्न असफल: ' + error.message, 'error');
+    document.getElementById('userTableBody').innerHTML = `
+      <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--danger);">
+        <span class="material-symbols-rounded" style="font-size:40px;display:block;margin-bottom:10px;">error</span>
+        ${error.message}
+      </td></tr>
+    `;
+  });
+}
+
+// ============================================================
+// UPDATE USER IN FIREBASE
+// ============================================================
+function updateUserInFirebase(userId, updates) {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.remove('hidden');
+
+  if (!database || !firebaseInitialized) {
+    overlay.classList.add('hidden');
+    showToast('❌ Firebase जडान छैन', 'error');
+    return;
   }
+
+  // Find the Firebase key for this user
+  let firebaseKey = null;
+  users.forEach(u => {
+    if (u.id === userId && u._firebaseKey) {
+      firebaseKey = u._firebaseKey;
+    }
+  });
+
+  if (!firebaseKey) {
+    // Try to find by searching in database
+    const usersRef = database.ref('users');
+    usersRef.orderByChild('id').equalTo(userId).once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const key = Object.keys(data)[0];
+          performUpdate(key, updates);
+        } else {
+          overlay.classList.add('hidden');
+          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+        }
+      })
+      .catch((err) => {
+        overlay.classList.add('hidden');
+        showToast('❌ खोजी गर्न असफल: ' + err.message, 'error');
+      });
+    return;
+  }
+
+  performUpdate(firebaseKey, updates);
+}
+
+function performUpdate(key, updates) {
+  const overlay = document.getElementById('loadingOverlay');
+  database.ref('users/' + key).update(updates)
+    .then(() => {
+      overlay.classList.add('hidden');
+      showToast('✅ अद्यावधिक गरियो', 'success');
+      // Data will refresh via the real-time listener
+    })
+    .catch((error) => {
+      overlay.classList.add('hidden');
+      showToast('❌ अपडेट गर्न असफल: ' + error.message, 'error');
+    });
+}
+
+// ============================================================
+// DELETE USER FROM FIREBASE
+// ============================================================
+function deleteUserFromFirebase(userId) {
+  if (!confirm('के तपाईं यो प्रयोगकर्ता स्थायी रूपमा हटाउन चाहनुहुन्छ?')) return;
+
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.remove('hidden');
+
+  if (!database || !firebaseInitialized) {
+    overlay.classList.add('hidden');
+    showToast('❌ Firebase जडान छैन', 'error');
+    return;
+  }
+
+  // Find Firebase key
+  let firebaseKey = null;
+  users.forEach(u => {
+    if (u.id === userId && u._firebaseKey) {
+      firebaseKey = u._firebaseKey;
+    }
+  });
+
+  if (!firebaseKey) {
+    const usersRef = database.ref('users');
+    usersRef.orderByChild('id').equalTo(userId).once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const key = Object.keys(data)[0];
+          performDelete(key);
+        } else {
+          overlay.classList.add('hidden');
+          showToast('❌ प्रयोगकर्ता फेला परेन', 'error');
+        }
+      })
+      .catch((err) => {
+        overlay.classList.add('hidden');
+        showToast('❌ खोजी गर्न असफल: ' + err.message, 'error');
+      });
+    return;
+  }
+
+  performDelete(firebaseKey);
+}
+
+function performDelete(key) {
+  const overlay = document.getElementById('loadingOverlay');
+  database.ref('users/' + key).remove()
+    .then(() => {
+      overlay.classList.add('hidden');
+      showToast('🗑️ प्रयोगकर्ता हटाइयो', 'success');
+    })
+    .catch((error) => {
+      overlay.classList.add('hidden');
+      showToast('❌ हटाउन असफल: ' + error.message, 'error');
+    });
 }
 
 // ============================================================
@@ -738,7 +694,7 @@ function renderTable() {
   }
   empty.style.display = 'none';
 
-  tbody.innerHTML = filtered.map(u => {
+  tbody.innerHTML = filtered.map((u, index) => {
     const verified = u.verified;
     const membershipIcons = {
       'Starter':'chat_bubble', 'Basic':'eco', 'Premium':'auto_awesome',
@@ -747,7 +703,7 @@ function renderTable() {
     const icon = membershipIcons[u.membership] || 'auto_awesome';
     const initials = (u.fullName || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
 
-    return `<tr>
+    return `<tr style="animation:slideUp ${0.2 + index * 0.04}s ease forwards;opacity:0;">
       <td>
         <div class="user-info">
           <div class="user-avatar">${initials}</div>
@@ -811,11 +767,17 @@ function verifyUser(id) {
     showToast('यो प्रयोगकर्ता पहिले नै प्रमाणित छ', 'error');
     return;
   }
-  updateVerificationInDB(id, true);
+  
+  updateUserInFirebase(id, {
+    verified: true,
+    verificationDate: new Date().toISOString()
+  });
+  closeDetail();
 }
 
 function deleteUser(id) {
-  deleteUserFromDB(id);
+  deleteUserFromFirebase(id);
+  closeDetail();
 }
 
 function viewUser(id) {
@@ -911,13 +873,6 @@ function showToast(message, type = 'success') {
 }
 
 // ============================================================
-// LOADING
-// ============================================================
-function showLoading(show) {
-  document.getElementById('loadingOverlay').classList.toggle('show', show);
-}
-
-// ============================================================
 // KEYBOARD SHORTCUTS
 // ============================================================
 document.addEventListener('keydown', function(e) {
@@ -929,52 +884,23 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ============================================================
-// ADD DEMO USER BUTTON (for testing)
+// INIT - Load from Firebase
 // ============================================================
-function addDemoUser() {
-  const demo = {
-    id: Math.floor(Math.random() * 9000) + 1000,
-    fullName: 'Test User ' + new Date().getTime().toString().slice(-4),
-    currentCountry: 'Nepal',
-    gender: 'Male',
-    age: '25',
-    caste: 'Brahmin',
-    education: 'Bachelor\'s',
-    occupation: 'Student',
-    preferredAge: '22-28',
-    preferredCaste: 'Any',
-    preferredCountry: 'Nepal',
-    membership: 'Starter',
-    price: 100,
-    verified: false,
-    registrationDate: new Date().toISOString(),
-    verificationDate: null,
-    transactionCode: 'TXN' + Math.random().toString(36).slice(2,8).toUpperCase()
-  };
-  
-  saveUserToDB(demo);
-}
+loadUsersFromFirebase();
 
-// Add a small floating button for testing
-const testBtn = document.createElement('button');
-testBtn.innerHTML = '+ Demo';
-testBtn.style.cssText = `
-  position:fixed;bottom:100px;right:20px;z-index:9999;
-  padding:10px 16px;border:none;border-radius:40px;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  color:#fff;font-weight:700;font-size:13px;cursor:pointer;
-  box-shadow:0 8px 24px rgba(142,36,170,0.4);
-  font-family:inherit;
+// Add animation keyframe
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideUp {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
 `;
-testBtn.onclick = addDemoUser;
-document.body.appendChild(testBtn);
+document.head.appendChild(style);
 
 // ============================================================
-// INIT
+// EXPOSE TO GLOBAL
 // ============================================================
-loadUsersFromDB();
-
-// Expose to global
 window.setFilter = setFilter;
 window.filterTable = filterTable;
 window.verifyUser = verifyUser;
@@ -983,7 +909,6 @@ window.viewUser = viewUser;
 window.openDetail = openDetail;
 window.closeDetail = closeDetail;
 window.showToast = showToast;
-window.addDemoUser = addDemoUser;
 </script>
 </body>
 </html>
